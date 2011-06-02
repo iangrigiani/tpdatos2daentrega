@@ -1,6 +1,0 @@
-FrontCoding.o: src/ArbolB+/FrontCoding.cpp src/ArbolB+/FrontCoding.h \
- src/ArbolB+/../EstructurasEnComun/Constantes.h
-
-src/ArbolB+/FrontCoding.h:
-
-src/ArbolB+/../EstructurasEnComun/Constantes.h:

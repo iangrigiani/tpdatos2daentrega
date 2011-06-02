@@ -1,7 +1,0 @@
-ParserDeLibros.o: src/ParserLibros/ParserDeLibros.cpp \
- src/ParserLibros/ParserDeLibros.h \
- src/ParserLibros/../EstructurasEnComun/Constantes.h
-
-src/ParserLibros/ParserDeLibros.h:
-
-src/ParserLibros/../EstructurasEnComun/Constantes.h:
