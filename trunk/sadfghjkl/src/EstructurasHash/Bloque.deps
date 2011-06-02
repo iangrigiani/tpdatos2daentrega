@@ -1,0 +1,6 @@
+Bloque.o: src/EstructurasHash/Bloque.cpp src/EstructurasHash/Bloque.h \
+ src/EstructurasHash/../ModuloDePersistencia/Serializable.h
+
+src/EstructurasHash/Bloque.h:
+
+src/EstructurasHash/../ModuloDePersistencia/Serializable.h:

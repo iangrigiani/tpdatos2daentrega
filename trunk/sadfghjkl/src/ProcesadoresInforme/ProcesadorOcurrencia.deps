@@ -1,0 +1,16 @@
+ProcesadorOcurrencia.o: src/ProcesadoresInforme/ProcesadorOcurrencia.cpp \
+ src/ProcesadoresInforme/ProcesadorOcurrencia.h \
+ src/ProcesadoresInforme/../ParserLibros/ParserDeLibros.h \
+ src/ProcesadoresInforme/../ParserLibros/../EstructurasEnComun/Constantes.h \
+ src/ProcesadoresInforme/../EstructurasEnComun/Ocurrencia.h \
+ src/ProcesadoresInforme/../EstructurasEnComun/Termino.h
+
+src/ProcesadoresInforme/ProcesadorOcurrencia.h:
+
+src/ProcesadoresInforme/../ParserLibros/ParserDeLibros.h:
+
+src/ProcesadoresInforme/../ParserLibros/../EstructurasEnComun/Constantes.h:
+
+src/ProcesadoresInforme/../EstructurasEnComun/Ocurrencia.h:
+
+src/ProcesadoresInforme/../EstructurasEnComun/Termino.h:

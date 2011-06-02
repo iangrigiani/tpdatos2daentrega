@@ -1,0 +1,15 @@
+RegTitulo.o: src/EstructurasHash/RegTitulo.cpp \
+ src/EstructurasHash/RegTitulo.h src/EstructurasHash/Reg.h \
+ src/EstructurasHash/../ModuloDePersistencia/Serializable.h \
+ src/EstructurasHash/../ModuloDePersistencia/Persistencia.h \
+ src/EstructurasHash/../ModuloDePersistencia/../EstructurasEnComun/Constantes.h
+
+src/EstructurasHash/RegTitulo.h:
+
+src/EstructurasHash/Reg.h:
+
+src/EstructurasHash/../ModuloDePersistencia/Serializable.h:
+
+src/EstructurasHash/../ModuloDePersistencia/Persistencia.h:
+
+src/EstructurasHash/../ModuloDePersistencia/../EstructurasEnComun/Constantes.h:

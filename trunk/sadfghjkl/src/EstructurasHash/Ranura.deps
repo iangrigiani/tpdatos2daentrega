@@ -1,0 +1,47 @@
+Ranura.o: src/EstructurasHash/Ranura.cpp src/EstructurasHash/Ranura.h \
+ src/EstructurasHash/Bloque.h \
+ src/EstructurasHash/../ModuloDePersistencia/Serializable.h \
+ src/EstructurasHash/RegTitulo.h src/EstructurasHash/Reg.h \
+ src/EstructurasHash/../ModuloDePersistencia/Persistencia.h \
+ src/EstructurasHash/../ModuloDePersistencia/../EstructurasEnComun/Constantes.h \
+ src/EstructurasHash/../Hash/HandlerTabla.h \
+ src/EstructurasHash/../Hash/../EstructurasHash/Bloque.h \
+ src/EstructurasHash/../Hash/../EstructurasHash/Cubo.h \
+ src/EstructurasHash/../Hash/../EstructurasHash/Bloque.h \
+ src/EstructurasHash/../Hash/../EstructurasHash/RegPalabra.h \
+ src/EstructurasHash/../Hash/../EstructurasHash/Reg.h \
+ src/EstructurasHash/../Hash/../EstructurasHash/../EstructurasEnComun/Constantes.h \
+ src/EstructurasHash/../Hash/../EstructurasHash/../Hash/HandlerTabla.h \
+ src/EstructurasHash/../Hash/../EstructurasHash/Ranura.h
+
+src/EstructurasHash/Ranura.h:
+
+src/EstructurasHash/Bloque.h:
+
+src/EstructurasHash/../ModuloDePersistencia/Serializable.h:
+
+src/EstructurasHash/RegTitulo.h:
+
+src/EstructurasHash/Reg.h:
+
+src/EstructurasHash/../ModuloDePersistencia/Persistencia.h:
+
+src/EstructurasHash/../ModuloDePersistencia/../EstructurasEnComun/Constantes.h:
+
+src/EstructurasHash/../Hash/HandlerTabla.h:
+
+src/EstructurasHash/../Hash/../EstructurasHash/Bloque.h:
+
+src/EstructurasHash/../Hash/../EstructurasHash/Cubo.h:
+
+src/EstructurasHash/../Hash/../EstructurasHash/Bloque.h:
+
+src/EstructurasHash/../Hash/../EstructurasHash/RegPalabra.h:
+
+src/EstructurasHash/../Hash/../EstructurasHash/Reg.h:
+
+src/EstructurasHash/../Hash/../EstructurasHash/../EstructurasEnComun/Constantes.h:
+
+src/EstructurasHash/../Hash/../EstructurasHash/../Hash/HandlerTabla.h:
+
+src/EstructurasHash/../Hash/../EstructurasHash/Ranura.h:

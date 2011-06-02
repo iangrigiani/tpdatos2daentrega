@@ -1,0 +1,10 @@
+HandlerBloques.o: src/ManejadoresDeArchivos/HandlerBloques.cpp \
+ src/ManejadoresDeArchivos/HandlerBloques.h \
+ src/ManejadoresDeArchivos/HandlerEspLibre.h \
+ src/ManejadoresDeArchivos/../EstructurasEnComun/Constantes.h
+
+src/ManejadoresDeArchivos/HandlerBloques.h:
+
+src/ManejadoresDeArchivos/HandlerEspLibre.h:
+
+src/ManejadoresDeArchivos/../EstructurasEnComun/Constantes.h:
