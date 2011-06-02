@@ -1,4 +1,0 @@
-Ocurrencia.o: src/EstructurasEnComun/Ocurrencia.cpp \
- src/EstructurasEnComun/Ocurrencia.h
-
-src/EstructurasEnComun/Ocurrencia.h:
