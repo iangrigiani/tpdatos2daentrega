@@ -1,0 +1,15 @@
+Elementos.o: src/ArbolB+/Elementos.cpp src/ArbolB+/Elementos.h \
+ src/ArbolB+/../EstructurasEnComun/Clave.h \
+ src/ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/CadenaBytes.h \
+ src/ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/../ArbolB+/FrontCoding.h \
+ src/ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/../ArbolB+/../EstructurasEnComun/Constantes.h
+
+src/ArbolB+/Elementos.h:
+
+src/ArbolB+/../EstructurasEnComun/Clave.h:
+
+src/ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/CadenaBytes.h:
+
+src/ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/../ArbolB+/FrontCoding.h:
+
+src/ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/../ArbolB+/../EstructurasEnComun/Constantes.h:

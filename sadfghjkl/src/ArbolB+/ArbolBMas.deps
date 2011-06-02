@@ -1,0 +1,42 @@
+ArbolBMas.o: src/ArbolB+/ArbolBMas.cpp src/ArbolB+/ArbolBMas.h \
+ src/ArbolB+/Elementos.h src/ArbolB+/../EstructurasEnComun/Clave.h \
+ src/ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/CadenaBytes.h \
+ src/ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/../ArbolB+/FrontCoding.h \
+ src/ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/../ArbolB+/../EstructurasEnComun/Constantes.h \
+ src/ArbolB+/NodoInterior.h src/ArbolB+/Nodo.h \
+ src/ArbolB+/../ModuloDePersistencia/PersistorArbol.h \
+ src/ArbolB+/../ModuloDePersistencia/CadenaBytes.h \
+ src/ArbolB+/../ModuloDePersistencia/../ManejadoresDeArchivos/HandlerBloques.h \
+ src/ArbolB+/../ModuloDePersistencia/../ManejadoresDeArchivos/HandlerEspLibre.h \
+ src/ArbolB+/../ModuloDePersistencia/../ManejadoresDeArchivos/../EstructurasEnComun/Constantes.h \
+ src/ArbolB+/Solucion.h src/ArbolB+/NodoHoja.h
+
+src/ArbolB+/ArbolBMas.h:
+
+src/ArbolB+/Elementos.h:
+
+src/ArbolB+/../EstructurasEnComun/Clave.h:
+
+src/ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/CadenaBytes.h:
+
+src/ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/../ArbolB+/FrontCoding.h:
+
+src/ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/../ArbolB+/../EstructurasEnComun/Constantes.h:
+
+src/ArbolB+/NodoInterior.h:
+
+src/ArbolB+/Nodo.h:
+
+src/ArbolB+/../ModuloDePersistencia/PersistorArbol.h:
+
+src/ArbolB+/../ModuloDePersistencia/CadenaBytes.h:
+
+src/ArbolB+/../ModuloDePersistencia/../ManejadoresDeArchivos/HandlerBloques.h:
+
+src/ArbolB+/../ModuloDePersistencia/../ManejadoresDeArchivos/HandlerEspLibre.h:
+
+src/ArbolB+/../ModuloDePersistencia/../ManejadoresDeArchivos/../EstructurasEnComun/Constantes.h:
+
+src/ArbolB+/Solucion.h:
+
+src/ArbolB+/NodoHoja.h:

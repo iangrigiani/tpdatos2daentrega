@@ -1,0 +1,7 @@
+HandlerArchivoRLV.o: src/ManejadoresDeArchivos/HandlerArchivoRLV.cpp \
+ src/ManejadoresDeArchivos/HandlerArchivoRLV.h \
+ src/ManejadoresDeArchivos/../EstructurasEnComun/Constantes.h
+
+src/ManejadoresDeArchivos/HandlerArchivoRLV.h:
+
+src/ManejadoresDeArchivos/../EstructurasEnComun/Constantes.h:

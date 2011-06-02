@@ -1,0 +1,136 @@
+HandlerComandos.o: src/ManejadoresInforme/HandlerComandos.cpp \
+ src/ManejadoresInforme/HandlerComandos.h \
+ src/ManejadoresInforme/../ArbolB+/ArbolBMas.h \
+ src/ManejadoresInforme/../ArbolB+/Elementos.h \
+ src/ManejadoresInforme/../ArbolB+/../EstructurasEnComun/Clave.h \
+ src/ManejadoresInforme/../ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/CadenaBytes.h \
+ src/ManejadoresInforme/../ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/../ArbolB+/FrontCoding.h \
+ src/ManejadoresInforme/../ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/../ArbolB+/../EstructurasEnComun/Constantes.h \
+ src/ManejadoresInforme/../ArbolB+/NodoInterior.h \
+ src/ManejadoresInforme/../ArbolB+/Nodo.h \
+ src/ManejadoresInforme/../ArbolB+/../ModuloDePersistencia/PersistorArbol.h \
+ src/ManejadoresInforme/../ArbolB+/../ModuloDePersistencia/CadenaBytes.h \
+ src/ManejadoresInforme/../ArbolB+/../ModuloDePersistencia/../ManejadoresDeArchivos/HandlerBloques.h \
+ src/ManejadoresInforme/../ArbolB+/../ModuloDePersistencia/../ManejadoresDeArchivos/HandlerEspLibre.h \
+ src/ManejadoresInforme/../ArbolB+/../ModuloDePersistencia/../ManejadoresDeArchivos/../EstructurasEnComun/Constantes.h \
+ src/ManejadoresInforme/../ArbolB+/Solucion.h \
+ src/ManejadoresInforme/../ArbolB+/NodoHoja.h \
+ src/ManejadoresInforme/../Hash/HashPalabra.h \
+ src/ManejadoresInforme/../Hash/Hash.h \
+ src/ManejadoresInforme/../Hash/HandlerTabla.h \
+ src/ManejadoresInforme/../Hash/../EstructurasHash/Bloque.h \
+ src/ManejadoresInforme/../Hash/../EstructurasHash/../ModuloDePersistencia/Serializable.h \
+ src/ManejadoresInforme/../Hash/../EstructurasHash/Cubo.h \
+ src/ManejadoresInforme/../Hash/../EstructurasHash/Bloque.h \
+ src/ManejadoresInforme/../Hash/../EstructurasHash/RegPalabra.h \
+ src/ManejadoresInforme/../Hash/../EstructurasHash/Reg.h \
+ src/ManejadoresInforme/../Hash/../EstructurasHash/../ModuloDePersistencia/Persistencia.h \
+ src/ManejadoresInforme/../Hash/../EstructurasHash/../ModuloDePersistencia/../EstructurasEnComun/Constantes.h \
+ src/ManejadoresInforme/../Hash/../EstructurasHash/../EstructurasEnComun/Constantes.h \
+ src/ManejadoresInforme/../Hash/../EstructurasHash/../Hash/HandlerTabla.h \
+ src/ManejadoresInforme/../Hash/../EstructurasHash/Ranura.h \
+ src/ManejadoresInforme/../Hash/../EstructurasHash/RegTitulo.h \
+ src/ManejadoresInforme/../Hash/../ManejadoresDeArchivos/HandlerBloques.h \
+ src/ManejadoresInforme/../Hash/../EstructurasEnComun/Constantes.h \
+ src/ManejadoresInforme/../Hash/HashTitulo.h \
+ src/ManejadoresInforme/../ManejadoresDeArchivos/HandlerArchivoRLV.h \
+ src/ManejadoresInforme/../ManejadoresDeArchivos/../EstructurasEnComun/Constantes.h \
+ src/ManejadoresInforme/../ManejadoresDeArchivos/HandlerArchivoLog.h \
+ src/ManejadoresInforme/../ManejadoresDeArchivos/HandlerArchivoOcurrencias.h \
+ src/ManejadoresInforme/../ManejadoresDeArchivos/../EstructurasEnComun/Ocurrencia.h \
+ src/ManejadoresInforme/../EstructurasEnComun/Ocurrencia.h \
+ src/ManejadoresInforme/../ProcesadoresInforme/ProcesadorOcurrencia.h \
+ src/ManejadoresInforme/../ProcesadoresInforme/../ParserLibros/ParserDeLibros.h \
+ src/ManejadoresInforme/../ProcesadoresInforme/../ParserLibros/../EstructurasEnComun/Constantes.h \
+ src/ManejadoresInforme/../ProcesadoresInforme/../EstructurasEnComun/Ocurrencia.h \
+ src/ManejadoresInforme/../ProcesadoresInforme/../EstructurasEnComun/Termino.h
+
+src/ManejadoresInforme/HandlerComandos.h:
+
+src/ManejadoresInforme/../ArbolB+/ArbolBMas.h:
+
+src/ManejadoresInforme/../ArbolB+/Elementos.h:
+
+src/ManejadoresInforme/../ArbolB+/../EstructurasEnComun/Clave.h:
+
+src/ManejadoresInforme/../ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/CadenaBytes.h:
+
+src/ManejadoresInforme/../ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/../ArbolB+/FrontCoding.h:
+
+src/ManejadoresInforme/../ArbolB+/../EstructurasEnComun/../ModuloDePersistencia/../ArbolB+/../EstructurasEnComun/Constantes.h:
+
+src/ManejadoresInforme/../ArbolB+/NodoInterior.h:
+
+src/ManejadoresInforme/../ArbolB+/Nodo.h:
+
+src/ManejadoresInforme/../ArbolB+/../ModuloDePersistencia/PersistorArbol.h:
+
+src/ManejadoresInforme/../ArbolB+/../ModuloDePersistencia/CadenaBytes.h:
+
+src/ManejadoresInforme/../ArbolB+/../ModuloDePersistencia/../ManejadoresDeArchivos/HandlerBloques.h:
+
+src/ManejadoresInforme/../ArbolB+/../ModuloDePersistencia/../ManejadoresDeArchivos/HandlerEspLibre.h:
+
+src/ManejadoresInforme/../ArbolB+/../ModuloDePersistencia/../ManejadoresDeArchivos/../EstructurasEnComun/Constantes.h:
+
+src/ManejadoresInforme/../ArbolB+/Solucion.h:
+
+src/ManejadoresInforme/../ArbolB+/NodoHoja.h:
+
+src/ManejadoresInforme/../Hash/HashPalabra.h:
+
+src/ManejadoresInforme/../Hash/Hash.h:
+
+src/ManejadoresInforme/../Hash/HandlerTabla.h:
+
+src/ManejadoresInforme/../Hash/../EstructurasHash/Bloque.h:
+
+src/ManejadoresInforme/../Hash/../EstructurasHash/../ModuloDePersistencia/Serializable.h:
+
+src/ManejadoresInforme/../Hash/../EstructurasHash/Cubo.h:
+
+src/ManejadoresInforme/../Hash/../EstructurasHash/Bloque.h:
+
+src/ManejadoresInforme/../Hash/../EstructurasHash/RegPalabra.h:
+
+src/ManejadoresInforme/../Hash/../EstructurasHash/Reg.h:
+
+src/ManejadoresInforme/../Hash/../EstructurasHash/../ModuloDePersistencia/Persistencia.h:
+
+src/ManejadoresInforme/../Hash/../EstructurasHash/../ModuloDePersistencia/../EstructurasEnComun/Constantes.h:
+
+src/ManejadoresInforme/../Hash/../EstructurasHash/../EstructurasEnComun/Constantes.h:
+
+src/ManejadoresInforme/../Hash/../EstructurasHash/../Hash/HandlerTabla.h:
+
+src/ManejadoresInforme/../Hash/../EstructurasHash/Ranura.h:
+
+src/ManejadoresInforme/../Hash/../EstructurasHash/RegTitulo.h:
+
+src/ManejadoresInforme/../Hash/../ManejadoresDeArchivos/HandlerBloques.h:
+
+src/ManejadoresInforme/../Hash/../EstructurasEnComun/Constantes.h:
+
+src/ManejadoresInforme/../Hash/HashTitulo.h:
+
+src/ManejadoresInforme/../ManejadoresDeArchivos/HandlerArchivoRLV.h:
+
+src/ManejadoresInforme/../ManejadoresDeArchivos/../EstructurasEnComun/Constantes.h:
+
+src/ManejadoresInforme/../ManejadoresDeArchivos/HandlerArchivoLog.h:
+
+src/ManejadoresInforme/../ManejadoresDeArchivos/HandlerArchivoOcurrencias.h:
+
+src/ManejadoresInforme/../ManejadoresDeArchivos/../EstructurasEnComun/Ocurrencia.h:
+
+src/ManejadoresInforme/../EstructurasEnComun/Ocurrencia.h:
+
+src/ManejadoresInforme/../ProcesadoresInforme/ProcesadorOcurrencia.h:
+
+src/ManejadoresInforme/../ProcesadoresInforme/../ParserLibros/ParserDeLibros.h:
+
+src/ManejadoresInforme/../ProcesadoresInforme/../ParserLibros/../EstructurasEnComun/Constantes.h:
+
+src/ManejadoresInforme/../ProcesadoresInforme/../EstructurasEnComun/Ocurrencia.h:
+
+src/ManejadoresInforme/../ProcesadoresInforme/../EstructurasEnComun/Termino.h:

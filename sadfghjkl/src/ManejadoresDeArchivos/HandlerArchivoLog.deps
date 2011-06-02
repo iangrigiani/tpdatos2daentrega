@@ -1,0 +1,7 @@
+HandlerArchivoLog.o: src/ManejadoresDeArchivos/HandlerArchivoLog.cpp \
+ src/ManejadoresDeArchivos/HandlerArchivoLog.h \
+ src/ManejadoresDeArchivos/../EstructurasEnComun/Constantes.h
+
+src/ManejadoresDeArchivos/HandlerArchivoLog.h:
+
+src/ManejadoresDeArchivos/../EstructurasEnComun/Constantes.h:

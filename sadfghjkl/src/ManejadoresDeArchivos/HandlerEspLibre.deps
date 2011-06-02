@@ -1,0 +1,4 @@
+HandlerEspLibre.o: src/ManejadoresDeArchivos/HandlerEspLibre.cpp \
+ src/ManejadoresDeArchivos/HandlerEspLibre.h
+
+src/ManejadoresDeArchivos/HandlerEspLibre.h:

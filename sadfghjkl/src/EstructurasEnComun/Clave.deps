@@ -1,0 +1,12 @@
+Clave.o: src/EstructurasEnComun/Clave.cpp src/EstructurasEnComun/Clave.h \
+ src/EstructurasEnComun/../ModuloDePersistencia/CadenaBytes.h \
+ src/EstructurasEnComun/../ModuloDePersistencia/../ArbolB+/FrontCoding.h \
+ src/EstructurasEnComun/../ModuloDePersistencia/../ArbolB+/../EstructurasEnComun/Constantes.h
+
+src/EstructurasEnComun/Clave.h:
+
+src/EstructurasEnComun/../ModuloDePersistencia/CadenaBytes.h:
+
+src/EstructurasEnComun/../ModuloDePersistencia/../ArbolB+/FrontCoding.h:
+
+src/EstructurasEnComun/../ModuloDePersistencia/../ArbolB+/../EstructurasEnComun/Constantes.h:

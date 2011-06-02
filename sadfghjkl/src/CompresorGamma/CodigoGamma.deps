@@ -1,0 +1,4 @@
+CodigoGamma.o: src/CompresorGamma/CodigoGamma.cpp \
+ src/CompresorGamma/CodigoGamma.h
+
+src/CompresorGamma/CodigoGamma.h:
