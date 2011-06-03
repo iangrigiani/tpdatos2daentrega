@@ -7,13 +7,14 @@
 #include <sstream>
 #include "../Comunes/Constantes.h"
 #include "../Comunes/RegistroLibro.h"
+#include "Parser.h"
 #include <vector>
 using namespace std;
 
-class ParserDeLibros {
-public:
+class ParserDeLibros : public virtual Parser {
+
 private:
-	vector<string> listaStopWords;
+
 	char * libroActual;
 	/*
 	 * Arma la cadena de match para el autor
@@ -47,13 +48,6 @@ private:
 	 */
 	char * obtenerPrimerMatch(char * string, char * patronDeFiltro, int size);
 
-	/*
-	 * Obtiene desde archivo la lista de stopWords
-	 * pre: -
-	 * post: lista obtenida
-	 */
-	void obtenerListaStopWords();
-
 	void downCase(string& str);
 
 public:
@@ -78,14 +72,6 @@ public:
 
 	list<string> obtenerPalabrasDeLibro(char* libro);
 	list < string > obtenerDatos(char* cadena, bool filtrar);
-
-	/*
-	 * Se fija en la lista de stopWords si la palabra correspondiente
-	 * es o no un stopWord
-	 * pre: pasar una palabra. Debe existir la lista de stopWords
-	 * post: Retorna true, si la palabra se encuentra en la lista.
-	 */
-	bool esStopWords(char* pch);
 
 };
 

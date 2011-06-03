@@ -1,12 +1,19 @@
+/*
+ * Ocurrencia.cpp
+ *
+ *  Created on: 22/05/2011
+ *      Author: catu
+ */
 
 #include "Ocurrencia.h"
 
 
 Ocurrencia::Ocurrencia()
 {
-	this->idDocumento = 0;
+	this->codigoGammaDocumento = "";
 	this->idPalabra = 0;
 	this->palabra = "";
+	this->idDocumento = 0;
 }
 
 int Ocurrencia::getIdPalabra()
@@ -28,6 +35,17 @@ string Ocurrencia::getPalabra()
 void Ocurrencia::setPalabra(string palabra)
 {
 	this->palabra = palabra;
+}
+
+
+string Ocurrencia::getCodigoGammaDocumento()
+{
+	return this->codigoGammaDocumento;
+}
+
+void Ocurrencia::setCodigoGammaDocumento(string idDocumento)
+{
+	this->codigoGammaDocumento = idDocumento;
 }
 
 
@@ -66,3 +84,5 @@ void Ocurrencia::agregarPosiciones(list < int > & posiciones) {
 	for (it = posiciones.begin(); it != posiciones.end(); ++ it)
 		this->posiciones.push_back(*it);
 }
+
+

@@ -227,9 +227,8 @@ int HandlerComandos::funcion_hash_palabra(const string& str) {
 //
 void HandlerComandos::insertar_en_hash_palabra(int offset) {
 
-//	Registro* reg = this->parser->obtenerRegistroDeLibro(this->handler->buscarRegistro(offset));
-	// LLamar a un método distinto del parser que devuelva el total de las palabras
 	list<string> palabras = this->parser->obtenerPalabrasDeLibro(this->handler->buscarRegistro(offset));
+
 	if (palabras.size() > 0){
 
 			HashPalabra hash;
@@ -246,7 +245,7 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 				Ocurrencia ocurrenciaActual = *itOcurrencias;
 
 				int offsetOcurrencia = this->handlerOcurrencias->insertarOcurrencia(ocurrenciaActual,offset);
-				int clave = this->funcion_hash_palabra(ocurrenciaActual.getPalabra());
+				int clave = ocurrenciaActual.getIdPalabra();
 
 				offsets.push_back(offsetOcurrencia);
 
