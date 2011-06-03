@@ -1,3 +1,9 @@
+/*
+ * HandlerArchivoOcurrencias.cpp
+ *
+ *  Created on: 22/05/2011
+ *      Author: catu
+ */
 
 #include "HandlerArchivoOcurrencias.h"
 
@@ -122,6 +128,11 @@ int HandlerArchivoOcurrencias::insertarOcurrencia(Ocurrencia ocurrencia,int idDo
 
 	fOcurrencias.open(PATH_ARCHIVO_OCURRENCIAS, std::ios_base::in | std::ios_base::out);
 
+	//Convierto el numero de documento a Gamma
+	CodigoGamma codigoGamma;
+	codigoGamma.setNumAConvertir(idDocumento);
+	string codigoGammaDocumento = codigoGamma.aplicarConversion();
+
 	string cadenaDePosiciones;
 	bool esEspacioLibre = false;
 	stringstream cadenaFinal;
@@ -167,9 +178,9 @@ int HandlerArchivoOcurrencias::insertarOcurrencia(Ocurrencia ocurrencia,int idDo
 		}
 
 		if(esEspacioLibre)
-			cadenaFinal << ocurrencia.getIdPalabra() << "|" << idDocumento << "|" << cadenaDePosiciones;
+			cadenaFinal << ocurrencia.getIdPalabra() << "|" << codigoGammaDocumento << "|" << cadenaDePosiciones;
 		else
-			cadenaFinal << ocurrencia.getIdPalabra() << "|" << idDocumento << "|" << cadenaDePosiciones<<"\n";
+			cadenaFinal << ocurrencia.getIdPalabra() << "|" << codigoGammaDocumento << "|" << cadenaDePosiciones<<"\n";
 
 
 		string cadenaAInsertar = cadenaFinal.str();
@@ -229,7 +240,7 @@ void HandlerArchivoOcurrencias::procesarCadenaDeDatos(char * cadena,Ocurrencia &
 
 	 caracteres = strtok(NULL,"|");
 
-	 ocurrencia.setIdDocumento(atoi(caracteres));
+	 ocurrencia.setCodigoGammaDocumento(caracteres);
 
 	 caracteres = strtok(NULL,"|,");
 	 do
@@ -288,11 +299,9 @@ int HandlerArchivoOcurrencias::obtenerTamanioOcurrencia(Ocurrencia ocurrencia)
 
 	stringstream ssDocumento,ssIdPalabra;
 
-	ssDocumento<<ocurrencia.getIdDocumento();
 	ssIdPalabra<<ocurrencia.getIdPalabra();
 
-	string cadenaDocumento = ssDocumento.str();
-	longitudIdDocumento = cadenaDocumento.length();
+	longitudIdDocumento = ocurrencia.getCodigoGammaDocumento().length();
 
 	string cadenaIdPalabra = ssIdPalabra.str();
 	longitudIdPalabra = cadenaIdPalabra.length();
@@ -318,11 +327,17 @@ int HandlerArchivoOcurrencias::obtenerTamanioOcurrencia(Ocurrencia ocurrencia)
 }
 
 list<int> HandlerArchivoOcurrencias::obtenerListaDocumentos(list<int> offsets){
+
 	list<int> documentos;
 	list<int>::iterator it = offsets.begin();
+	CodigoGamma codigoGamma;
+	int numeroDocumento;
+
 	while ( it != offsets.end()){
+
 		Ocurrencia ocurrencia = this->buscarOcurrencia((*it));
-		documentos.push_back(ocurrencia.getIdDocumento());
+		numeroDocumento = codigoGamma.interpretarConversion(ocurrencia.getCodigoGammaDocumento());
+		documentos.push_back(numeroDocumento);
 		++it;
 	}
 	return documentos;

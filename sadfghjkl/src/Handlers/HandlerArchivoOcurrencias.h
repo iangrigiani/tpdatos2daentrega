@@ -11,6 +11,7 @@
 #include <string.h>
 #include "../Comunes/Ocurrencia.h"
 #include "../Comunes/Constantes.h"
+#include "../Gamma/CodigoGamma.h"
 
 class HandlerArchivoOcurrencias{
 

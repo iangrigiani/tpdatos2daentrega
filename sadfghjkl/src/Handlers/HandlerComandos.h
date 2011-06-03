@@ -7,6 +7,7 @@
 #include "HandlerArchivoLog.h"
 #include "HandlerArchivoOcurrencias.h"
 #include "../Procesadores/ProcesadorOcurrencia.h"
+#include "../Parser/ParserDeLibros.h"
 
 #include <list>
 

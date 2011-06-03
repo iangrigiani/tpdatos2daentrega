@@ -1,24 +1,27 @@
 #include "ProcesadorOcurrencia.h"
 
 ProcesadorOcurrencia::ProcesadorOcurrencia() {
-	// TODO Auto-generated constructor stub
+
 
 }
 
 ProcesadorOcurrencia::~ProcesadorOcurrencia() {
-	// TODO Auto-generated destructor stub
+
 }
 
-list<Ocurrencia> ProcesadorOcurrencia::obtenerOcurrencias (list<string> palabras){
+list<Ocurrencia> ProcesadorOcurrencia::obtenerOcurrencias (list<string> palabras)
+{
+
 	list<Ocurrencia> ocurrencias;
 	this->getOcurrencias(palabras, ocurrencias);
 	return ocurrencias;
 }
 
-void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, list<Ocurrencia> & ocurrencias){
+void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, list<Ocurrencia> & ocurrencias)
+{
 	list <string> ::iterator itPalabras;
 	list<Ocurrencia> :: iterator itOcurrencias;
-	ParserDeLibros parser;
+	Parser parser;
 
 	int iteracion = 0;
 	bool encontrado = false;
@@ -71,8 +74,10 @@ void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, list<Ocurrencia
 }
 
 Termino ProcesadorOcurrencia::agregarTermino(string palabraActual){
-	// TODO LLamar al insertar del hash o del Arbol.
+
 	Termino termino;
+
+	//TODO llamar al arbol de terminos
 
 	return termino;
 }

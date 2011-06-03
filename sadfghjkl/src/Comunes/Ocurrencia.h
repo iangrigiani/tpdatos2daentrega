@@ -10,6 +10,7 @@ class Ocurrencia{
 private:
 		string palabra;
 		int idPalabra;
+		string codigoGammaDocumento;
 		int idDocumento;
 		list <int> posiciones;
 
@@ -21,6 +22,8 @@ public:
 		void setIdPalabra(int idPalabra);
 		string getPalabra();
 		void setPalabra(string palabra);
+		string getCodigoGammaDocumento();
+		void setCodigoGammaDocumento(string idDocumento);
 		int getIdDocumento();
 		void setIdDocumento(int idDocumento);
 		list<int> getPosiciones();
@@ -31,4 +34,4 @@ public:
 
 };
 
-#endif /* APARICION_H_ */
+#endif /* OCURRENCIA_H_ */
