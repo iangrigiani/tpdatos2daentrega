@@ -78,6 +78,7 @@ Termino ProcesadorOcurrencia::agregarTermino(string palabraActual){
 	Termino termino;
 
 	//TODO llamar al arbol de terminos
+	termino.setIdTermino(0);
 
 	return termino;
 }

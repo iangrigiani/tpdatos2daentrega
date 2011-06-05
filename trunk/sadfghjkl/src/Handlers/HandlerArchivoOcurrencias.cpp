@@ -340,5 +340,9 @@ list<int> HandlerArchivoOcurrencias::obtenerListaDocumentos(list<int> offsets){
 		documentos.push_back(numeroDocumento);
 		++it;
 	}
+
+	//Ordeno la lista de documentos ascendentemente.
+	documentos.sort();
+
 	return documentos;
 }
