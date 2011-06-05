@@ -63,12 +63,15 @@ list<int> ProcesadorConsulta::procesarApariciones(list<Aparicion> apariciones)
 
 	list<Aparicion> :: iterator itApariciones = apariciones.begin();
 
+
 	Aparicion aparicionActual = *itApariciones;
 	++itApariciones;
-	Aparicion aparicionSiguiente = *itApariciones;
+	Aparicion aparicionSiguiente;
 
 	while(itApariciones != apariciones.end())
 	{
+		aparicionSiguiente = *itApariciones;
+
 		if(documentosCoincidentes.size() == 0)
 		{
 			documentosCoincidentes = compararApariciones(aparicionActual.getDocumentos(),aparicionSiguiente.getDocumentos());
@@ -81,7 +84,6 @@ list<int> ProcesadorConsulta::procesarApariciones(list<Aparicion> apariciones)
 		++itApariciones;
 
 		aparicionActual = aparicionSiguiente;
-		aparicionSiguiente = *itApariciones;
 	}
 
 	return documentosCoincidentes;

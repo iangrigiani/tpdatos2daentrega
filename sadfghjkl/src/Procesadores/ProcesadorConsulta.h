@@ -19,13 +19,15 @@ using namespace std;
 class ProcesadorConsulta {
 
 private:
-		list<int> procesarApariciones(list<Aparicion> apariciones);
 		list<int> compararApariciones(list<int> documentos1,list<int> documentos2);
+		list<int> procesarApariciones(list<Aparicion> apariciones);
+
 public:
 
 		ProcesadorConsulta();
 		virtual ~ProcesadorConsulta();
 		list<int> consultarPalabras(list<string> palabras);
+
 };
 
 #endif /* PROCESADORCONSULTA_H_ */
