@@ -346,3 +346,26 @@ list<int> HandlerArchivoOcurrencias::obtenerListaDocumentos(list<int> offsets){
 
 	return documentos;
 }
+
+
+list<Ocurrencia> HandlerArchivoOcurrencias::obtenerOcurrencias(list<int> offsets)
+{
+	list<Ocurrencia> ocurrencias;
+	list<int> documentos;
+	list<int>::iterator it = offsets.begin();
+
+	CodigoGamma codigoGamma;
+	int numeroDocumento;
+
+	while ( it != offsets.end())
+	{
+		Ocurrencia ocurrencia =this->buscarOcurrencia((*it));
+		numeroDocumento = codigoGamma.interpretarConversion(ocurrencia.getCodigoGammaDocumento());
+		ocurrencia.setIdDocumento(numeroDocumento);
+		ocurrencias.push_back(ocurrencia);
+		++it;
+	}
+
+	return ocurrencias;
+}
+

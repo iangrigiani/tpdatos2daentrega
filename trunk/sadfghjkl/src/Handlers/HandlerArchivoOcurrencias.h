@@ -64,6 +64,14 @@ public:
 		 * post: devuelve la lista de documentos
 		 */
 		list<int> obtenerListaDocumentos(list<int>);
+
+
+		/*
+		 * Método que obtiene la lista de ocurrencias correspondientes a un termino
+		 * pre: recibe la lista de offset al archivo de ocurrencias donde aparece ese termino.
+		 * post: devuelve la lista de ocurrencias.
+		 */
+		list<Ocurrencia> obtenerOcurrencias(list<int> offsets);
 };
 
 #endif /* HANDLERARCHIVOOCURRENCIAS_H_ */
