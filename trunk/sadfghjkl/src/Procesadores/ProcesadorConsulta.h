@@ -29,8 +29,7 @@ private:
 		 */
 		void crearAparicion(Aparicion aparicion1, Aparicion aparicion2, Aparicion & nuevaAparicion, string palabra1, string palabra2);
 
-
-
+		Palabra procesarApariciones(list<Palabra> palabras);
 
 		/*
 		 * Procesar consulta puntual de Palabra
@@ -72,9 +71,6 @@ public:
 		 * pos : devuelve la lista de offset al archivo RLV.
 		 */
 		list<int> consultarPalabras(list<string> palabras);
-
-		Palabra procesarApariciones(list<Palabra> palabras);
-
 
 };
 
