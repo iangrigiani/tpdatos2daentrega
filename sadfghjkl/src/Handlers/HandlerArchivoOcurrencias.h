@@ -12,6 +12,8 @@
 #include "../Comunes/Ocurrencia.h"
 #include "../Comunes/Constantes.h"
 #include "../Gamma/CodigoGamma.h"
+#include "../Comunes/Palabra.h"
+#include "../Comunes/Aparicion.h"
 
 class HandlerArchivoOcurrencias{
 
@@ -67,11 +69,11 @@ public:
 
 
 		/*
-		 * Método que obtiene la lista de ocurrencias correspondientes a un termino
+		 * Método que obtiene palabra correspondientes a un termino
 		 * pre: recibe la lista de offset al archivo de ocurrencias donde aparece ese termino.
-		 * post: devuelve la lista de ocurrencias.
+		 * post: devuelve palabra.
 		 */
-		list<Ocurrencia> obtenerOcurrencias(list<int> offsets);
+		Palabra obtenerPalabra(list<int> offsets);
 };
 
 #endif /* HANDLERARCHIVOOCURRENCIAS_H_ */

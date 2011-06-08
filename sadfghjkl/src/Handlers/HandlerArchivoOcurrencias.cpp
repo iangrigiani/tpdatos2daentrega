@@ -348,24 +348,32 @@ list<int> HandlerArchivoOcurrencias::obtenerListaDocumentos(list<int> offsets){
 }
 
 
-list<Ocurrencia> HandlerArchivoOcurrencias::obtenerOcurrencias(list<int> offsets)
+Palabra HandlerArchivoOcurrencias::obtenerPalabra(list<int> offsets)
 {
-	list<Ocurrencia> ocurrencias;
-	list<int> documentos;
+
+	Palabra palabra;
 	list<int>::iterator it = offsets.begin();
 
 	CodigoGamma codigoGamma;
 	int numeroDocumento;
 
+	Ocurrencia ocurrencia;
+
 	while ( it != offsets.end())
 	{
-		Ocurrencia ocurrencia =this->buscarOcurrencia((*it));
+		ocurrencia =this->buscarOcurrencia((*it));
 		numeroDocumento = codigoGamma.interpretarConversion(ocurrencia.getCodigoGammaDocumento());
-		ocurrencia.setIdDocumento(numeroDocumento);
-		ocurrencias.push_back(ocurrencia);
+
+		Aparicion aparicion;
+		aparicion.setIdDocumento(numeroDocumento);
+		aparicion.agregarPosiciones(ocurrencia.getPosiciones(),ocurrencia.getPalabra());
+		palabra.agregarAparicion(aparicion);
+
 		++it;
 	}
 
-	return ocurrencias;
+	palabra.setPalabra(ocurrencia.getPalabra());
+
+	return palabra;
 }
 
