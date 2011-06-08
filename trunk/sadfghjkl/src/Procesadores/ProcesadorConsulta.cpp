@@ -16,7 +16,7 @@ ProcesadorConsulta::~ProcesadorConsulta() {
 }
 
 
-void ProcesadorConsulta::crearAparicion(Aparicion aparicion1, Aparicion aparicion2, Aparicion & nuevaAparicion, string palabra1, string palabra2)
+void ProcesadorConsulta::crearAparicion(Aparicion aparicion1, Aparicion aparicion2, Aparicion & nuevaAparicion)
 {
 	//Agrego el id correspondiente al documento
 	nuevaAparicion.setIdDocumento(aparicion1.getIdDocumento());
@@ -27,10 +27,17 @@ void ProcesadorConsulta::crearAparicion(Aparicion aparicion1, Aparicion aparicio
 	list<Posicion> :: iterator itPosiciones1 = posiciones1.begin();
 	list<Posicion> :: iterator itPosiciones2 = posiciones2.begin();
 
-	//Como se supone que se tiene una sola posicion
-	//Agrego las posiciones de ambas palabras
-	nuevaAparicion.agregarPosiciones((*itPosiciones1).getPosiciones(), palabra1);
-	nuevaAparicion.agregarPosiciones((*itPosiciones2).getPosiciones(),palabra2);
+	while(itPosiciones1 != posiciones1.end())
+	{
+		nuevaAparicion.agregarPosiciones((*itPosiciones1).getPosiciones(), (*itPosiciones1).getPalabra());
+		++itPosiciones1;
+	}
+
+	while(itPosiciones2 != posiciones2.end())
+	{
+		nuevaAparicion.agregarPosiciones((*itPosiciones2).getPosiciones(),(*itPosiciones2).getPalabra());
+		++itPosiciones2;
+	}
 }
 
 
@@ -66,7 +73,7 @@ Palabra ProcesadorConsulta::compararApariciones(Palabra palabra1, Palabra palabr
 
 				//Creo una nueva aparicion a partir de las dos coincidentes en el documento
 				//Se guardan ambas listas de posiciones referentes a cada palabra
-				this->crearAparicion(aparicionActual1,aparicionActual2,nuevaAparicion,palabra1.getPalabra(),palabra2.getPalabra());
+				this->crearAparicion(aparicionActual1,aparicionActual2,nuevaAparicion);
 
 				palabraCoincidente.agregarAparicion(nuevaAparicion);
 

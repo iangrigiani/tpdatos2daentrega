@@ -22,14 +22,23 @@ class ProcesadorConsulta {
 
 private:
 
+		/*
+		 * Compara dos palabras y crea una nueva con las coincidencias.
+		 */
 		Palabra compararApariciones(Palabra palabra1,Palabra palabra2);
 
 		/*
 		 * Crea una aparicion a partir de dos apariciones existentes.
 		 */
-		void crearAparicion(Aparicion aparicion1, Aparicion aparicion2, Aparicion & nuevaAparicion, string palabra1, string palabra2);
+		void crearAparicion(Aparicion aparicion1, Aparicion aparicion2, Aparicion & nuevaAparicion);
 
+
+		/*
+		 * Procesa todas las palabras recibidas por parametro y devuelve una sola con
+		 * las coincidencias.
+		 */
 		Palabra procesarApariciones(list<Palabra> palabras);
+
 
 		/*
 		 * Procesar consulta puntual de Palabra
