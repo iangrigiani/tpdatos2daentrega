@@ -16,91 +16,121 @@ ProcesadorConsulta::~ProcesadorConsulta() {
 }
 
 
-
-list<int> ProcesadorConsulta::compararApariciones(list<int> documentos1, list<int> documentos2)
+void ProcesadorConsulta::crearAparicion(Aparicion aparicion1, Aparicion aparicion2, Aparicion & nuevaAparicion, string palabra1, string palabra2)
 {
-	list<int> documentosCoincidentes;
+	//Agrego el id correspondiente al documento
+	nuevaAparicion.setIdDocumento(aparicion1.getIdDocumento());
 
-	list<int> :: iterator itDocumentos1 = documentos1.begin();
-	list<int> :: iterator itDocumentos2;
+	list<Posicion> posiciones1 = aparicion1.getPosiciones();
+	list<Posicion> posiciones2 = aparicion2.getPosiciones();
+
+	list<Posicion> :: iterator itPosiciones1 = posiciones1.begin();
+	list<Posicion> :: iterator itPosiciones2 = posiciones2.begin();
+
+	//Como se supone que se tiene una sola posicion
+	//Agrego las posiciones de ambas palabras
+	nuevaAparicion.agregarPosiciones((*itPosiciones1).getPosiciones(), palabra1);
+	nuevaAparicion.agregarPosiciones((*itPosiciones2).getPosiciones(),palabra2);
+}
+
+
+Palabra ProcesadorConsulta::compararApariciones(Palabra palabra1, Palabra palabra2)
+{
+	Palabra palabraCoincidente;
+
+	list<Aparicion> apariciones1 = palabra1.getApariciones();
+	list<Aparicion> apariciones2 = palabra2.getApariciones();
+
+	list<Aparicion> :: iterator itApariciones1 = apariciones1.begin();
+	list<Aparicion> :: iterator itApariciones2;
 
 	bool encontrado = false;
 
+	palabraCoincidente.setPalabra(palabra1.getPalabra() +" "+ palabra2.getPalabra());
 
-	while ( itDocumentos1 != documentos1.end())
+	while (itApariciones1 != apariciones1.end())
 	 {
-		int documento1Actual = *itDocumentos1;
+		Aparicion aparicionActual1 = *itApariciones1;
 
-		itDocumentos2 = documentos2.begin();
+		itApariciones2 = apariciones2.begin();
 
-		while(itDocumentos2 != documentos2.end() && !encontrado)
+		while(itApariciones2 != apariciones2.end() && !encontrado)
 		{
-			int documento2Actual = *itDocumentos2;
+			Aparicion aparicionActual2 = *itApariciones2;
 
 			//Coincidencia de documentos, se supone que aparecen una vez en la lista
 			//nada mas por lo que una vez que lo encuentra sale del while
-			if(documento1Actual == documento2Actual)
+			if(aparicionActual1.getIdDocumento() == aparicionActual2.getIdDocumento())
 			{
-				documentosCoincidentes.push_back(documento1Actual);
+				Aparicion nuevaAparicion;
+
+				//Creo una nueva aparicion a partir de las dos coincidentes en el documento
+				//Se guardan ambas listas de posiciones referentes a cada palabra
+				this->crearAparicion(aparicionActual1,aparicionActual2,nuevaAparicion,palabra1.getPalabra(),palabra2.getPalabra());
+
+				palabraCoincidente.agregarAparicion(nuevaAparicion);
+
 				encontrado = true;
 			}
 
-			itDocumentos2++;
+			itApariciones2++;
 		}
 
 		encontrado = false;
+		itApariciones1++;
 	}
 
-	return documentosCoincidentes;
+	return palabraCoincidente;
 
 
 }
 
 
 
-list<int> ProcesadorConsulta::procesarApariciones(list<Aparicion> apariciones)
+Palabra ProcesadorConsulta::procesarApariciones(list<Palabra> palabras)
 {
-	list<int> documentosCoincidentes;
+	Palabra palabraFiltrada;
 
-	list<Aparicion> :: iterator itApariciones = apariciones.begin();
+	list<Palabra> :: iterator itPalabras = palabras.begin();
 
 
-	Aparicion aparicionActual = *itApariciones;
-	++itApariciones;
-	Aparicion aparicionSiguiente;
+	Palabra palabraActual = *itPalabras;
+	++itPalabras;
+	Palabra palabraSiguiente;
 
-	while(itApariciones != apariciones.end())
+	while(itPalabras != palabras.end())
 	{
-		aparicionSiguiente = *itApariciones;
+		palabraSiguiente = *itPalabras;
 
-		if(documentosCoincidentes.size() == 0)
+		if(palabraFiltrada.obtenerDocumentos().size() == 0)
 		{
-			documentosCoincidentes = compararApariciones(aparicionActual.getDocumentos(),aparicionSiguiente.getDocumentos());
+			palabraFiltrada = compararApariciones(palabraActual,palabraSiguiente);
 		}
 		else
 		{
-			documentosCoincidentes = compararApariciones(documentosCoincidentes,aparicionSiguiente.getDocumentos());
+			palabraFiltrada = compararApariciones(palabraFiltrada,palabraSiguiente);
 		}
 
-		++itApariciones;
+		++itPalabras;
 
-		aparicionActual = aparicionSiguiente;
+		palabraActual = palabraSiguiente;
 	}
 
-	return documentosCoincidentes;
+	return palabraFiltrada;
 }
 
 
 
 list<int> ProcesadorConsulta::consultarPalabras(list<string> palabras)
 {
-	list<int> documentosARetornar;
-	if ( palabras.size() == 1 ){
-		list<string>::iterator it = palabras.begin();
-		return this->ConsultaPuntualPalabra(*it);
-	}
+	list<Palabra> palabrasConsulta;
+
+	Palabra palabraFiltrada;
 
 	list<string> :: iterator itPalabras  = palabras.begin();
+
+	if ( palabras.size() == 1 )
+		return this->consultaPuntualPalabra(*itPalabras);
 
 
 	//TODO cambiar hash termino por arbol para manejar los terminos
@@ -111,11 +141,9 @@ list<int> ProcesadorConsulta::consultarPalabras(list<string> palabras)
 
 	HandlerArchivoOcurrencias handlerArchivoOcurrencias;
 
-	list<Aparicion> apariciones;
-
 	while( itPalabras!= palabras.end() )
 	{
-		Aparicion aparicion;
+		Palabra palabra;
 
 		//TODO Cambiar por arbol
 		//int idTermino = hashTermino.consultar(*itPalabras);
@@ -126,24 +154,25 @@ list<int> ProcesadorConsulta::consultarPalabras(list<string> palabras)
 		//Esto devuelve la lista de offsets al archivo de ocurrencias correspondiente a ese termino
 		//offsetsArchivoOcurrencias = hashPalabra.consultar(idTermino);
 
-		aparicion.setDocumentos(handlerArchivoOcurrencias.obtenerListaDocumentos(offsetsArchivoOcurrencias));
-		aparicion.setPalabra(*itPalabras);
+		palabra = handlerArchivoOcurrencias.obtenerPalabra(offsetsArchivoOcurrencias);
 
-		apariciones.push_back(aparicion);
+		palabrasConsulta.push_back(palabra);
 	}
 
-	documentosARetornar = this->procesarApariciones(apariciones);
-	if (documentosARetornar.size() != 0){
-		filtrarProximidad(documentosARetornar);
+	palabraFiltrada = this->procesarApariciones(palabrasConsulta);
+
+	if (palabraFiltrada.obtenerDocumentos().size() != 0){
+		filtrarProximidad(palabraFiltrada);
 	}
-	filtrarRanqueada(documentosARetornar);
-	//Metodo que realiza la interseccion de las listas para obtener los documentos en comun.
-	return documentosARetornar;
+
+	filtrarRanqueada(palabraFiltrada);
+
+	return palabraFiltrada.obtenerDocumentos();
 }
 
 
 
-list<int> ProcesadorConsulta::ConsultaPuntualPalabra(string palabra){
+list<int> ProcesadorConsulta::consultaPuntualPalabra(string palabra){
 
 	HashPalabra hashPalabra;
 	hashPalabra.crear_condiciones_iniciales();
@@ -156,16 +185,13 @@ list<int> ProcesadorConsulta::ConsultaPuntualPalabra(string palabra){
 	//TODO agregar un consultar en HashPalabras que devuelva la lista de offsets de cada termino
 	//offsetsArchivoOcurrencias = hashPalabra.consultar(idTermino);
 
-	Aparicion aparicion;
-	aparicion.setDocumentos(handlerArchivoOcurrencias.obtenerListaDocumentos(offsetsArchivoOcurrencias));
-
-	return (aparicion.getDocumentos());
+	return handlerArchivoOcurrencias.obtenerListaDocumentos(offsetsArchivoOcurrencias);
 }
 
-void ProcesadorConsulta::filtrarProximidad(list<int>& documentos){
+void ProcesadorConsulta::filtrarProximidad(Palabra & palabra){
 
 }
 
-void ProcesadorConsulta::filtrarRanqueada(list<int>& documentos){
+void ProcesadorConsulta::filtrarRanqueada(Palabra & palabra){
 
 }
