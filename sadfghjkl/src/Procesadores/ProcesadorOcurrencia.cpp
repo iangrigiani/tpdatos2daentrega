@@ -71,6 +71,9 @@ void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, list<Ocurrencia
 		free(cadena);
 		iteracion++;
 	}
+
+	// Le paso la lista de terminos al handler del archivo de normas.
+	HandlerNormasAInfinito handler(this->idTerminos);
 }
 
 Termino ProcesadorOcurrencia::agregarTermino(string palabraActual){
@@ -80,5 +83,67 @@ Termino ProcesadorOcurrencia::agregarTermino(string palabraActual){
 	//TODO llamar al arbol de terminos
 	termino.setIdTermino(0);
 
+	insertarIdTermino(termino.getIdTermino());
+
 	return termino;
+}
+
+/*
+bool ProcesadorOcurrencia::existeTermino(int idTermino){
+
+	int totalElem = this->idTerminos.size();
+	int medio, pivotDer, pivotIzq;
+	pivotIzq=0;
+
+	pivotDer=totalElem-1;
+
+	while ( pivotIzq <= pivotDer) {
+		medio = ( pivotIzq + pivotDer )/2;
+		if ( idTermino > this->idTerminos[medio] )
+			pivotIzq = medio + 1;
+		else if ( idTermino < this->idTerminos[medio] )
+			pivotDer = medio - 1;
+		else return true;
+	}
+
+	return false;
+}
+*/
+
+
+void ProcesadorOcurrencia::insertarIdTermino(int idTermino){
+
+	int totalElem = this->idTerminos.size();
+	int medio, pivotDer, pivotIzq;
+	pivotIzq=0;
+	pivotDer=totalElem-1;
+	bool encontrado=false;
+
+	while ( pivotIzq <= pivotDer) {
+		medio = ( pivotIzq + pivotDer )/2;
+		if ( idTermino > this->idTerminos[medio] )
+			pivotIzq = medio + 1;
+		else if ( idTermino < this->idTerminos[medio] )
+			pivotDer = medio - 1;
+		else encontrado = true;;
+	}
+
+	if (!encontrado){
+		int aux = this->idTerminos[medio];
+		if ( aux > idTermino ){
+			this->idTerminos[medio] = idTermino;
+			for (int a=medio+1; a<totalElem; a++){
+				this->idTerminos[a] = aux;
+				aux = this->idTerminos[a+1];
+			}
+		} else {
+			aux = this->idTerminos[medio+1];
+			this->idTerminos[medio+1] = idTermino;
+			for (int a=medio+2; a<totalElem; a++){
+				this->idTerminos[a] = aux;
+				aux = this->idTerminos[a+1];
+			}
+
+		}
+	}
 }

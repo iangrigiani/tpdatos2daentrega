@@ -21,13 +21,14 @@ list<int> ProcesadorConsulta::compararApariciones(list<int> documentos1, list<in
 {
 	list<int> documentosCoincidentes;
 
-	list<int> :: iterator itDocumentos1;
+	list<int> :: iterator itDocumentos1 = documentos1.begin();
 	list<int> :: iterator itDocumentos2;
 
 	bool encontrado = false;
 
-	for(itDocumentos1 = documentos1.begin(); itDocumentos1 != documentos1.end();++itDocumentos1)
-	{
+
+	while ( itDocumentos1 != documentos1.end())
+	 {
 		int documento1Actual = *itDocumentos1;
 
 		itDocumentos2 = documentos2.begin();
@@ -93,7 +94,13 @@ list<int> ProcesadorConsulta::procesarApariciones(list<Aparicion> apariciones)
 
 list<int> ProcesadorConsulta::consultarPalabras(list<string> palabras)
 {
-	list<string> :: iterator itPalabras;
+	list<int> documentosARetornar;
+	if ( palabras.size() == 1 ){
+		list<string>::iterator it = palabras.begin();
+		return this->ConsultaPuntualPalabra(*it);
+	}
+
+	list<string> :: iterator itPalabras  = palabras.begin();
 
 
 	//TODO cambiar hash termino por arbol para manejar los terminos
@@ -106,7 +113,7 @@ list<int> ProcesadorConsulta::consultarPalabras(list<string> palabras)
 
 	list<Aparicion> apariciones;
 
-	for(itPalabras = palabras.begin();itPalabras!= palabras.end();++itPalabras)
+	while( itPalabras!= palabras.end() )
 	{
 		Aparicion aparicion;
 
@@ -125,7 +132,40 @@ list<int> ProcesadorConsulta::consultarPalabras(list<string> palabras)
 		apariciones.push_back(aparicion);
 	}
 
-
+	documentosARetornar = this->procesarApariciones(apariciones);
+	if (documentosARetornar.size() != 0){
+		filtrarProximidad(documentosARetornar);
+	}
+	filtrarRanqueada(documentosARetornar);
 	//Metodo que realiza la interseccion de las listas para obtener los documentos en comun.
-	return this->procesarApariciones(apariciones);
+	return documentosARetornar;
+}
+
+
+
+list<int> ProcesadorConsulta::ConsultaPuntualPalabra(string palabra){
+
+	HashPalabra hashPalabra;
+	hashPalabra.crear_condiciones_iniciales();
+	HandlerArchivoOcurrencias handlerArchivoOcurrencias;
+
+	list<int> offsetsArchivoOcurrencias;
+
+	// TODO Obtener ID de termino del arbol de terminos;
+
+	//TODO agregar un consultar en HashPalabras que devuelva la lista de offsets de cada termino
+	//offsetsArchivoOcurrencias = hashPalabra.consultar(idTermino);
+
+	Aparicion aparicion;
+	aparicion.setDocumentos(handlerArchivoOcurrencias.obtenerListaDocumentos(offsetsArchivoOcurrencias));
+
+	return (aparicion.getDocumentos());
+}
+
+void ProcesadorConsulta::filtrarProximidad(list<int>& documentos){
+
+}
+
+void ProcesadorConsulta::filtrarRanqueada(list<int>& documentos){
+
 }
