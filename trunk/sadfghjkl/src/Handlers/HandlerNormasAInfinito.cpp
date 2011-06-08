@@ -1,16 +1,10 @@
-/*
- * HandlerNormasAInfinito.cpp
- *
- *  Created on: 25/05/2011
- *      Author: andrea
- */
-
-
 #include "HandlerNormasAInfinito.h"
 
 HandlerNormasAInfinito::HandlerNormasAInfinito() {
 }
-
+HandlerNormasAInfinito::HandlerNormasAInfinito(vector<int> idTerminos){
+	this->listaIdTermino = idTerminos;
+}
 
 HandlerNormasAInfinito::~HandlerNormasAInfinito() {
 }

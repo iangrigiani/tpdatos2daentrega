@@ -1,19 +1,14 @@
-/*
- * HandlerNormasAInfinito.h
- *
- *  Created on: 25/05/2011
- *      Author: andrea
- */
-
 #ifndef HANDLERNORMASAINFINITO_H_
 #define HANDLERNORMASAINFINITO_H_
-
+class ArbolBMas;
 #include <fstream>
 #include <list>
 #include <sstream>
 #include <stdlib.h>
 #include <string.h>
+#include <vector>
 #include "../Comunes/Constantes.h"
+#include "../Arbol/ArbolBMas.h"
 
 using namespace std;
 
@@ -21,6 +16,7 @@ class HandlerNormasAInfinito{
 public:
 	/* -------- Constructor y Destructor ---------*/
 	HandlerNormasAInfinito();
+	HandlerNormasAInfinito(vector<int> idTerminos);
 	virtual ~HandlerNormasAInfinito();
 
 	/* Actualiza el archivo de normas incrementando en 1 el valor del peso que estaba
@@ -60,6 +56,8 @@ private:
 	 * POS: Retorna el offset de Término en el archivo de Normas y
 	 *      devuelve por parámetro el pesoTermino
 	 */
+	ArbolBMas* arbolPesos;
+	vector<int> listaIdTermino;
 	int buscarTermino(int IDTermino, int& pesoTermino);
 
 	string crearStringAInsertar(int IDTermino, int pesoTermino);
