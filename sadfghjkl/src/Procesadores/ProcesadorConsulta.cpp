@@ -273,6 +273,7 @@ int ProcesadorConsulta::procesarPosiciones(list<Posicion> posiciones)
 		}
 
 		posicionActual = posicionSiguiente;
+		++itPosiciones;
 
 	}
 
