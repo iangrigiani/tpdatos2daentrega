@@ -1,4 +1,7 @@
 #include "Handlers//HandlerComandos.h"
+#include "Procesadores/ProcesadorConsulta.h"
+#include "Comunes/Aparicion.h"
+#include "Comunes/Palabra.h"
 #include <iostream>
 #include <stdio.h>
 #include <cstring>
@@ -10,7 +13,7 @@ using namespace std;
 int main (int argc , char *argv[]){
 
 /* TODO cambiar printfs por métodos de HandlerComandos*/
-HandlerComandos* handlerComandos = new HandlerComandos();
+/*HandlerComandos* handlerComandos = new HandlerComandos();
 string path;
 
     int opcion1, opcion2;
@@ -148,7 +151,165 @@ string path;
         }
 
     delete handlerComandos;
-    return EXIT_SUCCESS;
+    return EXIT_SUCCESS;*/
+
+	ProcesadorConsulta procesador;
+
+	list<Palabra> palabras;
+
+	Palabra palabra1;
+	Palabra palabra2;
+	Palabra palabra3;
+
+	palabra1.setPalabra("hola");
+	palabra2.setPalabra("como");
+	palabra3.setPalabra("estas");
+
+	list<int> posiciones1;
+	list<int> posiciones2;
+	list<int> posiciones3;
+	list<int> posiciones4;
+	list<int> posiciones5;
+	list<int> posiciones6;
+	list<int> posiciones7;
+	list<int> posiciones8;
+	list<int> posiciones9;
+	list<int> posiciones10;
+
+	posiciones1.push_back(33);
+	posiciones1.push_back(76);
+
+	posiciones2.push_back(55);
+	posiciones2.push_back(87);
+
+	posiciones3.push_back(67);
+	posiciones3.push_back(88);
+
+	posiciones4.push_back(1);
+	posiciones5.push_back(10);
+	posiciones6.push_back(76);
+	posiciones7.push_back(87);
+
+	posiciones8.push_back(7);
+	posiciones9.push_back(17);
+	posiciones10.push_back(35);
+
+	Aparicion aparicion1;
+	Aparicion aparicion2;
+	Aparicion aparicion3;
+	Aparicion aparicion4;
+	Aparicion aparicion5;
+	Aparicion aparicion6;
+	Aparicion aparicion7;
+	Aparicion aparicion8;
+	Aparicion aparicion9;
+	Aparicion aparicion10;
+
+
+	aparicion1.setIdDocumento(1);
+	aparicion2.setIdDocumento(7);
+	aparicion3.setIdDocumento(10);
+
+	aparicion1.agregarPosiciones(posiciones1,"hola");
+	aparicion2.agregarPosiciones(posiciones2,"hola");
+	aparicion3.agregarPosiciones(posiciones3,"hola");
+
+
+	//Agrego las apariciones para la palabra HOLA
+	palabra1.agregarAparicion(aparicion1);
+	palabra1.agregarAparicion(aparicion2);
+	palabra1.agregarAparicion(aparicion3);
+
+
+	aparicion4.setIdDocumento(2);
+	aparicion5.setIdDocumento(5);
+	aparicion6.setIdDocumento(7);
+	aparicion7.setIdDocumento(10);
+
+	aparicion4.agregarPosiciones(posiciones4,"como");
+	aparicion5.agregarPosiciones(posiciones5,"como");
+	aparicion6.agregarPosiciones(posiciones6,"como");
+	aparicion7.agregarPosiciones(posiciones7,"como");
+
+	//Agrego las apariciones para la palabra COMO
+	palabra2.agregarAparicion(aparicion4);
+	palabra2.agregarAparicion(aparicion5);
+	palabra2.agregarAparicion(aparicion6);
+	palabra2.agregarAparicion(aparicion7);
+
+
+	aparicion8.setIdDocumento(3);
+	aparicion9.setIdDocumento(4);
+	aparicion10.setIdDocumento(7);
+
+	aparicion8.agregarPosiciones(posiciones8,"estas");
+	aparicion9.agregarPosiciones(posiciones9,"estas");
+	aparicion10.agregarPosiciones(posiciones10,"estas");
+
+	//Agrego las apariciones para la palabra ESTAS
+	palabra3.agregarAparicion(aparicion8);
+	palabra3.agregarAparicion(aparicion9);
+	palabra3.agregarAparicion(aparicion10);
+
+	palabras.push_back(palabra1);
+	palabras.push_back(palabra2);
+	palabras.push_back(palabra3);
+
+	/*documentos3.push_back(3);
+	documentos3.push_back(4);
+	documentos3.push_back(7);
+
+	aparicion1.setDocumentos(documentos1);
+
+	aparicion2.setDocumentos(documentos2);
+
+	aparicion3.setDocumentos(documentos3);
+
+	apariciones.push_back(aparicion1);
+	apariciones.push_back(aparicion2);
+	apariciones.push_back(aparicion3);*/
+
+	/*Palabra palabraCoincidente = procesador.procesarApariciones(palabras);
+
+	cout<<"Palabra : "<<palabraCoincidente.getPalabra()<<endl;
+
+	list<Aparicion> apariciones = palabraCoincidente.getApariciones();
+
+	list<Aparicion> :: iterator itApariciones = apariciones.begin();
+
+	while(itApariciones != apariciones.end())
+	{
+		cout<<"Documento :"<<(*itApariciones).getIdDocumento()<<endl;
+
+		Aparicion aparicionActual = *itApariciones;
+
+		list<Posicion> posiciones = aparicionActual.getPosiciones();
+
+		list<Posicion> :: iterator itPosiciones = posiciones.begin();
+
+		while(itPosiciones != posiciones.end())
+		{
+			cout<<"Posicion palabra :"<<(*itPosiciones).getPalabra()<<endl;
+
+			Posicion posicionActual = *itPosiciones;
+
+			list<int> pos = posicionActual.getPosiciones();
+			list<int> :: iterator itPos = pos.begin();
+
+			while(itPos != pos.end())
+			{
+				cout<<"Posicion actual :"<< *itPos <<endl;
+				++itPos;
+
+			}
+
+			++itPosiciones;
+		}
+
+		++itApariciones;
+	}*/
+
+
 }
 
 
