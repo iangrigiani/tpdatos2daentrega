@@ -169,12 +169,17 @@ list<int> ProcesadorConsulta::consultarPalabras(list<string> palabras)
 
 	palabraFiltrada = this->procesarApariciones(palabrasConsulta);
 
-	if (palabraFiltrada.obtenerDocumentos().size() != 0){
+	//Si obtengo mas de un documento es porque primero debo filtrar por proximidad
+	if (palabraFiltrada.obtenerDocumentos().size() > 1)
+	{
 		documentosCoincidentes = filtrarProximidad(palabraFiltrada);
 	}
+	else
+		documentosCoincidentes = palabraFiltrada.obtenerDocumentos();
 
-	//Si los documentos coincidentes son mas de 1 entonces hay que hacer la consulta ranqueada
-	if(documentosCoincidentes.size() > 0)
+	//Si los documentos coincidentes, una vez filtrado por proximidad siguen siendo
+	//mas de 1 entonces hay que hacer la consulta ranqueada
+	if(documentosCoincidentes.size() > 1)
 	{
 		filtrarRanqueada(palabraFiltrada);
 	}
@@ -200,37 +205,35 @@ list<int> ProcesadorConsulta::consultaPuntualPalabra(string palabra){
 	return handlerArchivoOcurrencias.obtenerListaDocumentos(offsetsArchivoOcurrencias);
 }
 
-Posicion ProcesadorConsulta::compararPosiciones(Posicion posicion1,Posicion posicion2)
+int ProcesadorConsulta::compararPosiciones(list<int> posiciones)
 {
-	Posicion posicionMinima;
-
 	int distanciaMinima = 0;
 	int distanciaMinimaAnterior = 0;
 
-	list<int> posiciones1 = posicion1.getPosiciones();
-	list<int> posiciones2 = posicion2.getPosiciones();
-
-	list<int> :: iterator itPosiciones1 = posiciones1.begin();
+	list<int> :: iterator itPosiciones1 = posiciones.begin();
 	list<int> :: iterator itPosiciones2;
 
-	while(itPosiciones1 != posiciones1.end())
+	while(itPosiciones1 != posiciones.end())
 	{
 		int posicion1Actual = *itPosiciones1;
 
-		itPosiciones2 = posiciones2.begin();
+		itPosiciones2 = posiciones.begin();
 
-		while(itPosiciones2 != posiciones2.end())
+		while(itPosiciones2 != posiciones.end())
 		{
 			int posicion2Actual = *itPosiciones2;
 
-			distanciaMinima = abs(posicion2Actual - posicion1Actual);
+			if(posicion1Actual != posicion2Actual)
+			{
+				distanciaMinima = abs(posicion2Actual - posicion1Actual);
 
-			//Esto debe hacerse una vez solamente
-			if(distanciaMinimaAnterior == 0)
-				distanciaMinimaAnterior = distanciaMinima;
+				//Esto debe hacerse una vez solamente
+				if(distanciaMinimaAnterior == 0)
+					distanciaMinimaAnterior = distanciaMinima;
 
-			if(distanciaMinima < distanciaMinimaAnterior)
-				distanciaMinimaAnterior = distanciaMinima;
+				if(distanciaMinima < distanciaMinimaAnterior)
+					distanciaMinimaAnterior = distanciaMinima;
+			}
 
 			itPosiciones2++;
 		}
@@ -238,9 +241,21 @@ Posicion ProcesadorConsulta::compararPosiciones(Posicion posicion1,Posicion posi
 		itPosiciones1++;
 	}
 
-	posicionMinima.agregarPosicion(distanciaMinimaAnterior);
 
-	return posicionMinima;
+	return distanciaMinimaAnterior;
+
+}
+
+void ProcesadorConsulta::filtrarPosiciones(list<int> & posiciones, Posicion posicion)
+{
+	list<int> pos = posicion.getPosiciones();
+	list<int> :: iterator itPosiciones = pos.begin();
+
+	while(itPosiciones!= pos.end())
+	{
+		posiciones.push_back(*itPosiciones);
+		itPosiciones++;
+	}
 
 }
 
@@ -248,41 +263,18 @@ Posicion ProcesadorConsulta::compararPosiciones(Posicion posicion1,Posicion posi
 
 int ProcesadorConsulta::procesarPosiciones(list<Posicion> posiciones)
 {
-	Posicion posicionMinima;
-
-	int posicionResultado = 0;
-
 	list<Posicion> :: iterator itPosiciones = posiciones.begin();
+	list<int> pos;
 
-	Posicion posicionActual = *itPosiciones;
-	++itPosiciones;
-	Posicion posicionSiguiente;
-
+	//Una vez que tenemos todas las posiciones en una misma lista las comparamos
 	while(itPosiciones != posiciones.end())
 	{
-		posicionSiguiente = *itPosiciones;
-
-		if(posicionMinima.getPosiciones().size() == 0)
-		{
-			posicionMinima = compararPosiciones(posicionActual,posicionSiguiente);
-		}
-		else
-		{
-			posicionMinima = compararPosiciones(posicionMinima,posicionSiguiente);
-
-		}
-
-		posicionActual = posicionSiguiente;
+		Posicion posicionActual = *itPosiciones;
+		this->filtrarPosiciones(pos,posicionActual);
 		++itPosiciones;
-
 	}
 
-	list<int> :: iterator itPosicionesResultado = posicionMinima.getPosiciones().begin();
-	posicionResultado = *itPosicionesResultado;
-
-
-	return posicionResultado;
-
+	return compararPosiciones(pos);
 
 }
 
