@@ -133,6 +133,9 @@ int HandlerArchivoOcurrencias::insertarOcurrencia(Ocurrencia ocurrencia,int idDo
 	codigoGamma.setNumAConvertir(idDocumento);
 	string codigoGammaDocumento = codigoGamma.aplicarConversion();
 
+	//Le seteo a la ocurrencia su respectivo codigo gamma de documento
+	ocurrencia.setCodigoGammaDocumento(codigoGammaDocumento);
+
 	string cadenaDePosiciones;
 	bool esEspacioLibre = false;
 	stringstream cadenaFinal;
@@ -297,7 +300,7 @@ int HandlerArchivoOcurrencias::obtenerTamanioOcurrencia(Ocurrencia ocurrencia)
 	int longitudIdDocumento = 0;
 	int longitudSeparadores = 2;
 
-	stringstream ssDocumento,ssIdPalabra;
+	stringstream ssIdPalabra;
 
 	ssIdPalabra<<ocurrencia.getIdPalabra();
 
@@ -371,8 +374,6 @@ Palabra HandlerArchivoOcurrencias::obtenerPalabra(list<int> offsets)
 
 		++it;
 	}
-
-	palabra.setPalabra(ocurrencia.getPalabra());
 
 	return palabra;
 }

@@ -54,7 +54,7 @@ void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, list<Ocurrencia
 				}
 				++itOcurrencias;
 			}
-			//Si no encontre esa clave es porque no existe en la lista de apariciones
+			//Si no encontre esa clave es porque no existe en la lista de ocurrencias
 			//entonces la agrego por primera vez.
 			if(!encontrado)
 			{
@@ -83,7 +83,9 @@ Termino ProcesadorOcurrencia::agregarTermino(string palabraActual){
 	//TODO llamar al arbol de terminos
 	termino.setIdTermino(0);
 
-	insertarIdTermino(termino.getIdTermino());
+
+	//TODO ver bien esto
+	//insertarIdTermino(termino.getIdTermino());
 
 	return termino;
 }
