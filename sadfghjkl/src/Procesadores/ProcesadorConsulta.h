@@ -12,8 +12,10 @@
 #include "../Comunes/Palabra.h"
 #include "../Comunes/Aparicion.h"
 #include "../Comunes/Posicion.h"
+#include "../Comunes/Distancia.h"
 #include "../Handlers/HandlerArchivoOcurrencias.h"
 #include "../Hash/HashPalabra.h"
+#include <math.h>
 
 
 using namespace std;
@@ -39,6 +41,16 @@ private:
 		 */
 		Palabra procesarApariciones(list<Palabra> palabras);
 
+		/*
+		 * Procesa todas las posiciones recibidas por parametros y devuelve un entero}
+		 * que representa la distancia minima de las mismas
+		 */
+		int procesarPosiciones(list<Posicion> posiciones);
+
+		/*
+		 * Compara dos posiciones y crea una nueva con la distancia minima.
+		 */
+		Posicion compararPosiciones(Posicion posicion1,Posicion posicion2);
 
 		/*
 		 * Procesar consulta puntual de Palabra
@@ -46,7 +58,20 @@ private:
 		 */
 		list<int> consultaPuntualPalabra(string palabra);
 
-		void filtrarProximidad(Palabra & palabra);
+
+		/*
+		 * Compara dos distancias y crea una nueva con la minima.
+		 */
+		Distancia compararDistancias(Distancia distancia1,Distancia distancia2);
+
+		/*
+		 * Filtra las distancias
+		 * pre: recibe una lista de distancias.
+		 * post: devuelve una lista de documentos, aquellos que tienen la menor distancia.
+		 */
+		list<int> filtrarDistancias(list<Distancia> distancias);
+
+		list<int> filtrarProximidad(Palabra & palabra);
 
 		void filtrarRanqueada(Palabra & palabra);
 public:

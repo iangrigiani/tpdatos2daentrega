@@ -56,6 +56,12 @@ public:
 				this->posiciones.push_back(*it);
 		}
 
+		void agregarPosicion(int & posicion)
+		{
+			this->posiciones.push_back(posicion);
+
+		}
+
 };
 
 #endif /* POSICION_H_ */
