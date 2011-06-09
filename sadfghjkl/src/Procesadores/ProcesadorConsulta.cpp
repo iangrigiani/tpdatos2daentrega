@@ -164,6 +164,8 @@ list<int> ProcesadorConsulta::consultarPalabras(list<string> palabras)
 
 		palabra = handlerArchivoOcurrencias.obtenerPalabra(offsetsArchivoOcurrencias);
 
+		palabra.setPalabra(*itPalabras);
+
 		palabrasConsulta.push_back(palabra);
 	}
 

@@ -34,6 +34,7 @@ private:
 		 */
 		void crearAparicion(Aparicion aparicion1, Aparicion aparicion2, Aparicion & nuevaAparicion);
 
+
 		/*
 		 * Procesa todas las palabras recibidas por parametro y devuelve una sola con
 		 * las coincidencias.
@@ -70,7 +71,6 @@ private:
 		 * Compara dos distancias y crea una nueva con la minima.
 		 */
 		Distancia compararDistancias(Distancia distancia1,Distancia distancia2);
-
 
 		/*
 		 * Filtra las distancias
@@ -113,6 +113,7 @@ public:
 		 * pos: devuelve la lista de offset al archivo RLV.
 		 */
 		list<int> consultarPalabras(list<string> palabras);
+
 
 };
 
