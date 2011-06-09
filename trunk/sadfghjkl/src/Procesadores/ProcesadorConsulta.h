@@ -34,12 +34,12 @@ private:
 		 */
 		void crearAparicion(Aparicion aparicion1, Aparicion aparicion2, Aparicion & nuevaAparicion);
 
-
 		/*
 		 * Procesa todas las palabras recibidas por parametro y devuelve una sola con
 		 * las coincidencias.
 		 */
 		Palabra procesarApariciones(list<Palabra> palabras);
+
 
 		/*
 		 * Procesa todas las posiciones recibidas por parametros y devuelve un entero}
@@ -48,9 +48,16 @@ private:
 		int procesarPosiciones(list<Posicion> posiciones);
 
 		/*
-		 * Compara dos posiciones y crea una nueva con la distancia minima.
+		 * Compara los elementos de una lista de enteros que representan las posiciones
+		 * de las palabras en el libro y devuelve la distancia minima entre ellas.
 		 */
-		Posicion compararPosiciones(Posicion posicion1,Posicion posicion2);
+		int compararPosiciones(list<int> posiciones);
+
+		/*
+		 * Agrega todas las posiciones que se encuentran en posicion a la lista de posiciones
+		 * que recibe por parametro.
+		 */
+		void filtrarPosiciones(list<int> & posiciones,Posicion posicion);
 
 		/*
 		 * Procesar consulta puntual de Palabra
@@ -63,6 +70,7 @@ private:
 		 * Compara dos distancias y crea una nueva con la minima.
 		 */
 		Distancia compararDistancias(Distancia distancia1,Distancia distancia2);
+
 
 		/*
 		 * Filtra las distancias
@@ -101,8 +109,8 @@ public:
 
 		/*
 		 * Procesar consulta de Palabras
-		 * pre:obtener las ocurrencias asociadas a las palabras
-		 * pos : devuelve la lista de offset al archivo RLV.
+		 * pre: obtener las ocurrencias asociadas a las palabras
+		 * pos: devuelve la lista de offset al archivo RLV.
 		 */
 		list<int> consultarPalabras(list<string> palabras);
 
