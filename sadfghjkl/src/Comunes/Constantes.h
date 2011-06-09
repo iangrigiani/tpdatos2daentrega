@@ -53,6 +53,7 @@
 #define TAM_CONTROL_REGISTRO 5
 #define PATH_AUTOR "Autores"
 #define PATH_EDITORIAL "Editoriales"
+#define PATH_ID_TERMINOS "Ids_Terminos.txt"
 
 /************* Hash de Término & Palabra ****************/
 #define TAM_CUBO 4096
