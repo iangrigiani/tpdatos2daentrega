@@ -8,6 +8,7 @@
 #include "../EstructurasArbol/Solucion.h"
 #include <fstream>
 #include <vector>
+#include <list>
 
 using namespace std;
 
@@ -34,7 +35,7 @@ public:
 	ArbolBMas(string ruta_archivo,int tipoDeArbol);
 
 	~ArbolBMas();
-	bool insertar(Elementos* registro);
+	int insertar(Elementos* registro);
 
 	bool modificar(Elementos* registro);
 
@@ -71,7 +72,7 @@ private:
 
 	int obtenerPosicion(Nodo *unNodo, Clave clave);
 
-	bool insertarRecursivo(Nodo* nodoCorriente, Clave clave, CadenaBytes dato, CadenaBytes id,  Clave* clavePromocion, Nodo** nuevoNodo);
+	bool insertarRecursivo(Nodo* nodoCorriente, Clave clave, CadenaBytes dato, CadenaBytes id,  Clave* clavePromocion, Nodo** nuevoNodo, CadenaBytes* idInsertado);
 
 	void dividirNodoHoja(NodoHoja* unNodoHoja, Clave* clavePromocion, Nodo** nuevoNodoHoja);
 
@@ -114,6 +115,9 @@ private:
 
 	Solucion buscarSecuencialClave(int nodo, Elementos* elemento, int posicion);
 
+	CadenaBytes obtenerNuevoId();
+
+	bool buscar(list<Elementos*> * listaElementos, Clave* clave, int nodo, int posicion);
 };
 
 #endif // _ARBOLBMAS_H_

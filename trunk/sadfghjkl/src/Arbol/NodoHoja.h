@@ -31,6 +31,10 @@ public:
         return hojaSiguiente;
     }
 
+    CadenaBytes *getIds(){
+    	return Ids;
+    }
+
     NodoHoja* Clonar();
 };
 
