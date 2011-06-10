@@ -1,17 +1,10 @@
-/*
- * HandlerArchivoEspLibres.h
- *
- *  Created on: 09/04/2011
- *      Author: angeles
- */
 
 #ifndef HANDLERESPLIBRE_H_
 #define HANDLERESPLIBRE_H_
 
-#define NOM_ARCH_TEMP "Temp"
-
 #include <string>
 #include <fstream>
+#include "../Comunes/Constantes.h"
 
 using namespace std;
 

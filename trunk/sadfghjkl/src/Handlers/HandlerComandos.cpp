@@ -129,20 +129,18 @@ void HandlerComandos::verEstructura(int parametro){
 
 	case 't': {
 		printf("Viendo estructura del hash de títulos. \n");
-		HashTitulo hash;
-		hash.crear_condiciones_iniciales();
+		HashTermino hash(NOM_BLOQUES_TITULO, NOM_ESP_LIBRE_TITULO, NOM_TABLA_TITULO);
 		hash.mostrar();
 		break; }
 	case 'p': {
 		printf("Viendo estructura del hash de palabras. \n");
-		HashPalabra hash;
-		hash.crear_condiciones_iniciales();
+		HashPalabra hash(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
 		hash.mostrar();
 		break; }
 
 	}
 }
-//
+/*
 int HandlerComandos::funcion_hash_titulo(const string& str) {
 
 	int size = str.size();
@@ -161,18 +159,13 @@ int HandlerComandos::funcion_hash_titulo(const string& str) {
 	free(cadena);
 	return clave;
 }
-//
+*/
 void HandlerComandos::insertar_en_hash_titulo(int offset) {
 	RegistroLibro reg;
 	this->parser->obtenerRegistroDeLibro(this->handler->buscarRegistro(offset), reg);
 	if (reg.getAutor() != REGISTRO_ERRONEO){
-		HashTitulo hash;
-		hash.crear_condiciones_iniciales();
-
-		int clave = this->funcion_hash_titulo(reg.getTitulo());
-
-		RegTitulo reg_indice(clave, offset);
-		hash.insertar_reg(reg_indice);
+		HashTermino hash(NOM_BLOQUES_TITULO, NOM_ESP_LIBRE_TITULO, NOM_TABLA_TITULO);
+		hash.alta(reg.getTitulo(), offset);
 	}else{
 		cout<<"ID:"<<offset<<"No pudo ser insertado en el hash de titulo.\n"<<endl;
 	}
@@ -183,12 +176,8 @@ void HandlerComandos::eliminar_de_hash_titulo(int offset) {
 	RegistroLibro reg;
 	this->parser->obtenerRegistroDeLibro(this->handler->buscarRegistro(offset), reg);
 	if (reg.getAutor() != REGISTRO_ERRONEO){
-		HashTitulo hash;
-		hash.crear_condiciones_iniciales();
-
-		int clave = this->funcion_hash_titulo(reg.getTitulo());
-
-		hash.eliminar_reg(clave);
+		HashTermino hash(NOM_BLOQUES_TITULO, NOM_ESP_LIBRE_TITULO, NOM_TABLA_TITULO);
+		hash.baja(reg.getTitulo());
 	}else{
 		cout<<"ID:"<<offset<<"No pudo ser insertado en el hash de titulo.\n"<<endl;
 	}
@@ -211,19 +200,14 @@ list < int > HandlerComandos::eliminar_repeticion(list < int > & palabras) {
 	return filtrados;
 }
 //
-//
-//
 int HandlerComandos::funcion_hash_palabra(const string& str) {
 
 	int clave = 0;
 	for (unsigned int i = 0; i < str.size(); ++ i)
-		clave += ((int)str[i]) * i;
+		clave += ((int)str[i]) * (str.size() - i);
 
-	//cout << str << " = " << clave;
 	return clave;
 }
-//
-//
 //
 void HandlerComandos::insertar_en_hash_palabra(int offset) {
 
@@ -231,28 +215,22 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 
 	if (palabras.size() > 0){
 
-			HashPalabra hash;
-			hash.crear_condiciones_iniciales();
+		HashPalabra hash(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
 
-			ProcesadorOcurrencia procesador;
-			list<Ocurrencia> ocurrencias = procesador.obtenerOcurrencias(palabras);
+		ProcesadorOcurrencia procesador;
+		list<Ocurrencia> ocurrencias = procesador.obtenerOcurrencias(palabras);
 
-			list < int > offsets;
-			list<Ocurrencia> :: iterator itOcurrencias;
+		list<Ocurrencia> :: iterator itOcurrencias;
 
-			for(itOcurrencias = ocurrencias.begin(); itOcurrencias != ocurrencias.end();++itOcurrencias)
-			{
-				Ocurrencia ocurrenciaActual = *itOcurrencias;
+		for(itOcurrencias = ocurrencias.begin(); itOcurrencias != ocurrencias.end();++itOcurrencias) {
+			Ocurrencia ocurrenciaActual = *itOcurrencias;
 
-				int offsetOcurrencia = this->handlerOcurrencias->insertarOcurrencia(ocurrenciaActual,offset);
-				int clave = ocurrenciaActual.getIdPalabra();
+			int offsetOcurrencia = this->handlerOcurrencias->insertarOcurrencia(ocurrenciaActual,offset);
+			int clave = ocurrenciaActual.getIdPalabra();
 
-				offsets.push_back(offsetOcurrencia);
+			hash.alta(clave, offsetOcurrencia);
 
-				hash.insercion(clave, offsets);
-
-				offsets.clear();
-			}
+		}
 
 
 			/*
@@ -285,15 +263,14 @@ void HandlerComandos::eliminar_de_hash_palabra(int offset) {
 	RegistroLibro reg;
 	this->parser->obtenerRegistroDeLibro(this->handler->buscarRegistro(offset), reg);
 	if (reg.getAutor() != REGISTRO_ERRONEO){
-		HashPalabra hash;
-		hash.crear_condiciones_iniciales();
+		HashPalabra hash(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
 
 		int clave;
 		list < string > palabras = reg.getPalabras();
 		list < string > ::iterator it;
 		for (it = palabras.begin(); it != palabras.end(); ++ it) {
 			clave = this->funcion_hash_palabra(*it);
-			hash.eliminacion(clave, offset);
+			hash.baja(clave, offset);
 		}
 	}else{
 		cout<<"ID:"<<offset<<"No pudo ser borrado en el hash de palabra.\n"<<endl;

@@ -18,11 +18,6 @@ void HandlerTabla::set_ruta_arch_tabla(const string& ruta_arch_tabla) {
 	this->ruta_arch_tabla = ruta_arch_tabla;
 }
 
-void HandlerTabla::set_ruta_arch_temporal(const string& ruta_arch_temporal) {
-	this->ruta_arch_temporal = ruta_arch_temporal;
-}
-
-
 bool HandlerTabla::tabla_vacia() {
 	ifstream arch;
 	string s;
@@ -41,23 +36,21 @@ bool HandlerTabla::tabla_vacia() {
 }
 
 void HandlerTabla::crear_tabla_inicial() {
-
 	fstream arch;
+
 	this->tam_tabla = 0;
-	arch.open(this->ruta_arch_tabla.c_str(),fstream::app);
-	if(arch.tellg() == 0)
-	{
+
+	arch.open(this->ruta_arch_tabla.c_str(), fstream::app);
+	if (arch.tellg() == 0) {
 		arch.close();
-		arch.open(this->ruta_arch_tabla.c_str(),fstream::out);
+		arch.open(this->ruta_arch_tabla.c_str(), fstream::out);
 		arch.width(8);
-		arch<< hex << this->tam_tabla<<'|';
+		arch << hex << this->tam_tabla << '|';
 	}
 	arch.close();
-
 }
 
-void HandlerTabla::insertar_primer_referencia(int num_bloque)
-{
+void HandlerTabla::insertar_primer_referencia(int num_bloque) {
 	fstream arch;
 	string s;
 	stringstream ss;
@@ -108,7 +101,7 @@ void HandlerTabla::truncar_tabla() {
 	int contador = 0;
 
 	arch.open(this->ruta_arch_tabla.c_str());
-	arch_aux.open(this->ruta_arch_temporal.c_str());
+	arch_aux.open(NOM_TEMP);
 
 	this->tam_tabla /= 2;
 	if (this->tam_tabla < 0)
@@ -128,10 +121,7 @@ void HandlerTabla::truncar_tabla() {
 	arch_aux.close();
 
 	remove(this->ruta_arch_tabla.c_str());
-
-
-	rename(this->ruta_arch_temporal.c_str(), this->ruta_arch_tabla.c_str());
-
+	rename(NOM_TEMP, this->ruta_arch_tabla.c_str());
 }
 
 bool HandlerTabla::mitades_iguales() const {
@@ -208,7 +198,7 @@ void HandlerTabla::reemplazar_referencia(int num_bloque_a_reemplazar, int num_nu
 	int contador = 0;
 
 	arch.open(this->ruta_arch_tabla.c_str());
-	arch_aux.open(this->ruta_arch_temporal.c_str());
+	arch_aux.open(NOM_TEMP);
 
 	arch_aux.width(8);
 	arch_aux << hex << this->tam_tabla << '|';
@@ -237,7 +227,7 @@ void HandlerTabla::reemplazar_referencia(int num_bloque_a_reemplazar, int num_nu
 	arch_aux.close();
 
 	remove(this->ruta_arch_tabla.c_str());
-	rename(this->ruta_arch_temporal.c_str(),this->ruta_arch_tabla.c_str());
+	rename(NOM_TEMP, this->ruta_arch_tabla.c_str());
 }
 
 void HandlerTabla::reemplazar_referencias(int pos_inicial, int num_nuevo_bloque, const Bloque& nuevo_bloque) {
@@ -249,7 +239,7 @@ void HandlerTabla::reemplazar_referencias(int pos_inicial, int num_nuevo_bloque,
 	int dist_salto = nuevo_bloque.get_tam_disp();
 
 	arch.open(this->ruta_arch_tabla.c_str());
-	arch_aux.open(this->ruta_arch_temporal.c_str());
+	arch_aux.open(NOM_TEMP);
 
 	arch_aux.width(8);
 	arch_aux << hex << this->tam_tabla << '|';
@@ -277,46 +267,9 @@ void HandlerTabla::reemplazar_referencias(int pos_inicial, int num_nuevo_bloque,
 	arch_aux.close();
 
 	remove(this->ruta_arch_tabla.c_str());
-
-	rename(this->ruta_arch_temporal.c_str(), this->ruta_arch_tabla.c_str());
-
+	rename(NOM_TEMP, this->ruta_arch_tabla.c_str());
 }
-/*
-void HandlerTabla::reemplazar_referencias(int pos_inicial, int num_nuevo_bloque, const Bloque& nuevo_bloque) {
-	ifstream arch;
-	ofstream arch_aux;
-	string s;
-	int contador = this->tam_tabla - pos_inicial;
-	int dist_salto = contador;
 
-	arch.open(NOM_ARCH_TABLA);
-	arch_aux.open(NOM_ARCH_TEMP);
-
-	arch_aux.width(8);
-	arch_aux << hex << this->tam_tabla << '|';
-
-	getline(arch, s, '|');
-
-	while (contador - this->tam_tabla + pos_inicial != this->tam_tabla) {
-		arch >> s;
-
-		if (dist_salto == nuevo_bloque.get_tam_disp()) {
-			arch_aux << ' ' << dec << num_nuevo_bloque;
-			dist_salto = 0;
-		}
-		else arch_aux << ' ' << s;
-
-		++ contador;
-		++ dist_salto;
-	}
-
-	arch.close();
-	arch_aux.close();
-
-	remove(NOM_ARCH_TABLA);
-	rename(NOM_ARCH_TEMP, NOM_ARCH_TABLA);
-}
-*/
 int HandlerTabla::puedo_liberar_bloque(const Bloque& bloque_a_liberar, int pos_actual) const {
 	ifstream arch;
 	string s;

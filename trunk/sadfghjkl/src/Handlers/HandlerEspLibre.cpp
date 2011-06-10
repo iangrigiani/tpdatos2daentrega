@@ -1,9 +1,3 @@
-/*
- * HandlerArchivoEspLibres.cpp
- *
- *  Created on: 09/04/2011
- *      Author: angeles
- */
 
 #include "HandlerEspLibre.h"
 
@@ -66,7 +60,7 @@ void HandlerEspLibre::actualizar_baja_bloque_libre() {
 	int pos_bloque_libre;
 
 	arch.open(this->ruta_arch_esp_libre.c_str());
-	arch_aux.open(NOM_ARCH_TEMP);
+	arch_aux.open(NOM_TEMP);
 
 	for(int i = 0; i < 2; ++ i)
 		arch >> pos_bloque_libre;
@@ -80,7 +74,7 @@ void HandlerEspLibre::actualizar_baja_bloque_libre() {
 	arch_aux.close();
 
 	remove(this->ruta_arch_esp_libre.c_str());
-	rename(NOM_ARCH_TEMP, this->ruta_arch_esp_libre.c_str());
+	rename(NOM_TEMP, this->ruta_arch_esp_libre.c_str());
 }
 
 void HandlerEspLibre::actualizar_alta_bloque_libre(int pos_nuevo_bloque_libre) {

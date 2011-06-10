@@ -55,35 +55,19 @@
 #define PATH_EDITORIAL "Editoriales"
 #define PATH_ID_TERMINOS "Ids_Terminos.txt"
 
-/************* Hash de Término & Palabra ****************/
+/************************ Hash ************************/
 #define TAM_CUBO 4096
+#define NOM_TEMP "Temp"
 
-/***************** Hash de Término **********************/
-#define PATH_TMP_TERMINO "TempTermino.txt"
-#define PATH_TABLA_TERMINO "TablaTermino.txt"
-#define PATH_ESP_LIBRE_TERMINO "EspLibreTermino.txt"
-#define PATH_BLOQUES_TERMINO "BloquesTermino.txt"
-#define PATH_ID "ID.txt"
-#define PATH_HASH_TERMINO "Terminos.txt"
+/****************** Hash de Palabra *******************/
+#define NOM_TABLA_PALABRA "TablaPalabra"
+#define NOM_ESP_LIBRE_PALABRA "EspLibrePalabra"
+#define NOM_BLOQUES_PALABRA "BloquesPalabra"
 
-/****************** Hash de Palabra *********************/
-#define PATH_TMP_PALABRA "TempPalabra.txt"
-#define PATH_TABLA_PALABRA "TablaPalabra.txt"
-#define PATH_ESP_LIBRE_PALABRA "EspLibrePalabra.txt"
-#define PATH_BLOQUES_PALABRA "BloquesPalabra.txt"
-#define PATH_HASH_PALABRAS "Palabras.txt"
-
-/****************** Hash de Título *********************/
-#define TAM_RANURA 64
-
-#define OCUPADA 1
-#define VACIA 0
-
-#define PATH_TMP_TITULO "TempTitulo.txt"
-#define PATH_TABLA_TITULO "TablaTitulo.txt"
-#define PATH_ESP_LIBRE_TITULO "EspLibreTitulo.txt"
-#define PATH_BLOQUES_TITULO "BloquesTitulo.txt"
-#define PATH_HASH_TITULO "Titulos.txt"
+/****************** Hash de Titulo ********************/
+#define NOM_TABLA_TITULO "TablaTitulo"
+#define NOM_ESP_LIBRE_TITULO "EspLibreTitulo"
+#define NOM_BLOQUES_TITULO "BloquesTitulo"
 
 /*********************Testing ***************************/
 #define PATH_BLOQUES_TITULO_TEST "BloquesTituloTest"

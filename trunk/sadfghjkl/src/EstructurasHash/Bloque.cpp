@@ -3,10 +3,6 @@
 
 Bloque::Bloque(int tam_disp) : tam_disp(tam_disp) {}
 
-void Bloque::set_tam_disp(int tam_disp) {
-	this->tam_disp = tam_disp;
-}
-
 void Bloque::duplicar_tam_disp() {
 	this->tam_disp *= 2;
 }

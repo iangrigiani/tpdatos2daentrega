@@ -1,7 +1,7 @@
 
-#include "HashPalabra.h"
+#include "HashTermino.h"
 
-HashPalabra::HashPalabra(const string& ruta_arch_bloques, const string& ruta_arch_esp_libre,
+HashTermino::HashTermino(const string& ruta_arch_bloques, const string& ruta_arch_esp_libre,
 		const string& ruta_arch_tabla) {
 	HandlerEspLibre handler_esp_libre(ruta_arch_esp_libre);
 	this->persistor.set_handler_bloques(ruta_arch_bloques, handler_esp_libre);
@@ -11,23 +11,32 @@ HashPalabra::HashPalabra(const string& ruta_arch_bloques, const string& ruta_arc
 	this->crear_condiciones_iniciales();
 }
 
-void HashPalabra::crear_condiciones_iniciales() {
+int HashTermino::funcion_hash(const string& termino) {
+	int clave = 0;
+
+	for (unsigned int i = 0; i < termino.size(); ++ i)
+		clave += ((int)termino[i]) * (termino.size() - i);
+
+	return clave;
+}
+
+void HashTermino::crear_condiciones_iniciales() {
 	HandlerBloques& handler_bloques = this->persistor.get_handler_bloques();
 	handler_bloques.crear_arch_vacio();
 	handler_bloques.get_handler_esp_libre().crear_arch_inicial();
 	this->handler_tabla.crear_tabla_inicial();
 
 	if (this->handler_tabla.tabla_vacia() == true) {
-		Cubo bloque;
+		Bucket bloque;
 
 		int num_bloque = this->persistor.guardar_bloque(bloque.Serializar());
 		this->handler_tabla.insertar_primer_referencia(num_bloque);
 	}
 }
 
-void HashPalabra::insertar_reg(RegPalabra& reg) {
+void HashTermino::insertar_reg(RegIndice& reg) {
 	CadenaBytes cadena;
-	Cubo bloque;
+	Bucket bloque;
 
 	int pos_tabla_bloque = this->handler_tabla.get_pos_tabla(reg.get_clave());
 	int num_bloque = this->handler_tabla.get_num_bloque(reg.get_clave());
@@ -41,7 +50,7 @@ void HashPalabra::insertar_reg(RegPalabra& reg) {
 	else {
 		int tam_disp_inicial = bloque.get_tam_disp();
 		bloque.duplicar_tam_disp();
-		Cubo nuevo_bloque(bloque.get_tam_disp());
+		Bucket nuevo_bloque(bloque.get_tam_disp());
 		int num_nuevo_bloque = this->persistor.guardar_bloque(nuevo_bloque.Serializar());
 
 		if (tam_disp_inicial == this->handler_tabla.get_tam_tabla()) {
@@ -50,7 +59,7 @@ void HashPalabra::insertar_reg(RegPalabra& reg) {
 		}
 		else this->handler_tabla.reemplazar_referencias(pos_tabla_bloque, num_nuevo_bloque, nuevo_bloque);
 
-		list < RegPalabra > regs_desactualizados = bloque.actualizar_regs(num_bloque, this->handler_tabla);
+		list < RegIndice > regs_desactualizados = bloque.actualizar_regs(num_bloque, this->handler_tabla);
 
 		if (regs_desactualizados.empty() == false) {
 			nuevo_bloque.incorporar_regs(regs_desactualizados);
@@ -62,54 +71,82 @@ void HashPalabra::insertar_reg(RegPalabra& reg) {
 	}
 }
 
-void HashPalabra::agregar_nuevo_offset(Cubo& bloque, int num_bloque, RegPalabra& reg, int offset) {
-	if (bloque.entra_en_bloque(offset) == true) {
-		reg.agregar_nuevo_offset(offset);
-		bloque.disminuir_esp_libre(offset);
+bool HashTermino::elemento_repetido(RegIndice& reg, const string& termino) {
+	if (reg.existe_elemento(termino) == true)
+		return true;
+	else {
+		if (reg.get_bloque_sig() == -1)
+			return false;
+		else {
+			CadenaBytes cadena;
+			Bucket bloque_sig;
+
+			this->persistor.recuperar_bloque(reg.get_bloque_sig(), cadena);
+			bloque_sig.Hidratar(cadena);
+			RegIndice& reg_aux = bloque_sig.buscar_reg(reg.get_clave());
+			return this->elemento_repetido(reg_aux, termino);
+		}
+	}
+}
+
+void HashTermino::agregar_nuevo_elemento(Bucket& bloque, int num_bloque, RegIndice& reg, Elemento& elemento) {
+	if (bloque.entra_en_bloque(elemento) == true) {
+		reg.agregar_nuevo_elemento(elemento);
+		bloque.disminuir_esp_libre(elemento);
 		this->persistor.guardar_bloque(bloque.Serializar(), num_bloque);
 	}
 	else {
-		Cubo bloque_sig;
+		Bucket bloque_sig;
 
 		if (reg.get_bloque_sig() == -1) {
-			RegPalabra reg_aux(reg.get_clave());
-			reg_aux.agregar_nuevo_offset(offset);
+			RegIndice reg_aux(reg.get_clave());
+			reg_aux.agregar_nuevo_elemento(elemento);
 			bloque_sig.agregar_nuevo_reg(reg_aux);
 			int num_bloque_sig = this->persistor.guardar_bloque(bloque_sig.Serializar());
 			reg.set_bloque_sig(num_bloque_sig);
 			this->persistor.guardar_bloque(bloque.Serializar(), num_bloque);
-			cout << "el bloque " << num_bloque << " tiene un reg con clave " << reg.get_clave() << " q apunta al bloque " << num_bloque_sig << endl;
+			//cout << "el bloque " << num_bloque << " tiene un reg con clave " << reg.get_clave() << " q apunta al bloque " << num_bloque_sig << endl;
 		}
 		else {
 			CadenaBytes cadena;
 			this->persistor.recuperar_bloque(reg.get_bloque_sig(), cadena);
 			bloque_sig.Hidratar(cadena);
-			RegPalabra& reg_aux = bloque_sig.buscar_reg(reg.get_clave());
-			this->agregar_nuevo_offset(bloque_sig, reg.get_bloque_sig(), reg_aux, offset);
+			RegIndice& reg_aux = bloque_sig.buscar_reg(reg.get_clave());
+			this->agregar_nuevo_elemento(bloque_sig, reg.get_bloque_sig(), reg_aux, elemento);
 		}
 	}
 }
 
-void HashPalabra::alta(int clave, int offset) {
+int HashTermino::alta(const string& termino, int ID) {
 	CadenaBytes cadena;
-	Cubo bloque;
+	Bucket bloque;
 
+	int clave = this->funcion_hash(termino);
 	int num_bloque = this->handler_tabla.get_num_bloque(clave);
 	this->persistor.recuperar_bloque(num_bloque, cadena);
 	bloque.Hidratar(cadena);
 
-	if (bloque.existe_reg(clave) == true)
-		this->agregar_nuevo_offset(bloque, num_bloque, bloque.buscar_reg(clave), offset);
+	if (bloque.existe_reg(clave) == true) {
+		RegIndice& reg = bloque.buscar_reg(clave);
+
+		if (this->elemento_repetido(reg, termino) == false) {
+			Elemento elemento(termino, ID);
+			this->agregar_nuevo_elemento(bloque, num_bloque, reg, elemento);
+		}
+	}
 	else {
-		RegPalabra reg(clave);
-		reg.agregar_nuevo_offset(offset);
+		Elemento elemento(termino, ID);
+		RegIndice reg(clave);
+		reg.agregar_nuevo_elemento(elemento);
 		this->insertar_reg(reg);
 	}
+
+	return ID;
 }
 
-bool HashPalabra::eliminar_reg(int clave) {
+bool HashTermino::eliminar_reg(int clave) {
 	CadenaBytes cadena;
-	Cubo bloque;
+	Bucket bloque;
 
 	int pos_tabla_bloque = this->handler_tabla.get_pos_tabla(clave);
 	int num_bloque = this->handler_tabla.get_num_bloque(clave);
@@ -122,7 +159,7 @@ bool HashPalabra::eliminar_reg(int clave) {
 	if (bloque.esta_vacio() == true) {
 		int num_otro_bloque = this->handler_tabla.puedo_liberar_bloque(bloque, pos_tabla_bloque);
 		if (num_otro_bloque != -1) {
-			Cubo otro_bloque;
+			Bucket otro_bloque;
 
 			this->persistor.recuperar_bloque(num_otro_bloque, cadena);
 			otro_bloque.Hidratar(cadena);
@@ -144,7 +181,7 @@ bool HashPalabra::eliminar_reg(int clave) {
 	return true;
 }
 
-void HashPalabra::obtener_reg(RegPalabra& reg, Cubo& bloque_sig, list < int > & bloques_sigs, int clave) {
+void HashTermino::obtener_reg(RegIndice& reg, Bucket& bloque_sig, list < int > & bloques_sigs, int clave) {
 	CadenaBytes cadena;
 
 	this->persistor.recuperar_bloque(reg.get_bloque_sig(), cadena);
@@ -153,23 +190,23 @@ void HashPalabra::obtener_reg(RegPalabra& reg, Cubo& bloque_sig, list < int > & 
 	reg = bloque_sig.buscar_reg(clave);
 }
 
-void HashPalabra::eliminar_reg_y_bloques_sigs(Cubo& bloque, int num_bloque, int clave) {
+void HashTermino::eliminar_reg_y_bloques_sigs(Bucket& bloque, int num_bloque, int clave) {
 	if (bloque.existe_reg(clave) == true) {
-		RegPalabra& reg = bloque.buscar_reg(clave);
+		RegIndice& reg = bloque.buscar_reg(clave);
 
 		if (reg.esta_vacio() == true)
 			this->eliminar_reg(clave);
 		else {
-			if (reg.get_offsets().empty() == true && reg.get_bloque_sig() != -1) {
-				Cubo bloque_sig;
+			if (reg.get_elementos().empty() == true && reg.get_bloque_sig() != -1) {
+				Bucket bloque_sig;
 				list < int > bloques_sigs;
 
 				this->obtener_reg(reg, bloque_sig, bloques_sigs, clave);
 
-				while (reg.get_offsets().empty() == true && reg.get_bloque_sig() != -1)
+				while (reg.get_elementos().empty() == true && reg.get_bloque_sig() != -1)
 					this->obtener_reg(reg, bloque_sig, bloques_sigs, clave);
 
-				if (reg.get_offsets().empty() == true && reg.get_bloque_sig() == -1) {
+				if (reg.get_elementos().empty() == true && reg.get_bloque_sig() == -1) {
 					list < int > ::iterator it;
 
 					for (it = bloques_sigs.begin(); it != bloques_sigs.end(); ++ it)
@@ -182,86 +219,86 @@ void HashPalabra::eliminar_reg_y_bloques_sigs(Cubo& bloque, int num_bloque, int 
 	}
 }
 
-void HashPalabra::eliminar_offset(Cubo& bloque, int num_bloque, int clave, int offset) {
+void HashTermino::eliminar_elemento(Bucket& bloque, int num_bloque, int clave, const string& termino) {
 	if (bloque.existe_reg(clave) == true) {
-		RegPalabra& reg = bloque.buscar_reg(clave);
+		RegIndice& reg = bloque.buscar_reg(clave);
 
-		if (reg.eliminar_offset(offset) == false) {
+		if (reg.existe_elemento(termino) == false) {
 			if (reg.get_bloque_sig() == -1)
 				return;
 			else {
 				CadenaBytes cadena;
-				Cubo bloque_sig;
+				Bucket bloque_sig;
 
 				this->persistor.recuperar_bloque(reg.get_bloque_sig(), cadena);
 				bloque_sig.Hidratar(cadena);
-				this->eliminar_offset(bloque_sig, reg.get_bloque_sig(), clave, offset);
+				this->eliminar_elemento(bloque_sig, reg.get_bloque_sig(), clave, termino);
 			}
 		}
 		else {
-			bloque.aumentar_esp_libre(offset);
+			Elemento elemento = reg.buscar_elemento(termino);
+			reg.eliminar_elemento(termino);
+			bloque.aumentar_esp_libre(elemento);
 			this->persistor.guardar_bloque(bloque.Serializar(), num_bloque);
 		}
 	}
 }
 
-void HashPalabra::baja(int clave, int offset) {
+void HashTermino::baja(const string& termino) {
 	CadenaBytes cadena;
-	Cubo bloque;
+	Bucket bloque;
 
+	int clave = this->funcion_hash(termino);
 	int num_bloque = this->handler_tabla.get_num_bloque(clave);
 	this->persistor.recuperar_bloque(num_bloque, cadena);
 	bloque.Hidratar(cadena);
 
-	this->eliminar_offset(bloque, num_bloque, clave, offset);
+	this->eliminar_elemento(bloque, num_bloque, clave, termino);
 	this->eliminar_reg_y_bloques_sigs(bloque, num_bloque, clave);
 }
 
-void HashPalabra::concatenar_offsets(list < int > & lista_1, list < int > & lista_2) {
-	list < int > ::iterator it;
-	for (it = lista_2.begin(); it != lista_2.end(); ++ it)
-		lista_1.push_back(*it);
-}
-
-list < int > HashPalabra::consultar_offsets(Cubo& bloque, int num_bloque, int clave) {
-	CadenaBytes cadena;
-	list < int > lista_1;
-
+int HashTermino::consultar_elemento(Bucket& bloque, int num_bloque, int clave, const string& termino) {
 	if (bloque.existe_reg(clave) == true) {
-		bool fin_lista = false;
+		RegIndice& reg = bloque.buscar_reg(clave);
 
-		while (fin_lista == false) {
-			RegPalabra& reg = bloque.buscar_reg(clave);
-			list < int > lista_2 = reg.get_offsets();
-			this->concatenar_offsets(lista_1, lista_2);
-			if (reg.get_bloque_sig() != -1) {
+		if (reg.existe_elemento(termino) == false) {
+			if (reg.get_bloque_sig() == -1)
+				return -1;
+			else {
+				CadenaBytes cadena;
+				Bucket bloque_sig;
+
 				this->persistor.recuperar_bloque(reg.get_bloque_sig(), cadena);
-				bloque.Hidratar(cadena);
+				bloque_sig.Hidratar(cadena);
+				return this->consultar_elemento(bloque_sig, reg.get_bloque_sig(), clave, termino);
 			}
-			else fin_lista = true;
+		}
+		else {
+			Elemento& elemento = reg.buscar_elemento(termino);
+			return elemento.get_ID();
 		}
 	}
-
-	return lista_1;
+	else return -1;
 }
 
-list < int > HashPalabra::consultar(int clave) {
+int HashTermino::consultar(const string& termino) {
 	CadenaBytes cadena;
-	Cubo bloque;
+	Bucket bloque;
 
+	int clave = this->funcion_hash(termino);
 	int num_bloque = this->handler_tabla.get_num_bloque(clave);
 	this->persistor.recuperar_bloque(num_bloque, cadena);
 	bloque.Hidratar(cadena);
-	return this->consultar_offsets(bloque, num_bloque, clave);
+	return this->consultar_elemento(bloque, num_bloque, clave, termino);
 }
 
-void HashPalabra::mostrar(ostream& os) {
+void HashTermino::mostrar(ostream& os) {
 	CadenaBytes cadena;
-	Cubo bloque;
+	Bucket bloque;
 	int cant_bloques = this->persistor.get_handler_bloques().get_tam_arch_bloques() / TAM_CUBO;
 
 	os << "********************************************************************************" << endl;
-	os << "		                          Hash de Palabras                                 " << endl;
+	os << "		             Dispersión Extensible de Títulos                            " << endl;
 	os << "********************************************************************************" << endl;
 	os << endl;
 
@@ -274,7 +311,7 @@ void HashPalabra::mostrar(ostream& os) {
 	}
 }
 
-void HashPalabra::mostrar(const string& nombre_arch) {
+void HashTermino::mostrar(const string& nombre_arch) {
 	ofstream arch;
 
 	arch.open(nombre_arch.c_str(), fstream::out);
@@ -282,6 +319,6 @@ void HashPalabra::mostrar(const string& nombre_arch) {
 	arch.close();
 }
 
-void HashPalabra::mostrar() {
+void HashTermino::mostrar() {
 	this->mostrar(cout);
 }
