@@ -3,44 +3,40 @@
 #define REGPALABRA_H_
 
 #include <list>
-#include "Reg.h"
-#include <fstream>
-#include <stdio.h>
-#include <string>
+#include "../Persistencia/Serializable.h"
 
-using namespace std;
-
-class RegPalabra: public Reg {
+class RegPalabra: public Serializable {
 
 private:
 
+	int clave;
 	int bloque_sig;
 	list < int > offsets;
 
 public:
 
-	RegPalabra() : Reg(), bloque_sig(-1) {}
-	RegPalabra(int clave): Reg(clave), bloque_sig(-1) {}
+	RegPalabra();
+	RegPalabra(int clave);
 	virtual ~RegPalabra() {};
 
+	void set_clave(int clave);
+	void set_bloque_sig(int bloque_sig);
+	void set_offsets(const list < int > & offsets);
+
+	int get_clave() const { return this->clave; }
+	int get_bloque_sig() const { return this->bloque_sig; }
+	const list < int > & get_offsets() const { return this->offsets; }
+
+	bool esta_vacio();
 	int get_tam();
 
-	void set_bloque_sig(int bloque_sig);
-	int get_bloque_sig() const { return this->bloque_sig; }
-
-	void set_offsets(list < int > & offsets);
-	list < int > get_offsets() const { return this->offsets; }
-
-	void agregar_nuevos_offsets(list < int > & offsets);
-	bool eliminar_offset(int offset);
-	CadenaBytes Serializar();
-	bool Hidratar(CadenaBytes &cadena);
-//	void serializar(char* buffer, unsigned int& offset);
-//	void hidratar(char* buffer, unsigned int& offset);
-
-	void toString(ofstream& fo);
-
 	void agregar_nuevo_offset(int offset);
+	bool eliminar_offset(int offset);
+
+	CadenaBytes Serializar();
+	bool Hidratar(CadenaBytes& cadena);
+
+	void toString(ostream& os);
 
 };
 

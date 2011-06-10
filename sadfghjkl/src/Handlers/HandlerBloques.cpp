@@ -60,7 +60,7 @@ int HandlerArchivoBloques::get_pos_insercion() const {
 	else return (this->get_tam_arch_bloques() / TAM_BLOQUE);
 }
 */
-void HandlerBloques::recuperar_bloque(char* buffer, int pos_arch_bloques) {
+void HandlerBloques::recuperar_bloque(int pos_arch_bloques, char* buffer) {
 	fstream arch;
 
 	arch.open(this->ruta_arch_bloques.c_str(), fstream::in);

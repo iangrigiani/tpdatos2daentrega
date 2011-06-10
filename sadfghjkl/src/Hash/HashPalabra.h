@@ -1,37 +1,59 @@
+
 #ifndef HASHPALABRA_H_
 #define HASHPALABRA_H_
 
-#include "Hash.h"
+#include "../Persistencia/PersistorHash.h"
+#include "../EstructurasHash/Cubo.h"
 
-class HashPalabra : public virtual Hash {
+class HashPalabra {
 
 private :
 
-	void obtener_reg(RegPalabra& reg, Cubo& bloque_sig ,list < int > & bloques_sigs, int clave);
+	HandlerTabla handler_tabla;
+	PersistorHash persistor;
 
-	void agregar_nuevos_offsets(Cubo& bloque, int num_bloque, RegPalabra& reg, list < int > & offsets);
 
-	void eliminar_offset(Cubo& bloque, int num_bloque, int clave, int offset);
+	void agregar_nuevo_offset(Cubo& bloque, int num_bloque, RegPalabra& reg, int offset);
 
 	void insertar_reg(RegPalabra& reg);
 
+
+	void obtener_reg(RegPalabra& reg, Cubo& bloque_sig ,list < int > & bloques_sigs, int clave);
+
+	void eliminar_reg_y_bloques_sigs(Cubo& bloque, int num_bloque, int clave);
+
+	void eliminar_offset(Cubo& bloque, int num_bloque, int clave, int offset);
+
 	bool eliminar_reg(int clave);
 
-public:
 
-	HashPalabra() : Hash(TAM_CUBO, PATH_BLOQUES_PALABRA, PATH_ESP_LIBRE_PALABRA,
-							PATH_TABLA_PALABRA, PATH_TMP_PALABRA) {}
+	void concatenar_offsets(list < int > & lista_1, list < int > & lista_2);
 
-	virtual ~HashPalabra() {};
+	list < int > consultar_offsets(Cubo& bloque, int num_bloque, int clave);
+
+
+	void mostrar(ostream& os);
+
 
 	void crear_condiciones_iniciales();
 
-	void insercion(int clave, list < int > & offsets);
+public:
 
-	void eliminacion(int clave, int offset);
+	HashPalabra(const string& ruta_arch_bloques, const string& ruta_arch_esp_libre,
+			const string& ruta_arch_tabla);
+
+	virtual ~HashPalabra() {};
+
+	void alta(int clave, int offset);
+
+	void baja(int clave, int offset);
+
+	list < int > consultar(int clave);
+
+	void mostrar(const string& nombre_arch);
 
 	void mostrar();
 
 };
 
-#endif /* HASHPALABRAS_H_ */
+#endif /* HASHPALABRA_H_ */

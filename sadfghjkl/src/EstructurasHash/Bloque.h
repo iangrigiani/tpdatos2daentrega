@@ -6,7 +6,7 @@
 
 class Bloque : public Serializable {
 
-private:
+protected:
 
 	int tam_disp;
 
@@ -15,7 +15,6 @@ public:
 	Bloque(int tam_disp = 1);
 	virtual ~Bloque() {};
 
-	void set_tam_disp(int tam_disp);
 	int get_tam_disp() const { return this->tam_disp; }
 
 	void duplicar_tam_disp();

@@ -144,8 +144,8 @@ list<int> ProcesadorConsulta::consultarPalabras(list<string> palabras)
 	//TODO cambiar hash termino por arbol para manejar los terminos
 	//HashTermino hashTermino(TAM_CUBO,PATH_BLOQUES_TERMINO,PATH_ESP_LIBRE_TERMINO,PATH_TABLA_TERMINO,PATH_TMP_TERMINO,PATH_ID);
 
-	HashPalabra hashPalabra;
-	hashPalabra.crear_condiciones_iniciales();
+	//HashPalabra hashPalabra;
+	//hashPalabra.crear_condiciones_iniciales();
 
 	HandlerArchivoOcurrencias handlerArchivoOcurrencias;
 
@@ -193,8 +193,8 @@ list<int> ProcesadorConsulta::consultarPalabras(list<string> palabras)
 
 list<int> ProcesadorConsulta::consultaPuntualPalabra(string palabra){
 
-	HashPalabra hashPalabra;
-	hashPalabra.crear_condiciones_iniciales();
+	//HashPalabra hashPalabra;
+	//hashPalabra.crear_condiciones_iniciales();
 	HandlerArchivoOcurrencias handlerArchivoOcurrencias;
 
 	list<int> offsetsArchivoOcurrencias;

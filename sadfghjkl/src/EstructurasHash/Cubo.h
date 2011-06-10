@@ -1,11 +1,10 @@
+
 #ifndef CUBO_H_
 #define CUBO_H_
 
 class HandlerTabla;
 
-#include "Bloque.h"
 #include "RegPalabra.h"
-#include "../Comunes/Constantes.h"
 #include "../Hash/HandlerTabla.h"
 
 class Cubo : public Bloque {
@@ -20,30 +19,31 @@ public:
 	Cubo(int tam_disp = 1);
 	virtual ~Cubo() {};
 
-	int calcular_esp_libre(int tam_dip,int tam_regs,int& espLibre);
-	bool esta_vacio();
+	int get_tam();
+	bool esta_vacio() const;
 	bool entra_en_bloque(RegPalabra& reg) const;
-	bool entra_en_bloque(list < int > & offsets) const;
+	bool entra_en_bloque(int offset) const;
+
+	list < RegPalabra > & get_regs() { return this->regs; }
 
 	void aumentar_esp_libre(int offset);
-	void disminuir_esp_libre(list<int> offsets);
+	void disminuir_esp_libre(int offset);
 
 	void agregar_nuevo_reg(RegPalabra& reg);
 	bool eliminar_reg(int clave);
+
 	bool existe_reg(int clave);
 	RegPalabra& buscar_reg(int clave);
-	list < RegPalabra > & get_regs() { return this->regs; }
 
 	void incorporar_regs(list < RegPalabra > & regs);
 	list < RegPalabra > actualizar_regs(int num_bloque, HandlerTabla& handler);
 
 	void vaciar();
-	CadenaBytes Serializar();
-	bool Hidratar(CadenaBytes &cadena);
-//	void serializar(char* buffer, unsigned int& offset);
-//	void hidratar(char* buffer, unsigned int& offset);
 
-	void toString(ofstream& fo);
+	CadenaBytes Serializar();
+	bool Hidratar(CadenaBytes& cadena);
+
+	void toString(ostream& os);
 
 };
 

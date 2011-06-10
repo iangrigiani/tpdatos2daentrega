@@ -1,22 +1,22 @@
 
-#include "Cubo.h"
+#include "Bucket.h"
 
-Cubo::Cubo(int tam_disp) : Bloque(tam_disp) {
+Bucket::Bucket(int tam_disp) : Bloque(tam_disp) {
 	this->esp_libre = TAM_CUBO - this->get_tam();
 }
 
-int Cubo::get_tam() {
+int Bucket::get_tam() {
 	CadenaBytes cadena_aux = this->Serializar();
 	return cadena_aux.getTamanio();
 }
 
-bool Cubo::esta_vacio() const {
+bool Bucket::esta_vacio() const {
 	if (this->regs.empty() == true)
 		return true;
 	return false;
 }
 
-bool Cubo::entra_en_bloque(RegPalabra& reg) const {
+bool Bucket::entra_en_bloque(RegIndice& reg) const {
 	CadenaBytes cadena;
 
 	int tam = reg.get_tam();
@@ -29,10 +29,12 @@ bool Cubo::entra_en_bloque(RegPalabra& reg) const {
 	return false;
 }
 
-bool Cubo::entra_en_bloque(int offset) const {
+bool Bucket::entra_en_bloque(Elemento& elemento) const {
 	CadenaBytes cadena;
 
-	cadena.agregarAlFinal(&offset, sizeof(offset));
+	int tam = elemento.get_tam();
+	cadena.agregarAlFinal(&tam, sizeof(tam));
+	cadena.agregarAlFinal(elemento.Serializar());
 
 	if (this->esp_libre > (int)cadena.getTamanio())
 		return true;
@@ -40,23 +42,27 @@ bool Cubo::entra_en_bloque(int offset) const {
 	return false;
 }
 
-void Cubo::aumentar_esp_libre(int offset) {
+void Bucket::aumentar_esp_libre(Elemento& elemento) {
 	CadenaBytes cadena;
 
-	cadena.agregarAlFinal(&offset, sizeof(offset));
+	int tam = elemento.get_tam();
+	cadena.agregarAlFinal(&tam, sizeof(tam));
+	cadena.agregarAlFinal(elemento.Serializar());
 
 	this->esp_libre += cadena.getTamanio();
 }
 
-void Cubo::disminuir_esp_libre(int offset) {
+void Bucket::disminuir_esp_libre(Elemento& elemento) {
 	CadenaBytes cadena;
 
-	cadena.agregarAlFinal(&offset, sizeof(offset));
+	int tam = elemento.get_tam();
+	cadena.agregarAlFinal(&tam, sizeof(tam));
+	cadena.agregarAlFinal(elemento.Serializar());
 
 	this->esp_libre -= cadena.getTamanio();
 }
 
-void Cubo::agregar_nuevo_reg(RegPalabra& reg) {
+void Bucket::agregar_nuevo_reg(RegIndice& reg) {
 	this->regs.push_back(reg);
 
 	CadenaBytes cadena;
@@ -68,8 +74,8 @@ void Cubo::agregar_nuevo_reg(RegPalabra& reg) {
 	this->esp_libre -= cadena.getTamanio();
 }
 
-bool Cubo::eliminar_reg(int clave) {
-	list < RegPalabra > ::iterator it;
+bool Bucket::eliminar_reg(int clave) {
+	list < RegIndice > ::iterator it;
 
 	it = this->regs.begin();
 	while (it != this->regs.end() && (*it).get_clave() != clave)
@@ -92,8 +98,8 @@ bool Cubo::eliminar_reg(int clave) {
 	return false;
 }
 
-bool Cubo::existe_reg(int clave) {
-	list < RegPalabra > ::iterator it;
+bool Bucket::existe_reg(int clave) {
+	list < RegIndice > ::iterator it;
 
 	it = this->regs.begin();
 	while (it != this->regs.end() && (*it).get_clave() != clave)
@@ -105,8 +111,8 @@ bool Cubo::existe_reg(int clave) {
 	return false;
 }
 
-RegPalabra& Cubo::buscar_reg(int clave) {
-	list < RegPalabra > ::iterator it;
+RegIndice& Bucket::buscar_reg(int clave) {
+	list < RegIndice > ::iterator it;
 
 	it = this->regs.begin();
 	while ((*it).get_clave() != clave)
@@ -115,22 +121,22 @@ RegPalabra& Cubo::buscar_reg(int clave) {
 	return (*it);
 }
 
-void Cubo::vaciar() {
+void Bucket::vaciar() {
 	this->tam_disp = 1;
 	this->regs.clear();
 	this->esp_libre = TAM_CUBO - this->get_tam();
 }
 
-void Cubo::incorporar_regs(list < RegPalabra > & regs) {
-	list < RegPalabra > ::iterator it;
+void Bucket::incorporar_regs(list < RegIndice > & regs) {
+	list < RegIndice > ::iterator it;
 	for (it = regs.begin(); it != regs.end(); ++ it)
 		this->agregar_nuevo_reg(*it);
 }
 
-list < RegPalabra > Cubo::actualizar_regs(int num_bloque, HandlerTabla& handler) {
-	list < RegPalabra > ::iterator it;
-	list < RegPalabra > list_aux;
-	RegPalabra reg_desact;
+list < RegIndice > Bucket::actualizar_regs(int num_bloque, HandlerTabla& handler) {
+	list < RegIndice > ::iterator it;
+	list < RegIndice > list_aux;
+	RegIndice reg_desact;
 	int tam;
 	unsigned int tam_regs;
 	unsigned int contador = 0;
@@ -161,7 +167,7 @@ list < RegPalabra > Cubo::actualizar_regs(int num_bloque, HandlerTabla& handler)
 	return list_aux;
 }
 
-CadenaBytes Cubo::Serializar() {
+CadenaBytes Bucket::Serializar() {
 	CadenaBytes cadena;
 
 	cadena.agregarAlFinal(&this->tam_disp, sizeof(this->tam_disp));
@@ -170,7 +176,7 @@ CadenaBytes Cubo::Serializar() {
 	cadena.agregarAlFinal(&tam, sizeof(tam));
 
 	int tam2;
-	list < RegPalabra > ::iterator it;
+	list < RegIndice > ::iterator it;
 	for (it = this->regs.begin(); it != this->regs.end(); ++ it) {
 		tam2 = (*it).get_tam();
 		cadena.agregarAlFinal(&tam2, sizeof(tam2));
@@ -180,7 +186,7 @@ CadenaBytes Cubo::Serializar() {
 	return cadena;
 }
 
-bool Cubo::Hidratar(CadenaBytes& cadena) {
+bool Bucket::Hidratar(CadenaBytes& cadena) {
 	this->vaciar();
 
 	int offset = 0;
@@ -197,7 +203,7 @@ bool Cubo::Hidratar(CadenaBytes& cadena) {
 		offset += sizeof(tam2);
 		CadenaBytes cadena_aux;
 		cadena_aux = cadena.leer(offset, tam2);
-		RegPalabra reg;
+		RegIndice reg;
 		reg.Hidratar(cadena_aux);
 		this->agregar_nuevo_reg(reg);
 		offset += tam2;
@@ -206,12 +212,12 @@ bool Cubo::Hidratar(CadenaBytes& cadena) {
 	return true;
 }
 
-void Cubo::toString(ostream& os) {
+void Bucket::toString(ostream& os) {
 	os << "Bloque --> " << endl;
 	os << "  Tamaño de dispersión:   " << this->tam_disp << endl;
 	os << "  Cantidad de espacio libre:   " << this->esp_libre << endl;
 
-	list < RegPalabra > ::iterator it;
+	list < RegIndice > ::iterator it;
 	for (it = this->regs.begin(); it != this->regs.end(); ++ it)
 		(*it).toString(os);
 }

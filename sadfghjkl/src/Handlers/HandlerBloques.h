@@ -60,7 +60,7 @@ public:
 	 * atributos inicializados segun la información cargada desde el archivo de bloques(que
 	 * permanece intacto).
 	 */
-	void recuperar_bloque(char* buffer, int pos_arch_bloques);
+	void recuperar_bloque(int pos_arch_bloques, char* buffer);
 	/*
 	 * Carga el bloque que se encuentra en la posicion pasada por parametro desde el archivo de
 	 * bloques a memoria principal para su posterior lectura o modificacion.
