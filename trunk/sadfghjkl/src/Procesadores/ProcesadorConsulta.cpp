@@ -183,7 +183,7 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 		list<Elementos> listaBusqueda;
 		Clave* clave = new Clave(*itPalabras);
 		arbol.buscar(&listaBusqueda, clave);
-		//delete clave;
+
 		if ( listaBusqueda.size() > 0){
 			list<Elementos>::iterator it = listaBusqueda.begin();
 			idTermino.push_back(atoi((*it).getID()->toString().c_str()));
@@ -242,7 +242,7 @@ list<int> ProcesadorConsulta::consultaPuntualPalabra(string palabra){
 	list<Elementos> listaBusqueda;
 	Clave* clave = new Clave(palabra);
 	arbol.buscar(&listaBusqueda, clave);
-//	delete clave;
+
 	if ( listaBusqueda.size() > 0){
 		list<Elementos>::iterator it = listaBusqueda.begin();
 		idTermino.push_back(atoi((*it).getID()->toString().c_str()));

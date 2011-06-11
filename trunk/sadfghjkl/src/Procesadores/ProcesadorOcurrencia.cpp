@@ -5,6 +5,7 @@ ProcesadorOcurrencia::ProcesadorOcurrencia() {
 }
 
 ProcesadorOcurrencia::~ProcesadorOcurrencia() {
+	if(this->idTerminos) delete[] idTerminos;
 
 }
 
@@ -72,7 +73,7 @@ void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, list<Ocurrencia
 	}
 
 	// Le paso la lista de terminos al handler del archivo de normas.
-	HandlerFrecGlobalTerminos handler(this->idTerminos);
+	//HandlerFrecGlobalTerminos handler(this->idTerminos);
 }
 
 Termino ProcesadorOcurrencia::agregarTermino(string palabraActual){
@@ -120,42 +121,43 @@ bool ProcesadorOcurrencia::existeTermino(int idTermino){
 
 void ProcesadorOcurrencia::insertarIdTermino(int idTermino){
 
-	int totalElem = this->idTerminos.size();
-	int medio, pivotDer, pivotIzq;
-	pivotIzq=0;
-	pivotDer=totalElem-1;
-	bool encontrado=false;
-
-	if(totalElem > 0)
+	if (this->idTerminos )
 	{
-		while ( pivotIzq <= pivotDer) {
-			medio = ( pivotIzq + pivotDer )/2;
-			if ( idTermino > this->idTerminos[medio] )
-				pivotIzq = medio + 1;
-			else if ( idTermino < this->idTerminos[medio] )
-				pivotDer = medio - 1;
-			else encontrado = true;
+		this->idTerminos[0] = idTermino;
+		++this->cantidadTerminos;
+		return;
+	}
+
+	int inferior = 0;
+	int superior = (this->cantidadTerminos) - 1;
+	int medio = 0;
+
+	while (inferior < superior)
+	{
+		medio = (inferior + superior) / 2;
+
+		if (idTermino <= this->idTerminos[medio])
+		{
+			superior = medio - 1;
 		}
-		if (!encontrado){
-			int aux = this->idTerminos[medio];
-			if ( aux > idTermino ){
-				this->idTerminos[medio] = idTermino;
-				for (int a=medio+1; a<totalElem; a++){
-					this->idTerminos[a] = aux;
-					aux = this->idTerminos[a+1];
-				}
-			} else {
-				aux = this->idTerminos[medio+1];
-				this->idTerminos[medio+1] = idTermino;
-				for (int a=medio+2; a<totalElem; a++){
-					this->idTerminos[a] = aux;
-					aux = this->idTerminos[a+1];
-				}
-			}
+		else
+		{
+			inferior = medio + 1;
 		}
 	}
-	else
+
+	if (superior < 0 || idTermino > this->idTerminos[medio])
+		superior ++;
+
+	if (this->idTerminos[superior] != idTermino)
 	{
-		this->idTerminos.push_back(idTermino);
+		int aux = this->idTerminos[superior];
+		this->idTerminos[superior] = idTermino;
+		this->idTerminos[superior+1] = aux;
+		for (int i = superior+2; i < (int)this->cantidadTerminos; ++ i)
+		{
+			this->idTerminos[i+1] = this->idTerminos[i];
+			++this->cantidadTerminos;
+		}
 	}
 }
