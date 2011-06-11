@@ -39,9 +39,10 @@ bool Clave::Hidratar(CadenaBytes &cadena){
 			char tamano;
 			cadena.leer(&tamano,0,TAM_LONG_CLAVE);
 			int size = int(tamano);
-			char buffer[size];
+			char* buffer = (char*)malloc(size);
 			cadena.leer(buffer,TAM_LONG_CLAVE,size);
 			this->clave.append(buffer,size);
+			free(buffer);
 		}
 		exito = true;
 	}

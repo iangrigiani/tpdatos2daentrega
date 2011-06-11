@@ -41,9 +41,10 @@ bool Elemento::Hidratar(CadenaBytes& cadena) {
 	offset += sizeof(tam);
 
 	int size = int(tam);
-	char buffer[size];
+	char* buffer = (char*)malloc(size);
 	cadena.leer(buffer, sizeof(char), size);
 	this->termino.append(buffer, size);
+	free(buffer);
 	offset += size;
 
 	this->ID = cadena.leerEntero(offset);

@@ -12,7 +12,7 @@ LOADLIBSTESTS = -lcppunit
 LDLIBSTESTS = -ldl
 targettests = tpDatosTests
 
-main = src/Main.cpp
+main = src/main.cpp
 maintest = test/main.cpp
 
 CXXFLAGS += $(CFLAGS)

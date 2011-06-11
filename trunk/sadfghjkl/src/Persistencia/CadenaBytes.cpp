@@ -43,10 +43,11 @@ bool CadenaBytes::agregar(const string &bytes,unsigned int posicion) {
 bool CadenaBytes::agregar(void* valor, unsigned int tamanio, unsigned int posicion){
 	bool exito = true;
 		string cadena;
-		char buffer[tamanio];
+		char* buffer = (char*)malloc(tamanio);
 		memcpy(buffer,valor,tamanio);
 		cadena.append(buffer,tamanio);
 		exito = agregar(cadena,posicion);
+		free(buffer);
 	return exito;
 }
 void CadenaBytes::transformarAFrontCoding(string primera, string ruta){
