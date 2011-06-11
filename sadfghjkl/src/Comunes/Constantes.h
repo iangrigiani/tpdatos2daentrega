@@ -76,4 +76,10 @@
 #define PATH_ESP_LIBRE_TITULO_TEST "EspLibreTituloTest"
 #define PATH_TEST_ARBOL "testArbol"
 
+/*******************Consultas *************************/
+#define PATH_CONSULTA_EDITORIAL "ConsultaEditorial.txt"
+#define PATH_CONSULTA_AUTOR "ConsultaAutor.txt"
+#define PATH_CONSULTA_TITULO "ConsultaTitulo.txt"
+#define PATH_CONSULTA_PALABRAS "ConsultaPalabras.txt"
+
 #endif /* CONSTANTES_H_ */

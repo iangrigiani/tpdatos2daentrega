@@ -149,34 +149,6 @@ void ArbolBMas::sacarFrontCodingNodoHoja (NodoHoja ** nodo){
 		(*nodo)->espacioOcupado += ((*nodo))->datos[i].getTamanio();
 	}
 }
-bool ArbolBMas::modificar(Elementos* registro) {
-	Nodo *unNodo = raiz;
-	if (!unNodo)
-		return false;
-
-	while (!unNodo->isNodoHoja()) {
-		NodoInterior *unNodoInterior = static_cast<NodoInterior*> (unNodo);
-		int posicion = obtenerPosicion(unNodoInterior, *(registro->getClave()));
-		unNodo = hidratarNodo(unNodoInterior->hijos[posicion]);
-		if (unNodoInterior != raiz)
-			liberarMemoriaNodo(unNodoInterior);
-	}
-
-	NodoHoja *unNodoHoja = static_cast<NodoHoja*> (unNodo);
-	int posicion = obtenerPosicion(unNodoHoja, *(registro->getClave()));
-	bool existe = (posicion < unNodoHoja->cantidadClaves && claveIgual(*(registro->getClave()), unNodoHoja->claves[posicion]));
-	if (existe) {
-		unNodoHoja->Ids[posicion].setBytes(registro->getID()->toString());
-		persistirNodo(unNodoHoja);
-		return true;
-	} else {
-		if (unNodoHoja != raiz)
-			liberarMemoriaNodo(unNodoHoja);
-		return false;
-	}
-}
-
-
 //IteradorArbolBMas* ArbolBMas::begin() {
 //	IteradorArbolBMas* iterador = NULL;
 //	NodoHoja* nodoHoja = static_cast <NodoHoja*> (hidratarNodo(primeraHoja));
@@ -1231,36 +1203,49 @@ Solucion ArbolBMas::buscarSecuencialClave(int nodo, Elementos* elemento, int pos
 	return res;
 }
 
-bool ArbolBMas::buscar(list<Elementos*> * listaElementos, Clave* clave, int nodo, int posicion){
+void ArbolBMas::buscar(list<Elementos*>& listaElementos, Clave* clave){
 
-	bool encontrado = false;
-	int i = 0;
-	Nodo* auxNodo = hidratarNodo(nodo);
-	NodoHoja* hojaCorriente = static_cast<NodoHoja*>(auxNodo);
-	sacarFrontCodingNodoHoja(&hojaCorriente);
+	Nodo *unNodo = raiz;
+	if (unNodo){
 
-	while ( hojaCorriente->claves[posicion + i] == *clave && ((posicion+i) < hojaCorriente->cantidadClaves)){
-
-		encontrado = true;
-		Clave * claveElem = new Clave(hojaCorriente->claves[posicion + i].toString());
-		CadenaBytes * datoElem = new CadenaBytes(hojaCorriente->datos[posicion + i].toString());
-		CadenaBytes * idElem = new CadenaBytes(hojaCorriente->Ids[posicion + i].toString());
-		Elementos *elem = new Elementos(claveElem, datoElem, idElem);
-		listaElementos->push_back(elem);
-		++i;
-	}
-	if (encontrado && ((posicion+i) == hojaCorriente->cantidadClaves-1) ){
-		if (hojaCorriente->claves[posicion + i -1] == *clave && (posicion + i ) == hojaCorriente->cantidadClaves){
-			Nodo* nodoAux = hidratarNodo(hojaCorriente->hojaSiguiente);
-			NodoHoja *nodoHojaDerecha = static_cast<NodoHoja*> (nodoAux);
-			encontrado = buscar(listaElementos, clave, nodoHojaDerecha->numero, 0);
+		while (!unNodo->isNodoHoja()) {
+			NodoInterior *unNodoInterior = static_cast<NodoInterior*> (unNodo);
+			int posicion = obtenerPosicion(unNodoInterior, *(clave));
+			unNodo = hidratarNodo(unNodoInterior->hijos[posicion]);
+			if (unNodoInterior != raiz)
+				liberarMemoriaNodo(unNodoInterior);
 		}
-	}
-	return encontrado;
 
+		NodoHoja *unNodoHoja = static_cast<NodoHoja*> (unNodo);
+		int posicion = obtenerPosicion(unNodoHoja, *(clave));
+
+		llenarListadeBusqueda(listaElementos, unNodoHoja, posicion, clave);
+	}
+
+	liberarMemoriaNodo(unNodo);
 }
 
+void ArbolBMas::llenarListadeBusqueda(list<Elementos*>& listaElementos, NodoHoja* nodo, int posicion, Clave* clave){
+	bool distinto = false;
+	this->sacarFrontCodingNodoHoja(&nodo);
+	for (int i = posicion; (i < nodo->cantidadClaves) && (!distinto); ++i){
+		if (nodo->claves[posicion].getClave() == clave->getClave()){
+			Elementos* elemento = new Elementos(clave, &nodo->datos[posicion], &nodo->Ids[posicion]);
+			listaElementos.push_back(elemento);
+			delete elemento;
+		}else{
+			distinto = true;
+		}
+	}
 
+	if(!distinto && nodo->hojaSiguiente != 0){
+		Nodo * nuevoNodo = hidratarNodo(nodo->hojaSiguiente);
+		NodoHoja* nuevoNodoHoja = static_cast<NodoHoja*> (nuevoNodo);
+		liberarMemoriaNodo(nodo);
+		llenarListadeBusqueda(listaElementos, nuevoNodoHoja, 0 , clave);
+	}
+
+}
 CadenaBytes ArbolBMas::obtenerNuevoId(){
 	CadenaBytes cadenaRetorno;
 	string modificacion;
@@ -1288,4 +1273,30 @@ CadenaBytes ArbolBMas::obtenerNuevoId(){
 	archivoId.flush();
 	archivoId.close();
 	return cadenaRetorno;
+}
+bool ArbolBMas::modificar(Elementos* registro) {
+	Nodo *unNodo = raiz;
+	if (!unNodo)
+		return false;
+
+	while (!unNodo->isNodoHoja()) {
+		NodoInterior *unNodoInterior = static_cast<NodoInterior*> (unNodo);
+		int posicion = obtenerPosicion(unNodoInterior, *(registro->getClave()));
+		unNodo = hidratarNodo(unNodoInterior->hijos[posicion]);
+		if (unNodoInterior != raiz)
+			liberarMemoriaNodo(unNodoInterior);
+	}
+
+	NodoHoja *unNodoHoja = static_cast<NodoHoja*> (unNodo);
+	int posicion = obtenerPosicion(unNodoHoja, *(registro->getClave()));
+	bool existe = (posicion < unNodoHoja->cantidadClaves && claveIgual(*(registro->getClave()), unNodoHoja->claves[posicion]));
+	if (existe) {
+		unNodoHoja->Ids[posicion].setBytes(registro->getID()->toString());
+		persistirNodo(unNodoHoja);
+		return true;
+	} else {
+		if (unNodoHoja != raiz)
+			liberarMemoriaNodo(unNodoHoja);
+		return false;
+	}
 }

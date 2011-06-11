@@ -1,10 +1,3 @@
-/*
- * ProcesadorConsulta.h
- *
- *  Created on: 01/06/2011
- *      Author: catu
- */
-
 #ifndef PROCESADORCONSULTA_H_
 #define PROCESADORCONSULTA_H_
 
@@ -13,8 +6,10 @@
 #include "../Comunes/Aparicion.h"
 #include "../Comunes/Posicion.h"
 #include "../Comunes/Distancia.h"
+#include "../Arbol/ArbolBMas.h"
 #include "../Handlers/HandlerArchivoOcurrencias.h"
 #include "../Hash/HashPalabra.h"
+#include "../Hash/HashTermino.h"
 #include <math.h>
 
 
@@ -102,9 +97,9 @@ public:
 		/*
 		 * Procesar consulta puntual de Editorial
 		 * pre: hacer la funcion de hashing
-		 * pos: devuelve la lista de offset al archivo RLV.
+		 * pos: devuelve el offset al archivo RLV.
 		 */
-		list<int> consultaTitulo(string titulo);
+		int consultaTitulo(string titulo);
 
 
 		/*
@@ -112,7 +107,7 @@ public:
 		 * pre: obtener las ocurrencias asociadas a las palabras
 		 * pos: devuelve la lista de offset al archivo RLV.
 		 */
-		list<int> consultarPalabras(list<string> palabras);
+		list<int> consultaPalabras(list<string> palabras);
 
 
 };

@@ -1,10 +1,3 @@
-/*
- * ProcesadorConsulta.cpp
- *
- *  Created on: 01/06/2011
- *      Author: catu
- */
-
 #include "ProcesadorConsulta.h"
 
 ProcesadorConsulta::ProcesadorConsulta() {
@@ -15,6 +8,46 @@ ProcesadorConsulta::~ProcesadorConsulta() {
 
 }
 
+list<int> ProcesadorConsulta::consultaAutor(string autor){
+	list<Elementos*> listaRetornoBusqueda;
+	list<int> listaRetorno;
+
+	ArbolBMas arbol(PATH_AUTOR, 2);
+	Clave* clave = new Clave(autor);
+	arbol.buscar(listaRetornoBusqueda, clave);
+	delete clave;
+	if ( listaRetornoBusqueda.size() > 0){
+		list<Elementos*>::iterator it = listaRetornoBusqueda.begin();
+		while ( it != listaRetornoBusqueda.end()){
+			listaRetorno.push_back(atoi((*it)->getID()->toString().c_str()));
+			++it;
+		}
+	}
+	return listaRetorno;
+}
+
+list<int> ProcesadorConsulta::consultaEditorial(string editorial){
+	list<Elementos*> listaRetornoBusqueda;
+	list<int> listaRetorno;
+
+	ArbolBMas arbol(PATH_EDITORIAL, 2);
+	Clave* clave = new Clave(editorial);
+	arbol.buscar(listaRetornoBusqueda, clave);
+	delete clave;
+	if ( listaRetornoBusqueda.size() > 0){
+		list<Elementos*>::iterator it = listaRetornoBusqueda.begin();
+		while ( it != listaRetornoBusqueda.end()){
+			listaRetorno.push_back(atoi((*it)->getID()->toString().c_str()));
+			++it;
+		}
+	}
+	return listaRetorno;
+}
+
+int ProcesadorConsulta::consultaTitulo(string titulo){
+	HashTermino hash(NOM_BLOQUES_TITULO, NOM_ESP_LIBRE_TITULO, NOM_TABLA_TITULO);
+	return (hash.consultar(titulo));
+}
 
 void ProcesadorConsulta::crearAparicion(Aparicion aparicion1, Aparicion aparicion2, Aparicion & nuevaAparicion)
 {
@@ -89,10 +122,7 @@ Palabra ProcesadorConsulta::compararApariciones(Palabra palabra1, Palabra palabr
 
 	return palabraCoincidente;
 
-
 }
-
-
 
 Palabra ProcesadorConsulta::procesarApariciones(list<Palabra> palabras)
 {
@@ -128,7 +158,7 @@ Palabra ProcesadorConsulta::procesarApariciones(list<Palabra> palabras)
 
 
 
-list<int> ProcesadorConsulta::consultarPalabras(list<string> palabras)
+list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 {
 	list<Palabra> palabrasConsulta;
 	list<int> documentosCoincidentes;
@@ -140,27 +170,30 @@ list<int> ProcesadorConsulta::consultarPalabras(list<string> palabras)
 	if ( palabras.size() == 1 )
 		return this->consultaPuntualPalabra(*itPalabras);
 
+	HashPalabra hashPalabra(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
 
-	//TODO cambiar hash termino por arbol para manejar los terminos
-	//HashTermino hashTermino(TAM_CUBO,PATH_BLOQUES_TERMINO,PATH_ESP_LIBRE_TERMINO,PATH_TABLA_TERMINO,PATH_TMP_TERMINO,PATH_ID);
-
-	//HashPalabra hashPalabra;
-	//hashPalabra.crear_condiciones_iniciales();
-
+	ArbolBMas arbol(PATH_ID_TERMINOS,1);
 	HandlerArchivoOcurrencias handlerArchivoOcurrencias;
 
 	while( itPalabras!= palabras.end() )
 	{
 		Palabra palabra;
 
-		//TODO Cambiar por arbol
-		//int idTermino = hashTermino.consultar(*itPalabras);
+		list<int> idTermino;
+		list<Elementos*> listaBusqueda;
+		Clave* clave = new Clave(*itPalabras);
+		arbol.buscar(listaBusqueda, clave);
+		delete clave;
+		if ( listaBusqueda.size() > 0){
+			list<Elementos*>::iterator it = listaBusqueda.begin();
+			idTermino.push_back(atoi((*it)->getID()->toString().c_str()));
+		}
 
-		//TODO agregar un consultar en HashPalabras que devuelva la lista de offsets de cada termino
+		list<int>::iterator it2 = idTermino.begin();
 		list<int> offsetsArchivoOcurrencias;
 
 		//Esto devuelve la lista de offsets al archivo de ocurrencias correspondiente a ese termino
-		//offsetsArchivoOcurrencias = hashPalabra.consultar(idTermino);
+		offsetsArchivoOcurrencias = hashPalabra.consultar((*it2));
 
 		palabra = handlerArchivoOcurrencias.obtenerPalabra(offsetsArchivoOcurrencias);
 
@@ -193,18 +226,27 @@ list<int> ProcesadorConsulta::consultarPalabras(list<string> palabras)
 
 list<int> ProcesadorConsulta::consultaPuntualPalabra(string palabra){
 
-	//HashPalabra hashPalabra;
-	//hashPalabra.crear_condiciones_iniciales();
+	HashPalabra hashPalabra(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
 	HandlerArchivoOcurrencias handlerArchivoOcurrencias;
 
 	list<int> offsetsArchivoOcurrencias;
+	list<int> idTermino;
 
-	// TODO Obtener ID de termino del arbol de terminos;
+	ArbolBMas arbol(PATH_ID_TERMINOS, 1);
+	list<Elementos*> listaBusqueda;
+	Clave* clave = new Clave(palabra);
+	arbol.buscar(listaBusqueda, clave);
+	delete clave;
+	if ( listaBusqueda.size() > 0){
+		list<Elementos*>::iterator it = listaBusqueda.begin();
+		idTermino.push_back(atoi((*it)->getID()->toString().c_str()));
+	}
 
-	//TODO agregar un consultar en HashPalabras que devuelva la lista de offsets de cada termino
-	//offsetsArchivoOcurrencias = hashPalabra.consultar(idTermino);
+	list<int>::iterator it2 = idTermino.begin();
 
-	return handlerArchivoOcurrencias.obtenerListaDocumentos(offsetsArchivoOcurrencias);
+	offsetsArchivoOcurrencias = hashPalabra.consultar((*it2));
+
+	return (handlerArchivoOcurrencias.obtenerListaDocumentos(offsetsArchivoOcurrencias));
 }
 
 int ProcesadorConsulta::compararPosiciones(list<int> posiciones)

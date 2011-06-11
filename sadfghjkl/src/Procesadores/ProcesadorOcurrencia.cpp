@@ -2,7 +2,6 @@
 
 ProcesadorOcurrencia::ProcesadorOcurrencia() {
 
-
 }
 
 ProcesadorOcurrencia::~ProcesadorOcurrencia() {
@@ -80,12 +79,17 @@ Termino ProcesadorOcurrencia::agregarTermino(string palabraActual){
 
 	Termino termino;
 
-	//TODO llamar al arbol de terminos
-	termino.setIdTermino(0);
+	ArbolBMas arbol(PATH_ID_TERMINOS, 1);
+	Clave clave(palabraActual);
+	CadenaBytes cadenaDato(palabraActual);
+	CadenaBytes cadenaID(" ");
+	Elementos elemento(&clave, &cadenaDato, &cadenaID);
+	int idTermino = arbol.insertar(&elemento);
+	termino.setIdTermino(idTermino);
 
 
-	//TODO ver bien esto
-	//insertarIdTermino(termino.getIdTermino());
+	//TODO ver bien esto ( Agrega un termino a la lista de ID para pasar al handler de NORMAS )
+	insertarIdTermino(termino.getIdTermino());
 
 	return termino;
 }
