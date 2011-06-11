@@ -1248,28 +1248,37 @@ CadenaBytes ArbolBMas::obtenerNuevoId(){
 	modificacion.clear();
 	std::fstream archivoId;
 	char  cadenaDeDatos[50];
+
 	archivoId.open(PATH_ID_TERMINOS, std::ios_base::in | std::ios_base::out);
+
 	if (archivoId.is_open()){
 		archivoId.seekg(0);
 		archivoId.get(cadenaDeDatos,50);
 		modificacion = cadenaDeDatos;
+		archivoId.close();
 	}else{
 		archivoId.open(PATH_ID_TERMINOS, std::ios_base::out);
 		archivoId.close();
 		archivoId.open(PATH_ID_TERMINOS, std::ios_base::in | std::ios_base::out);
 		modificacion  = "0";
+		archivoId.close();
 	}
 	cadenaRetorno.setBytes(modificacion);
 	int valor = atoi(modificacion.c_str());
 	++valor;
 	stringstream ss;
 	ss << valor;
+	archivoId.open(PATH_ID_TERMINOS, std::ios_base::out);
+	archivoId.close();
+	archivoId.open(PATH_ID_TERMINOS, std::ios_base::in | std::ios_base::out);
+
 	archivoId.seekg(0);
 	archivoId.write(ss.str().c_str(), ss.str().length());
 	archivoId.flush();
 	archivoId.close();
 	return cadenaRetorno;
 }
+
 bool ArbolBMas::modificar(Elementos* registro) {
 	Nodo *unNodo = raiz;
 	if (!unNodo)
