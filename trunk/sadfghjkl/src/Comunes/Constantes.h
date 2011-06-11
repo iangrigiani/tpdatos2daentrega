@@ -25,8 +25,8 @@
 #define PATH_ESPACIO_LIBRE_OCURRENCIAS "controlEspaciosLibresOcurrencias.txt"
 
 /*************Archivo de Normas a Infinito *****************/
-#define PATH_ARCHIVO_NORMA "ArchivoNormas.txt"
-#define PATH_ESPACIO_LIBRE_ARCHIVO_NORMA "controlEspLibresArchivoNormas.txt"
+#define PATH_ARCHIVO_NORMA "ArchivoNormas"
+#define PATH_ULTIMO_ID "UltimoIDNormas"
 
 /***********************Parser******************************/
 #define EDITORIAL "Grupo17"

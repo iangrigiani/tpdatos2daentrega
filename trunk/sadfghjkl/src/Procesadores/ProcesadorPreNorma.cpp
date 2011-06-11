@@ -19,6 +19,6 @@ int ProcesadorPreNorma::procesarIDPalabra(int IDPalabra){
 /*No sé si eso queda bien ahí.. por ahora ahí se queda*/
 void ProcesadorPreNorma::actualizarNormasAInfinito(){
 	HandlerNormasAInfinito* aNormas = new HandlerNormasAInfinito();
-	aNormas->actualizarPesosTerminos(this->listaIDsRecibidos);
+//aNormas->actualizarPesosTerminos(this->listaIDsRecibidos);
 	delete aNormas;
 }

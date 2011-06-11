@@ -3,103 +3,91 @@
 HandlerNormasAInfinito::HandlerNormasAInfinito() {
 }
 HandlerNormasAInfinito::HandlerNormasAInfinito(vector<int> idTerminos){
-	this->listaIdTermino = idTerminos;
+	this->idTerminos = idTerminos;
+	this->arbolPesos = new ArbolBMas(PATH_ARCHIVO_NORMA, 1);
 }
 
 HandlerNormasAInfinito::~HandlerNormasAInfinito() {
+	delete this->arbolPesos;
 }
 
-void HandlerNormasAInfinito::actualizarPesosTerminos (list<int>& IDsTerminos){
-	//TODO implementar
-	// usar el método HandlerNormasAInfinito::incrementarPesoTermino
+void HandlerNormasAInfinito::actualizarPesosTerminos (){
+	int i = 0 ;
+	while (i< (this->idTerminos.size()) ){
+		this->incrementarPesoTermino(idTerminos[i]);
+		i++;
+	}
 }
 
 
 void HandlerNormasAInfinito::incrementarPesoTermino (int IDTermino){
-	int pesoTermino = 0;
-	ofstream aNormas;
-	string linea;
+	// TODO Buscar elemento en el arbol
+	Clave clave(IDTerminoToString(IDTermino));
 
-	int puntero = this->buscarTermino(IDTermino, pesoTermino);
-	linea = this->crearStringAInsertar(IDTermino, pesoTermino);
+/*
+	pair<Elementos*, IteradorArbolBMas*> resultado = this->arbolPesos->buscar(clave); //Debería devolver uno o ninguno
 
-	// Si no existe el ID, agrego el registro al final del archivo
-	if (puntero == ERROR){
-		aNormas.open(PATH_ARCHIVO_LOG,std::ios_base::app);
-		if (!aNormas.is_open()){
-			aNormas.open(PATH_ARCHIVO_LOG,std::ios_base::out);
-			aNormas.close();
-			aNormas.open(PATH_ARCHIVO_LOG,std::ios_base::app);
-		}
+	if (resultado!=NULL){
+		//TODO Extraer elemento del par
+		Elementos* elemento = resultado.first();
+		int pesoActual = atoi(elemento->getID().c_str());
+		pesoActual++;
 
-		aNormas.write(linea.c_str(), linea.length());
-		aNormas.close();
-	} else {
-		//En cambio si existe el ID, solamente limpio las estructuras
-		aNormas.open(PATH_ARCHIVO_LOG, std::ios_base::in | std::ios_base::out);
-		if (!aNormas.is_open()){
-			aNormas.open(PATH_ARCHIVO_LOG,std::ios_base::out);
-			aNormas.close();
-			aNormas.open(PATH_ARCHIVO_LOG,std::ios_base::in | std::ios_base::out);
-		}
-		aNormas.seekp(puntero);
-		aNormas.write(linea.c_str(), linea.length());
-	    aNormas.close();
+		stringstream ss2;
+		ss2<<pesoActual;
+		string pesoNuevo = ss2.str();
+		elemento->setID(*pesoNuevo);
+		this->arbolPesos->modificar(elemento);
 
+	}else{
+		//TODO usar archivo de ultimo ID para generar clave
+		Elementos* elemento = new Elementos (clave, ID, '1');
+		this->arbolPesos->insertar(elemento);
 	}
+*/
 }
 
 
 
-void HandlerNormasAInfinito::decrementarPesoTermino (int IDTermino){
-	//TODO implementar
+int HandlerNormasAInfinito::decrementarPesoTermino (int IDTermino){
+	Clave clave(IDTerminoToString(IDTermino));
+
+/*
+	pair<Elementos*, IteradorArbolBMas*> resultado = this->arbolPesos->buscar(clave); //Debería devolver uno o ninguno
+
+	if (resultado!=NULL){
+		//TODO Extraer elemento del par
+		Elementos* elemento = resultado.first();
+		int pesoActual = atoi(elemento->getID().c_str());
+		pesoActual--;
+
+		stringstream ss2;
+		ss2<<pesoActual;
+		string pesoNuevo = ss2.str();
+		elemento->setID(*pesoNuevo);
+		this->arbolPesos->modificar(elemento);
+		return OK;
+
+	}else{
+		return ERROR;
+	}
+*/
 }
 
 int HandlerNormasAInfinito::buscarPesoTermino(int IDTermino){
-	//TODO implementar
-	return IDTermino;
+	int peso = 0;
+	Clave clave(IDTerminoToString(IDTermino));
+/*
+	pair<Elementos*, IteradorArbolBMas*> resultado = this->arbolPesos->buscar(clave);
+	Elementos* elemento = resultado.first();
+	peso = atoi(elemento->getID().c_str() );*/
+	return peso;
 }
+
 
 /*private*/
-int HandlerNormasAInfinito::buscarTermino(int IDTermino, int& pesoTermino){
-    bool terminoEncontrado = false ;
-	char cadena[100];
-    string cad;
-    int puntero = 0 , IDActual= 0 , pesoTerminoActual = 0;
-
-    fstream aNormas;
-	aNormas.open(PATH_ARCHIVO_LOG, std::ios_base::in | std::ios_base::out);
-	if (!aNormas.is_open()){
-		aNormas.open(PATH_ARCHIVO_LOG,std::ios_base::out);
-		aNormas.close();
-		aNormas.open(PATH_ARCHIVO_LOG,std::ios_base::in | std::ios_base::out);
-	}
-    aNormas.seekg(0);
-
-	while (!terminoEncontrado && !aNormas.eof() ){
-        puntero = aNormas.tellg();
-		aNormas.getline (cadena, 100);
-        cad = cadena;
-        if (cad.length() > 0 ) {
-            IDActual= atoi(strtok(cadena,"|"));
-            pesoTerminoActual = atoi(strtok(NULL,"\n"));
-            if (IDActual == IDTermino){
-            	pesoTermino = pesoTerminoActual;
-                terminoEncontrado = true;
-            }
-	    }
-    }
-	aNormas.close();
-	if(!terminoEncontrado){
-		puntero = -1;
-	}
-    return puntero;
-
-}
-
-
-string HandlerNormasAInfinito::crearStringAInsertar(int IDTermino, int pesoTermino){
-   stringstream ss;
-   ss <<IDTermino << "|" << pesoTermino<< "\n"  ;
-   return ss.str();
+string HandlerNormasAInfinito::IDTerminoToString(int IDTermino){
+	stringstream ss;
+	ss << IDTermino;
+	return ss.str();
 }

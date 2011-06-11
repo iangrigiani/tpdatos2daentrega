@@ -7,6 +7,8 @@ class ArbolBMas;
 #include <stdlib.h>
 #include <string.h>
 #include <vector>
+#include "../EstructurasArbol/Elementos.h"
+#include "../EstructurasArbol/Clave.h"
 #include "../Comunes/Constantes.h"
 #include "../Arbol/ArbolBMas.h"
 
@@ -20,11 +22,11 @@ public:
 	virtual ~HandlerNormasAInfinito();
 
 	/* Actualiza el archivo de normas incrementando en 1 el valor del peso que estaba
-	 * guardado en el archivo para cada IDTermino de la lista.
-	 * PRE: Recibe la lista de IDs.
+	 * guardado en el archivo para cada IDTermino del vector idTerminos.
+	 * PRE: -
 	 * POS: Archivo de normas actualizado.
 	 */
-	void actualizarPesosTerminos (list<int>& IDsTerminos);
+	void actualizarPesosTerminos();
 
 
 	/* Actualiza el archivo de normas incrementando en 1 el valor del peso que estaba
@@ -40,29 +42,19 @@ public:
 	 * PRE: Recibe un int con el IDTermino.
 	 * POS: Archivo de normas actualizado.
 	 */
-	void decrementarPesoTermino (int IDTermino);
+	int decrementarPesoTermino (int IDTermino);
 
 	/* Busca en el archivo de normas el valor del peso que esta
 	 * guardado en el archivo correspondiente al IDTermino pasado.
 	 * PRE: Recibe un int con el IDTermino.
-	 * POS: Devuelve un entero con el peso.
+	 * POS: Devuelve OK o error según haya tenido éxito o no la operación
 	 */
 	int  buscarPesoTermino(int IDTermino);
 
 private:
-	/* Busca en el archivo de normas el valor del peso que esta
-	 * guardado en el archivo correspondiente al IDTermino pasado.
-	 * PRE: Recibe un int con el IDTermino.
-	 * POS: Retorna el offset de Término en el archivo de Normas y
-	 *      devuelve por parámetro el pesoTermino
-	 */
 	ArbolBMas* arbolPesos;
-	vector<int> listaIdTermino;
-	int buscarTermino(int IDTermino, int& pesoTermino);
-
-	string crearStringAInsertar(int IDTermino, int pesoTermino);
-
-
+	vector<int> idTerminos;
+	string IDTerminoToString(int IDTermino);
 };
 
 
