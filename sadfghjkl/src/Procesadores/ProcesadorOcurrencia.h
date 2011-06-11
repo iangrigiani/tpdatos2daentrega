@@ -10,7 +10,8 @@
 class ProcesadorOcurrencia {
 
 private:
-		vector<int> idTerminos;
+		int cantidadTerminos;
+		int* idTerminos;
 		void getOcurrencias(list<string> palabras, list<Ocurrencia> & ocurrencias);
 		Termino agregarTermino(string palabraActual);
 		void insertarIdTermino(int idTermino);
