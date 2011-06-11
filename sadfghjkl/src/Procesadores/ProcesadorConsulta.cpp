@@ -422,7 +422,10 @@ list<int> ProcesadorConsulta::filtrarDistancias(list<Distancia> distancias)
 }
 
 
-void ProcesadorConsulta::filtrarRanqueada(Palabra & palabra)
+list<int> ProcesadorConsulta::filtrarRanqueada(Palabra & palabra)
 {
+	list<int> documentos;
+
+	return documentos;
 
 }

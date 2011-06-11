@@ -80,15 +80,16 @@ Termino ProcesadorOcurrencia::agregarTermino(string palabraActual){
 	Termino termino;
 
 	ArbolBMas arbol(PATH_ID_TERMINOS, 1);
-	Clave clave(palabraActual);
-	CadenaBytes cadenaDato(palabraActual);
-	CadenaBytes cadenaID(" ");
-	Elementos elemento(&clave, &cadenaDato, &cadenaID);
+	Clave * clave = new Clave(palabraActual);
+	CadenaBytes * cadenaDato = new CadenaBytes(palabraActual);
+	CadenaBytes * cadenaID = new CadenaBytes(" ");
+	Elementos elemento(clave, cadenaDato, cadenaID);
 	int idTermino = arbol.insertar(&elemento);
 	termino.setIdTermino(idTermino);
 
 
 	//TODO ver bien esto ( Agrega un termino a la lista de ID para pasar al handler de NORMAS )
+	//TODO cambiar esto porque insertarIdTermino no esta andando.
 	insertarIdTermino(termino.getIdTermino());
 
 	return termino;
@@ -125,31 +126,36 @@ void ProcesadorOcurrencia::insertarIdTermino(int idTermino){
 	pivotDer=totalElem-1;
 	bool encontrado=false;
 
-	while ( pivotIzq <= pivotDer) {
-		medio = ( pivotIzq + pivotDer )/2;
-		if ( idTermino > this->idTerminos[medio] )
-			pivotIzq = medio + 1;
-		else if ( idTermino < this->idTerminos[medio] )
-			pivotDer = medio - 1;
-		else encontrado = true;;
-	}
-
-	if (!encontrado){
-		int aux = this->idTerminos[medio];
-		if ( aux > idTermino ){
-			this->idTerminos[medio] = idTermino;
-			for (int a=medio+1; a<totalElem; a++){
-				this->idTerminos[a] = aux;
-				aux = this->idTerminos[a+1];
-			}
-		} else {
-			aux = this->idTerminos[medio+1];
-			this->idTerminos[medio+1] = idTermino;
-			for (int a=medio+2; a<totalElem; a++){
-				this->idTerminos[a] = aux;
-				aux = this->idTerminos[a+1];
-			}
-
+	if(totalElem > 0)
+	{
+		while ( pivotIzq <= pivotDer) {
+			medio = ( pivotIzq + pivotDer )/2;
+			if ( idTermino > this->idTerminos[medio] )
+				pivotIzq = medio + 1;
+			else if ( idTermino < this->idTerminos[medio] )
+				pivotDer = medio - 1;
+			else encontrado = true;
 		}
+		if (!encontrado){
+			int aux = this->idTerminos[medio];
+			if ( aux > idTermino ){
+				this->idTerminos[medio] = idTermino;
+				for (int a=medio+1; a<totalElem; a++){
+					this->idTerminos[a] = aux;
+					aux = this->idTerminos[a+1];
+				}
+			} else {
+				aux = this->idTerminos[medio+1];
+				this->idTerminos[medio+1] = idTermino;
+				for (int a=medio+2; a<totalElem; a++){
+					this->idTerminos[a] = aux;
+					aux = this->idTerminos[a+1];
+				}
+			}
+		}
+	}
+	else
+	{
+		this->idTerminos.push_back(idTermino);
 	}
 }
