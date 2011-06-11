@@ -21,9 +21,10 @@ CadenaBytes PersistorArbol::leerBloque (int nroBloque){
 	int dos = this->handlerBloque->get_tam_arch_bloques();
 
 	if  (uno <= dos){
-		char buffer[this->tamanioBloque];
+		char* buffer = (char*)malloc(this->tamanioBloque);
 		this->handlerBloque->recuperar_bloque_arbol(nroBloque, buffer);
 		cadena.agregar(buffer,this->tamanioBloque,0);
+		free(buffer);
 	}
 	return cadena;
 }
