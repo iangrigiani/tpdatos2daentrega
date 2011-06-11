@@ -24,9 +24,9 @@
 #define PATH_ARCHIVO_OCURRENCIAS "ArchivoOcurrencias.txt"
 #define PATH_ESPACIO_LIBRE_OCURRENCIAS "controlEspaciosLibresOcurrencias.txt"
 
-/*************Archivo de Normas a Infinito *****************/
-#define PATH_ARCHIVO_NORMA "ArchivoNormas"
-#define PATH_ULTIMO_ID "UltimoIDNormas"
+/*************Archivo de Frecuencias ***********************/
+#define PATH_ARCHIVO_FREC_GLOB "FrecuenciasGlobales"
+
 
 /***********************Parser******************************/
 #define EDITORIAL "Grupo17"

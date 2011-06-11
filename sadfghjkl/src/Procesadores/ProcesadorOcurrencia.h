@@ -4,7 +4,7 @@
 #include "../Parser/Parser.h"
 #include "../Comunes/Ocurrencia.h"
 #include "../Comunes/Termino.h"
-#include "../Handlers/HandlerNormasAInfinito.h"
+#include "../Handlers/HandlerFrecGlobalTerminos.h"
 
 
 class ProcesadorOcurrencia {
