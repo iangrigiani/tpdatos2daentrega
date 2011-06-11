@@ -76,7 +76,7 @@ private:
 
 		list<int> filtrarProximidad(Palabra & palabra);
 
-		void filtrarRanqueada(Palabra & palabra);
+		list<int> filtrarRanqueada(Palabra & palabra);
 public:
 
 		ProcesadorConsulta();
