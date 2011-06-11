@@ -183,7 +183,7 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 		list<Elementos> listaBusqueda;
 		Clave* clave = new Clave(*itPalabras);
 		arbol.buscar(&listaBusqueda, clave);
-		delete clave;
+		//delete clave;
 		if ( listaBusqueda.size() > 0){
 			list<Elementos>::iterator it = listaBusqueda.begin();
 			idTermino.push_back(atoi((*it).getID()->toString().c_str()));
@@ -200,6 +200,7 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 		palabra.setPalabra(*itPalabras);
 
 		palabrasConsulta.push_back(palabra);
+		++itPalabras;
 	}
 
 	palabraFiltrada = this->procesarApariciones(palabrasConsulta);
@@ -207,6 +208,11 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 	//Si obtengo mas de un documento es porque primero debo filtrar por proximidad
 	if (palabraFiltrada.obtenerDocumentos().size() > 1)
 	{
+		list<int>::iterator it = palabraFiltrada.obtenerDocumentos().begin();
+		while ( it != palabraFiltrada.obtenerDocumentos().end()){
+			cout << (*it);
+			++it;
+		}
 		documentosCoincidentes = filtrarProximidad(palabraFiltrada);
 	}
 	else
@@ -214,10 +220,10 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 
 	//Si los documentos coincidentes, una vez filtrado por proximidad siguen siendo
 	//mas de 1 entonces hay que hacer la consulta ranqueada
-	if(documentosCoincidentes.size() > 1)
-	{
-		filtrarRanqueada(palabraFiltrada);
-	}
+//	if(documentosCoincidentes.size() > 1)
+//	{
+//		filtrarRanqueada(palabraFiltrada);
+//	}
 
 	return documentosCoincidentes;
 }
@@ -236,7 +242,7 @@ list<int> ProcesadorConsulta::consultaPuntualPalabra(string palabra){
 	list<Elementos> listaBusqueda;
 	Clave* clave = new Clave(palabra);
 	arbol.buscar(&listaBusqueda, clave);
-	delete clave;
+//	delete clave;
 	if ( listaBusqueda.size() > 0){
 		list<Elementos>::iterator it = listaBusqueda.begin();
 		idTermino.push_back(atoi((*it).getID()->toString().c_str()));
