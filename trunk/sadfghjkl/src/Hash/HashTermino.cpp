@@ -278,7 +278,7 @@ int HashTermino::consultar_elemento(Bucket& bloque, int num_bloque, int clave, c
 			return elemento.get_ID();
 		}
 	}
-	else return -1;
+	else return ERROR;
 }
 
 int HashTermino::consultar(const string& termino) {

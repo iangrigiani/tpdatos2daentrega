@@ -341,3 +341,98 @@ bool HandlerComandos::eliminarEnArbol(int tipoArbol, int offset) {
 	return retorno;
 	//	delete arbol;
 }
+
+void HandlerComandos::consultarEditorial(string editorial){
+	ProcesadorConsulta procesador;
+	list<int> listaDocumentos = procesador.consultaEditorial(editorial);
+	if (listaDocumentos.size() > 0){
+		cout << "Se recuperaron " << listaDocumentos.size() << "libros, cuya Editorial es " <<
+				editorial << ". Se genero un archivo en el directorio con los mismos ( Path: Consulta Editorial )" << endl;
+		fstream off;
+		off.open(PATH_CONSULTA_EDITORIAL, ios_base::out);
+		off.close();
+		off.open(PATH_CONSULTA_EDITORIAL, ios_base::app);
+		list<int>::iterator it = listaDocumentos.begin();
+		while ( it != listaDocumentos.end()){
+			stringstream ss;
+			ss << this->handler->buscarRegistro((*it));
+			off.write(ss.str().c_str(), ss.str().length());
+			off.flush();
+			++it;
+		}
+		off.close();
+	}else{
+		cout << "No se recuperaron documentos para esta consulta" << endl;
+	}
+}
+void HandlerComandos::consultarAutor(string autor){
+	ProcesadorConsulta procesador;
+	list<int> listaDocumentos = procesador.consultaAutor(autor);
+	if (listaDocumentos.size() > 0){
+		cout << "Se recuperaron " << listaDocumentos.size() << "libros, cuyo autor es " <<
+				autor << ". Se genero un archivo en el directorio con los mismos ( Path: Consulta autor )" << endl;
+		fstream off;
+		off.open(PATH_CONSULTA_AUTOR, ios_base::out);
+		off.close();
+		off.open(PATH_CONSULTA_AUTOR, ios_base::app);
+		list<int>::iterator it = listaDocumentos.begin();
+		while ( it != listaDocumentos.end()){
+			stringstream ss;
+			ss << this->handler->buscarRegistro((*it));
+			off.write(ss.str().c_str(), ss.str().length());
+			off.flush();
+			++it;
+		}
+		off.close();
+	}else{
+		cout << "No se recuperaron documentos para esta consulta" << endl;
+	}
+}
+void HandlerComandos::consultarTitulo(string titulo){
+	ProcesadorConsulta procesador;
+	int documento = procesador.consultaTitulo(titulo);
+	if ( documento != ERROR){
+		cout << "Se recuperó el libro cuyo título es " <<
+				titulo << ". Se genero un archivo en el directorio con el mismo ( Path: Consulta titulo )" << endl;
+		fstream off;
+		off.open(PATH_CONSULTA_TITULO, ios_base::out);
+		off.close();
+		off.open(PATH_CONSULTA_TITULO, ios_base::app);
+		stringstream ss;
+		ss << this->handler->buscarRegistro(documento);
+		off.write(ss.str().c_str(), ss.str().length());
+		off.flush();
+		off.close();
+	}else{
+		cout << "No se recuperaron documentos para esta consulta" << endl;
+	}
+}
+void HandlerComandos::consultarPalabras(list<string> palabras){
+	ProcesadorConsulta procesador;
+	string busqueda;
+	list<string>::iterator it = palabras.begin();
+	while( it != palabras.end()){
+		busqueda += (*it);
+		++it;
+	}
+	list<int> listaDocumentos = procesador.consultaPalabras(palabras);
+	if (listaDocumentos.size() > 0){
+		cout << "Se recuperaron " << listaDocumentos.size() << "libros, para esta busqueda  " <<
+				busqueda << ". Se genero un archivo en el directorio con los mismo ( Path: Consulta Palabras )" << endl;
+		fstream off;
+		off.open(PATH_CONSULTA_PALABRAS, ios_base::out);
+		off.close();
+		off.open(PATH_CONSULTA_PALABRAS, ios_base::app);
+		list<int>::iterator it = listaDocumentos.begin();
+		while ( it != listaDocumentos.end()){
+			stringstream ss;
+			ss << this->handler->buscarRegistro((*it));
+			off.write(ss.str().c_str(), ss.str().length());
+			off.flush();
+			++it;
+		}
+		off.close();
+	}else{
+		cout << "No se recuperaron documentos para esta consulta" << endl;
+	}
+}

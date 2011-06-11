@@ -1,13 +1,11 @@
 #ifndef HANDLERARBOL_H_
 #define HANDLERARBOL_H_
 
-#include "../Hash/HashPalabra.h"
-#include "../Hash/HashTermino.h"
-#include "../Arbol/ArbolBMas.h"
 #include "HandlerArchivoRLV.h"
 #include "HandlerArchivoLog.h"
 #include "HandlerArchivoOcurrencias.h"
 #include "../Procesadores/ProcesadorOcurrencia.h"
+#include "../Procesadores/ProcesadorConsulta.h"
 #include "../Parser/ParserDeLibros.h"
 
 #include <list>
@@ -81,7 +79,10 @@ public:
 	 * */
 	void verEstructura(int parametro);
 
-
+	void consultarEditorial(string editorial);
+	void consultarAutor(string autor);
+	void consultarTitulo(string titulo);
+	void consultarPalabras(list<string> palabras);
 	virtual ~HandlerComandos();
 };
 
