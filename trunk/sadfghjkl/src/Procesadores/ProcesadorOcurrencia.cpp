@@ -90,7 +90,6 @@ Termino ProcesadorOcurrencia::agregarTermino(string palabraActual){
 
 
 	//TODO ver bien esto ( Agrega un termino a la lista de ID para pasar al handler de NORMAS )
-	//TODO cambiar esto porque insertarIdTermino no esta andando.
 	insertarIdTermino(termino.getIdTermino());
 
 	return termino;

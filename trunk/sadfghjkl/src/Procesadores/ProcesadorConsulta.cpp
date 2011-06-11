@@ -208,9 +208,10 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 	//Si obtengo mas de un documento es porque primero debo filtrar por proximidad
 	if (palabraFiltrada.obtenerDocumentos().size() > 1)
 	{
-		list<int>::iterator it = palabraFiltrada.obtenerDocumentos().begin();
-		while ( it != palabraFiltrada.obtenerDocumentos().end()){
-			cout << (*it);
+		list<int> docs = palabraFiltrada.obtenerDocumentos();
+		list<int>::iterator it = docs.begin();
+		while ( it != docs.end()){
+			cout << *it <<endl;
 			++it;
 		}
 		documentosCoincidentes = filtrarProximidad(palabraFiltrada);
