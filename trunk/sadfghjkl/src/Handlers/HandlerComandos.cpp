@@ -215,6 +215,8 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 
 	if (palabras.size() > 0){
 
+		cout << offset << endl;
+
 		HashPalabra hash(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
 
 		ProcesadorOcurrencia procesador;
@@ -224,10 +226,9 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 
 		for(itOcurrencias = ocurrencias.begin(); itOcurrencias != ocurrencias.end();++itOcurrencias) {
 			Ocurrencia ocurrenciaActual = *itOcurrencias;
-
 			int offsetOcurrencia = this->handlerOcurrencias->insertarOcurrencia(ocurrenciaActual,offset);
 			int clave = ocurrenciaActual.getIdPalabra();
-
+			cout << "Indexando" << clave << endl;
 			hash.alta(clave, offsetOcurrencia);
 
 		}
@@ -422,11 +423,12 @@ void HandlerComandos::consultarPalabras(list<string> palabras){
 		fstream off;
 		off.open(PATH_CONSULTA_PALABRAS, ios_base::out);
 		off.close();
-		off.open(PATH_CONSULTA_PALABRAS, ios_base::app);
+		off.open(PATH_CONSULTA_PALABRAS, ios_base::in | ios_base::out);
 		list<int>::iterator it = listaDocumentos.begin();
 		while ( it != listaDocumentos.end()){
 			stringstream ss;
 			ss << this->handler->buscarRegistro((*it));
+			off.seekg(0, ios_base::end);
 			off.write(ss.str().c_str(), ss.str().length());
 			off.flush();
 			++it;
