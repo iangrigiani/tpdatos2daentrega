@@ -54,7 +54,7 @@ public:
 private:
 	ArbolBMas* arbolPesos;
 	vector<int> idTerminos;
-	string IDTerminoToString(int IDTermino);
+	string intToString(int integer);
 };
 
 

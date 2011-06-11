@@ -21,73 +21,77 @@ void HandlerNormasAInfinito::actualizarPesosTerminos (){
 
 
 void HandlerNormasAInfinito::incrementarPesoTermino (int IDTermino){
-	// TODO Buscar elemento en el arbol
-	Clave clave(IDTerminoToString(IDTermino));
+	Clave* clave = new Clave(intToString(IDTermino));
+	list<Elementos>* listaElementos;
+	this->arbolPesos->buscar(listaElementos, clave); //Debería devolver uno o ninguno
 
-/*
-	pair<Elementos*, IteradorArbolBMas*> resultado = this->arbolPesos->buscar(clave); //Debería devolver uno o ninguno
+	if (listaElementos!=NULL){
 
-	if (resultado!=NULL){
-		//TODO Extraer elemento del par
-		Elementos* elemento = resultado.first();
-		int pesoActual = atoi(elemento->getID().c_str());
+		Elementos elemento = *(listaElementos->begin());
+		CadenaBytes* pesoActualCad = elemento.getID();
+		string pesoActualStr = pesoActualCad->toString();
+		int pesoActual = atoi(pesoActualStr.c_str());
 		pesoActual++;
 
-		stringstream ss2;
-		ss2<<pesoActual;
-		string pesoNuevo = ss2.str();
-		elemento->setID(*pesoNuevo);
-		this->arbolPesos->modificar(elemento);
+		string pesoNuevo = intToString(pesoActual);
+		CadenaBytes* pesoNuevoCad = new CadenaBytes(pesoNuevo);
+		elemento.setID(pesoNuevoCad);
+		this->arbolPesos->modificar(&elemento);
 
 	}else{
-		//TODO usar archivo de ultimo ID para generar clave
-		Elementos* elemento = new Elementos (clave, ID, '1');
+		CadenaBytes* ID = new CadenaBytes (intToString(IDTermino));
+		CadenaBytes* peso = new CadenaBytes(intToString(1));
+		Elementos* elemento = new Elementos (clave, ID, peso);
 		this->arbolPesos->insertar(elemento);
 	}
-*/
+	delete clave;
 }
 
 
 
 int HandlerNormasAInfinito::decrementarPesoTermino (int IDTermino){
-	Clave clave(IDTerminoToString(IDTermino));
+	Clave* clave = new Clave(intToString(IDTermino));
+	list<Elementos>* listaElementos;
+	this->arbolPesos->buscar(listaElementos, clave); //Debería devolver uno o ninguno
 
-/*
-	pair<Elementos*, IteradorArbolBMas*> resultado = this->arbolPesos->buscar(clave); //Debería devolver uno o ninguno
+	if (listaElementos!=NULL){
 
-	if (resultado!=NULL){
-		//TODO Extraer elemento del par
-		Elementos* elemento = resultado.first();
-		int pesoActual = atoi(elemento->getID().c_str());
+		Elementos elemento = *(listaElementos->begin());
+		CadenaBytes* pesoActualCad = elemento.getID();
+		string pesoActualStr = pesoActualCad->toString();
+		int pesoActual = atoi(pesoActualStr.c_str());
 		pesoActual--;
 
-		stringstream ss2;
-		ss2<<pesoActual;
-		string pesoNuevo = ss2.str();
-		elemento->setID(*pesoNuevo);
-		this->arbolPesos->modificar(elemento);
-		return OK;
+		string pesoNuevo = intToString(pesoActual);
+		CadenaBytes* pesoNuevoCad = new CadenaBytes(pesoNuevo);
+		elemento.setID(pesoNuevoCad);
+		this->arbolPesos->modificar(&elemento);
+		return 1;
 
 	}else{
 		return ERROR;
 	}
-*/
+
 }
 
 int HandlerNormasAInfinito::buscarPesoTermino(int IDTermino){
-	int peso = 0;
-	Clave clave(IDTerminoToString(IDTermino));
-/*
-	pair<Elementos*, IteradorArbolBMas*> resultado = this->arbolPesos->buscar(clave);
-	Elementos* elemento = resultado.first();
-	peso = atoi(elemento->getID().c_str() );*/
-	return peso;
+
+	Clave* clave = new Clave(intToString(IDTermino));
+	list<Elementos>* listaElementos;
+	this->arbolPesos->buscar(listaElementos, clave);
+	Elementos elemento = *(listaElementos->begin());
+	CadenaBytes* pesoActualCad = elemento.getID();
+	string pesoActualStr = pesoActualCad->toString();
+	return atoi(pesoActualStr.c_str());
+
 }
 
 
 /*private*/
-string HandlerNormasAInfinito::IDTerminoToString(int IDTermino){
+string HandlerNormasAInfinito::intToString(int integer){
 	stringstream ss;
-	ss << IDTermino;
+	ss << integer;
 	return ss.str();
 }
+
+
