@@ -72,7 +72,7 @@ void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, list<Ocurrencia
 	}
 
 	// Le paso la lista de terminos al handler del archivo de normas.
-	HandlerNormasAInfinito handler(this->idTerminos);
+	HandlerFrecGlobalTerminos handler(this->idTerminos);
 }
 
 Termino ProcesadorOcurrencia::agregarTermino(string palabraActual){

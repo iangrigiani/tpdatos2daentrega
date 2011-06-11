@@ -1,17 +1,17 @@
-#include "HandlerNormasAInfinito.h"
+#include "HandlerFrecGlobalTerminos.h"
 
-HandlerNormasAInfinito::HandlerNormasAInfinito() {
+HandlerFrecGlobalTerminos::HandlerFrecGlobalTerminos() {
 }
-HandlerNormasAInfinito::HandlerNormasAInfinito(vector<int> idTerminos){
+HandlerFrecGlobalTerminos::HandlerFrecGlobalTerminos(vector<int> idTerminos){
 	this->idTerminos = idTerminos;
-	this->arbolPesos = new ArbolBMas(PATH_ARCHIVO_NORMA, 1);
+	this->arbolPesos = new ArbolBMas(PATH_ARCHIVO_FREC_GLOB, 1);
 }
 
-HandlerNormasAInfinito::~HandlerNormasAInfinito() {
+HandlerFrecGlobalTerminos::~HandlerFrecGlobalTerminos() {
 	delete this->arbolPesos;
 }
 
-void HandlerNormasAInfinito::actualizarPesosTerminos (){
+void HandlerFrecGlobalTerminos::actualizarPesosTerminos (){
 	int i = 0 ;
 	while (i< (this->idTerminos.size()) ){
 		this->incrementarPesoTermino(idTerminos[i]);
@@ -20,7 +20,7 @@ void HandlerNormasAInfinito::actualizarPesosTerminos (){
 }
 
 
-void HandlerNormasAInfinito::incrementarPesoTermino (int IDTermino){
+void HandlerFrecGlobalTerminos::incrementarPesoTermino (int IDTermino){
 	Clave* clave = new Clave(intToString(IDTermino));
 	list<Elementos>* listaElementos;
 	this->arbolPesos->buscar(listaElementos, clave); //Debería devolver uno o ninguno
@@ -49,7 +49,7 @@ void HandlerNormasAInfinito::incrementarPesoTermino (int IDTermino){
 
 
 
-int HandlerNormasAInfinito::decrementarPesoTermino (int IDTermino){
+int HandlerFrecGlobalTerminos::decrementarPesoTermino (int IDTermino){
 	Clave* clave = new Clave(intToString(IDTermino));
 	list<Elementos>* listaElementos;
 	this->arbolPesos->buscar(listaElementos, clave); //Debería devolver uno o ninguno
@@ -74,7 +74,7 @@ int HandlerNormasAInfinito::decrementarPesoTermino (int IDTermino){
 
 }
 
-int HandlerNormasAInfinito::buscarPesoTermino(int IDTermino){
+int HandlerFrecGlobalTerminos::buscarPesoTermino(int IDTermino){
 
 	Clave* clave = new Clave(intToString(IDTermino));
 	list<Elementos>* listaElementos;
@@ -88,7 +88,7 @@ int HandlerNormasAInfinito::buscarPesoTermino(int IDTermino){
 
 
 /*private*/
-string HandlerNormasAInfinito::intToString(int integer){
+string HandlerFrecGlobalTerminos::intToString(int integer){
 	stringstream ss;
 	ss << integer;
 	return ss.str();

@@ -14,12 +14,12 @@ class ArbolBMas;
 
 using namespace std;
 
-class HandlerNormasAInfinito{
+class HandlerFrecGlobalTerminos{
 public:
 	/* -------- Constructor y Destructor ---------*/
-	HandlerNormasAInfinito();
-	HandlerNormasAInfinito(vector<int> idTerminos);
-	virtual ~HandlerNormasAInfinito();
+	HandlerFrecGlobalTerminos();
+	HandlerFrecGlobalTerminos(vector<int> idTerminos);
+	virtual ~HandlerFrecGlobalTerminos();
 
 	/* Actualiza el archivo de normas incrementando en 1 el valor del peso que estaba
 	 * guardado en el archivo para cada IDTermino del vector idTerminos.
