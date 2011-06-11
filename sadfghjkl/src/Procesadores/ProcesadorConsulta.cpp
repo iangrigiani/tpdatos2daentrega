@@ -9,17 +9,17 @@ ProcesadorConsulta::~ProcesadorConsulta() {
 }
 
 list<int> ProcesadorConsulta::consultaAutor(string autor){
-	list<Elementos*> listaRetornoBusqueda;
+	list<Elementos> listaRetornoBusqueda;
 	list<int> listaRetorno;
 
 	ArbolBMas arbol(PATH_AUTOR, 2);
 	Clave* clave = new Clave(autor);
-	arbol.buscar(listaRetornoBusqueda, clave);
+	arbol.buscar(&listaRetornoBusqueda, clave);
 	delete clave;
 	if ( listaRetornoBusqueda.size() > 0){
-		list<Elementos*>::iterator it = listaRetornoBusqueda.begin();
+		list<Elementos>::iterator it = listaRetornoBusqueda.begin();
 		while ( it != listaRetornoBusqueda.end()){
-			listaRetorno.push_back(atoi((*it)->getID()->toString().c_str()));
+			listaRetorno.push_back(atoi((*it).getID()->toString().c_str()));
 			++it;
 		}
 	}
@@ -27,17 +27,17 @@ list<int> ProcesadorConsulta::consultaAutor(string autor){
 }
 
 list<int> ProcesadorConsulta::consultaEditorial(string editorial){
-	list<Elementos*> listaRetornoBusqueda;
+	list<Elementos> listaRetornoBusqueda;
 	list<int> listaRetorno;
 
 	ArbolBMas arbol(PATH_EDITORIAL, 2);
 	Clave* clave = new Clave(editorial);
-	arbol.buscar(listaRetornoBusqueda, clave);
+	arbol.buscar(&listaRetornoBusqueda, clave);
 	delete clave;
 	if ( listaRetornoBusqueda.size() > 0){
-		list<Elementos*>::iterator it = listaRetornoBusqueda.begin();
+		list<Elementos>::iterator it = listaRetornoBusqueda.begin();
 		while ( it != listaRetornoBusqueda.end()){
-			listaRetorno.push_back(atoi((*it)->getID()->toString().c_str()));
+			listaRetorno.push_back(atoi((*it).getID()->toString().c_str()));
 			++it;
 		}
 	}
@@ -180,13 +180,13 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 		Palabra palabra;
 
 		list<int> idTermino;
-		list<Elementos*> listaBusqueda;
+		list<Elementos> listaBusqueda;
 		Clave* clave = new Clave(*itPalabras);
-		arbol.buscar(listaBusqueda, clave);
+		arbol.buscar(&listaBusqueda, clave);
 		delete clave;
 		if ( listaBusqueda.size() > 0){
-			list<Elementos*>::iterator it = listaBusqueda.begin();
-			idTermino.push_back(atoi((*it)->getID()->toString().c_str()));
+			list<Elementos>::iterator it = listaBusqueda.begin();
+			idTermino.push_back(atoi((*it).getID()->toString().c_str()));
 		}
 
 		list<int>::iterator it2 = idTermino.begin();
@@ -233,13 +233,13 @@ list<int> ProcesadorConsulta::consultaPuntualPalabra(string palabra){
 	list<int> idTermino;
 
 	ArbolBMas arbol(PATH_ID_TERMINOS, 1);
-	list<Elementos*> listaBusqueda;
+	list<Elementos> listaBusqueda;
 	Clave* clave = new Clave(palabra);
-	arbol.buscar(listaBusqueda, clave);
+	arbol.buscar(&listaBusqueda, clave);
 	delete clave;
 	if ( listaBusqueda.size() > 0){
-		list<Elementos*>::iterator it = listaBusqueda.begin();
-		idTermino.push_back(atoi((*it)->getID()->toString().c_str()));
+		list<Elementos>::iterator it = listaBusqueda.begin();
+		idTermino.push_back(atoi((*it).getID()->toString().c_str()));
 	}
 
 	list<int>::iterator it2 = idTermino.begin();

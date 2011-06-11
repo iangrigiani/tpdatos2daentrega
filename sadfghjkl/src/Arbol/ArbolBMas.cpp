@@ -191,7 +191,7 @@ void ArbolBMas::mostrar(){
 	string ruta = this->persistor->getRuta() + "_Salida.txt";
 	fo.open(ruta.c_str(), ios_base::out);
 	fo << "********************************************************************************" << endl << endl;
-	fo << "		                   Arbol B+ de "; fo << "Terminos" << "                    " << endl << endl;
+	fo << "		                   Arbol B+ de "; fo << this->persistor->getRuta() << "                    " << endl << endl;
 	fo << "********************************************************************************" << endl << endl;
 	if (raiz){
 		fo << "Tamanio de Nodo:  " << TAM_TOTAL_NODO << endl;
@@ -434,7 +434,7 @@ bool ArbolBMas::insertarRecursivo(Nodo* nodoCorriente, Clave clave, CadenaBytes 
 		if (nodoHojaCorriente->cantidadClaves > 1){
 			refactorizarNodoFrontCoding(&nodoHojaCorriente);
 		}
-		nodoHojaCorriente->espacioOcupado += id.getTamanio() + dato.getTamanio() + clave.getTamanio() + TAM_CONTROL_REGISTRO;
+		nodoHojaCorriente->espacioOcupado += nodoHojaCorriente->Ids[i + 1].getTamanio() + nodoHojaCorriente->datos[i + 1].getTamanio() + nodoHojaCorriente->claves[i + 1].getTamanio() + TAM_CONTROL_REGISTRO;
 
 		if (nodoHojaCorriente->isOverflow(TAM_CONTROL_OVERFLOW)) {
 
@@ -1203,7 +1203,7 @@ Solucion ArbolBMas::buscarSecuencialClave(int nodo, Elementos* elemento, int pos
 	return res;
 }
 
-void ArbolBMas::buscar(list<Elementos*>& listaElementos, Clave* clave){
+void ArbolBMas::buscar(list<Elementos>* listaElementos, Clave* clave){
 
 	Nodo *unNodo = raiz;
 	if (unNodo){
@@ -1222,29 +1222,25 @@ void ArbolBMas::buscar(list<Elementos*>& listaElementos, Clave* clave){
 		llenarListadeBusqueda(listaElementos, unNodoHoja, posicion, clave);
 	}
 
-	liberarMemoriaNodo(unNodo);
 }
 
-void ArbolBMas::llenarListadeBusqueda(list<Elementos*>& listaElementos, NodoHoja* nodo, int posicion, Clave* clave){
+void ArbolBMas::llenarListadeBusqueda(list<Elementos>* listaElementos, NodoHoja* nodo, int posicion, Clave* clave){
 	bool distinto = false;
 	this->sacarFrontCodingNodoHoja(&nodo);
 	for (int i = posicion; (i < nodo->cantidadClaves) && (!distinto); ++i){
-		if (nodo->claves[posicion].getClave() == clave->getClave()){
-			Elementos* elemento = new Elementos(clave, &nodo->datos[posicion], &nodo->Ids[posicion]);
-			listaElementos.push_back(elemento);
-			delete elemento;
+		if (nodo->claves[i].getClave() == clave->getClave()){
+			Elementos* elemento = new Elementos(clave, new CadenaBytes(nodo->datos[i].toString()), new CadenaBytes(nodo->Ids[i].toString()));
+			listaElementos->push_back(*elemento);
 		}else{
 			distinto = true;
 		}
 	}
-
 	if(!distinto && nodo->hojaSiguiente != 0){
 		Nodo * nuevoNodo = hidratarNodo(nodo->hojaSiguiente);
 		NodoHoja* nuevoNodoHoja = static_cast<NodoHoja*> (nuevoNodo);
-		liberarMemoriaNodo(nodo);
+		refactorizarNodoFrontCoding(&nodo);
 		llenarListadeBusqueda(listaElementos, nuevoNodoHoja, 0 , clave);
 	}
-
 }
 CadenaBytes ArbolBMas::obtenerNuevoId(){
 	CadenaBytes cadenaRetorno;

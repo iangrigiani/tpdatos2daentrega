@@ -111,9 +111,14 @@ Elementos::~Elementos() {
 
 string Elementos::toString(){
 	string cadena;
+	cadena += "Clave: ";
 	cadena += clave->toString();
 	cadena += " | ";
+	cadena += "Dato : ";
 	cadena += datos->toString();
+	cadena += " | ";
+	cadena += "Id de Elemento: ";
+	cadena += ID->toString();
 	return cadena;
 }
 
