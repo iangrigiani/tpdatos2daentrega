@@ -225,7 +225,9 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 
 		list<Ocurrencia> :: iterator itOcurrencias;
 
-		for(itOcurrencias = ocurrencias.begin(); itOcurrencias != ocurrencias.end();++itOcurrencias) {
+		for(itOcurrencias = ocurrencias.begin(); itOcurrencias != ocurrencias.end();++itOcurrencias)
+		{
+
 			Ocurrencia ocurrenciaActual = *itOcurrencias;
 			int offsetOcurrencia = this->handlerOcurrencias->insertarOcurrencia(ocurrenciaActual,offset);
 			int clave = ocurrenciaActual.getIdPalabra();
