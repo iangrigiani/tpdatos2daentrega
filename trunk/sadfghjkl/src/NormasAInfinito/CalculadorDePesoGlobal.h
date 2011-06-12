@@ -3,11 +3,15 @@
 
 class CalculadorDePesoGlobal{
 private:
-
+	int cantDeDocs;
 
 public:
-	float calcularPesoGlobal(int cantDeDocs, int frecGlobal);
+	CalculadorDePesoGlobal();
+	~CalculadorDePesoGlobal();
 
+	void incrementarCantDeDocs(int diferencial);
+	float calcularPesoGlobalTermino(int frecGlobalTermino);
+	void decrementarCantDeDocs();
 
 };
 
