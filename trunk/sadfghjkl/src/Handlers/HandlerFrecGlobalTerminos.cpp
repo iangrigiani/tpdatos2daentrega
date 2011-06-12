@@ -110,11 +110,11 @@ int HandlerFrecGlobalTerminos::eliminarNormaGuardada(int idDocumento){
 
 	if (puntero != ERROR){
 		//si existe el ID, solamente limpio las estructuras
-		archivoLog.open(PATH_ARCHIVO_LOG, std::ios_base::in | std::ios_base::out);
+		archivoLog.open(PATH_ARCHIVO_NORMA, std::ios_base::in | std::ios_base::out);
 		if (!archivoLog.is_open()){
-			archivoLog.open(PATH_ARCHIVO_LOG,std::ios_base::out);
+			archivoLog.open(PATH_ARCHIVO_NORMA,std::ios_base::out);
 			archivoLog.close();
-			archivoLog.open(PATH_ARCHIVO_LOG,std::ios_base::in | std::ios_base::out);
+			archivoLog.open(PATH_ARCHIVO_NORMA,std::ios_base::in | std::ios_base::out);
 		}
 		archivoLog.seekp(puntero);
 		archivoLog.write(linea.c_str(), linea.length());
@@ -143,11 +143,11 @@ void HandlerFrecGlobalTerminos::persistirNorma(int idDocumento, float norma){
 	string linea = lineaArchivoNorma(idDocument, norma);
 	ofstream archivoLog;
 
-	archivoLog.open(PATH_ARCHIVO_LOG,std::ios_base::app);
+	archivoLog.open(PATH_ARCHIVO_NORMA,std::ios_base::app);
 	if (!archivoLog.is_open()){
-		archivoLog.open(PATH_ARCHIVO_LOG,std::ios_base::out);
+		archivoLog.open(PATH_ARCHIVO_NORMA,std::ios_base::out);
 		archivoLog.close();
-		archivoLog.open(PATH_ARCHIVO_LOG,std::ios_base::app);
+		archivoLog.open(PATH_ARCHIVO_NORMA,std::ios_base::app);
 	}
 	archivoLog.write(linea.c_str(), linea.length());
 	archivoLog.close();

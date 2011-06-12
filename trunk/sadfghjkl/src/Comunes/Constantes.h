@@ -26,6 +26,7 @@
 
 /*************Archivo de Frecuencias ***********************/
 #define PATH_ARCHIVO_FREC_GLOB "FrecuenciasGlobales"
+#define PATH_ARCHIVO_NORMA "NormasDocumentos"
 
 
 /***********************Parser******************************/
