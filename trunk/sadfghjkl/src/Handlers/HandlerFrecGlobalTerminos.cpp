@@ -22,12 +22,12 @@ void HandlerFrecGlobalTerminos::actualizarPesosTerminos (){
 
 void HandlerFrecGlobalTerminos::incrementarPesoTermino (int IDTermino){
 	Clave* clave = new Clave(intToString(IDTermino));
-	list<Elementos>* listaElementos;
+	list<Elementos*>* listaElementos;
 	this->arbolPesos->buscar(listaElementos, clave); //Debería devolver uno o ninguno
 
 	if (listaElementos!=NULL){
 
-		Elementos elemento = *(listaElementos->begin());
+		Elementos elemento = *(*(listaElementos->begin()));
 		CadenaBytes* pesoActualCad = elemento.getID();
 		string pesoActualStr = pesoActualCad->toString();
 		int pesoActual = atoi(pesoActualStr.c_str());
@@ -51,12 +51,12 @@ void HandlerFrecGlobalTerminos::incrementarPesoTermino (int IDTermino){
 
 int HandlerFrecGlobalTerminos::decrementarPesoTermino (int IDTermino){
 	Clave* clave = new Clave(intToString(IDTermino));
-	list<Elementos>* listaElementos;
+	list<Elementos*>* listaElementos;
 	this->arbolPesos->buscar(listaElementos, clave); //Debería devolver uno o ninguno
 
 	if (listaElementos!=NULL){
 
-		Elementos elemento = *(listaElementos->begin());
+		Elementos elemento = *(*(listaElementos->begin()));
 		CadenaBytes* pesoActualCad = elemento.getID();
 		string pesoActualStr = pesoActualCad->toString();
 		int pesoActual = atoi(pesoActualStr.c_str());
@@ -77,9 +77,9 @@ int HandlerFrecGlobalTerminos::decrementarPesoTermino (int IDTermino){
 int HandlerFrecGlobalTerminos::buscarPesoTermino(int IDTermino){
 
 	Clave* clave = new Clave(intToString(IDTermino));
-	list<Elementos>* listaElementos;
+	list<Elementos*>* listaElementos;
 	this->arbolPesos->buscar(listaElementos, clave);
-	Elementos elemento = *(listaElementos->begin());
+	Elementos elemento = *(*(listaElementos->begin()));
 	CadenaBytes* pesoActualCad = elemento.getID();
 	string pesoActualStr = pesoActualCad->toString();
 	return atoi(pesoActualStr.c_str());

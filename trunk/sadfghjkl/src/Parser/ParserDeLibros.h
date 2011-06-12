@@ -48,9 +48,10 @@ private:
 	 */
 	char * obtenerPrimerMatch(char * string, char * patronDeFiltro, int size);
 
-	void downCase(string& str);
 
 public:
+
+	void downCase(string& str);
 
 	ParserDeLibros();
 	virtual ~ParserDeLibros();
