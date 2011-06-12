@@ -71,9 +71,13 @@ void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, list<Ocurrencia
 		free(cadena);
 		iteracion++;
 	}
-
-	// Le paso la lista de terminos al handler del archivo de normas.
-	//HandlerFrecGlobalTerminos handler(this->idTerminos);
+    // Le paso la lista de terminos al handler del archivo de normas.
+	/*
+    int idDocumento = 0; //TODO Sacar esta basura harcodeada,
+    //ver como guardar el número de documento indexado (total de docs +1
+    HandlerFrecGlobalTerminos handlerFrec(this->idTerminos);
+    handlerFrec.actualizarPesosYNormas(idDocumento);
+    */
 }
 
 Termino ProcesadorOcurrencia::agregarTermino(string palabraActual){
