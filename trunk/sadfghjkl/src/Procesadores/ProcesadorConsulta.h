@@ -11,9 +11,7 @@
 #include "../Hash/HashPalabra.h"
 #include "../Hash/HashTermino.h"
 #include <math.h>
-
-
-using namespace std;
+//using namespace std;
 
 class ProcesadorConsulta {
 

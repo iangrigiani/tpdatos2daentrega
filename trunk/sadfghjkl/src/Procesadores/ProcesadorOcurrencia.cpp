@@ -5,7 +5,7 @@ ProcesadorOcurrencia::ProcesadorOcurrencia() {
 }
 
 ProcesadorOcurrencia::~ProcesadorOcurrencia() {
-	if(this->idTerminos) delete[] idTerminos;
+	//if(this->idTerminos) delete[] idTerminos;
 
 }
 
