@@ -166,6 +166,7 @@ void HandlerComandos::insertar_en_hash_titulo(int offset) {
 	if (reg.getAutor() != REGISTRO_ERRONEO){
 		HashTermino hash(NOM_BLOQUES_TITULO, NOM_ESP_LIBRE_TITULO, NOM_TABLA_TITULO);
 		hash.alta(reg.getTitulo(), offset);
+		cout<<"ID:"<<offset<<".Libro indexado por titulo.\n"<<endl;
 	}else{
 		cout<<"ID:"<<offset<<"No pudo ser insertado en el hash de titulo.\n"<<endl;
 	}
