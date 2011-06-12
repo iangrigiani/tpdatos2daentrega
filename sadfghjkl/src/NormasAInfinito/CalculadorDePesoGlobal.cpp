@@ -11,10 +11,26 @@
 #include "CalculadorDePesoGlobal.h"
 #include <math.h>
 
-float CalculadorDePesoGlobal::calcularPesoGlobal(int cantDeDocs, int frecGlobal){
+CalculadorDePesoGlobal::CalculadorDePesoGlobal(){
+}
+
+CalculadorDePesoGlobal::~CalculadorDePesoGlobal(){
+}
+
+float CalculadorDePesoGlobal::calcularPesoGlobalTermino(int frecGlobalTermino){
 	float pesoGlobal = 0 ;
 	float cociente = 0;
-	cociente = cantDeDocs / frecGlobal;
+	cociente = (this->cantDeDocs) / frecGlobalTermino;
 	pesoGlobal = log10(cociente);
 	return pesoGlobal;
+}
+
+void CalculadorDePesoGlobal::incrementarCantDeDocs(int diferencial){
+	this->cantDeDocs = cantDeDocs + diferencial;
+}
+
+void CalculadorDePesoGlobal::decrementarCantDeDocs(){
+	int aux = (this->cantDeDocs);
+	--aux;
+	this->cantDeDocs = aux;
 }

@@ -6,9 +6,11 @@ class ArbolBMas;
 #include <sstream>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include <vector>
 #include "../EstructurasArbol/Elementos.h"
 #include "../EstructurasArbol/Clave.h"
+#include "../NormasAInfinito/CalculadorDePesoGlobal.h"
 #include "../Comunes/Constantes.h"
 #include "../Arbol/ArbolBMas.h"
 
@@ -26,7 +28,7 @@ public:
 	 * PRE: -
 	 * POS: Archivo de normas actualizado.
 	 */
-	void actualizarPesosTerminos();
+	void actualizarPesosYNormas(int idDocumento);
 
 
 	/* Actualiza el archivo de normas incrementando en 1 el valor del peso que estaba
@@ -34,7 +36,7 @@ public:
 	 * PRE: Recibe un int con el IDTermino.
 	 * POS: Archivo de normas actualizado.
 	 */
-	void incrementarPesoTermino (int IDTermino);
+	int incrementarPesoTermino (int IDTermino);
 
 	/* Actualiza el archivo de normas decrementando en 1 el valor del peso que estaba
 	 * guardado en el archivo para el IDTermino pasado.
@@ -51,10 +53,19 @@ public:
 	 */
 	int  buscarPesoTermino(int IDTermino);
 
+	/*
+	 * Se usa para borrar la norma de un Documento cuando este documento (libro) se elimina
+	 * PRE: Recibe por parámetro el id del documento
+	 * POS:
+	 */
+	int eliminarNormaGuardada(int idDocumento);
+
 private:
 	ArbolBMas* arbolPesos;
+	CalculadorDePesoGlobal* calc;
 	vector<int> idTerminos;
 	string intToString(int integer);
+	void persistirNorma(int idDocumento, float norma){
 };
 
 
