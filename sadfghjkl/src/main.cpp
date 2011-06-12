@@ -94,7 +94,15 @@ int main (int argc , char *argv[]){
 	case 'w':   {
 		if (argv[2]) {
 			printf("-qa <Autor> Consulta puntual por <Autor> \n");
-			handlerComandos->consultarAutor(argv[2]);
+			stringstream ss2;
+			for ( int i = 2 ; i < argc; ++i){
+				if (i == (argc - 1)){
+					ss2 << argv[i];
+				}else{
+					ss2 << argv[i] << " ";
+				}
+			}
+			handlerComandos->consultarAutor(ss2.str());
 		}else{
 			printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");}
 		break;}
@@ -102,7 +110,15 @@ int main (int argc , char *argv[]){
 	case 'x':   {
 		if (argv[2]) {
 			printf("-qe <Editorial> Consulta puntual por <Editorial> \n \n");
-			handlerComandos->consultarEditorial(argv[2]);
+			stringstream ss3;
+			for ( int i = 2 ; i < argc; ++i){
+				if (i == (argc - 1)){
+					ss3 << argv[i];
+				}else{
+					ss3 << argv[i] << " ";
+				}
+			}
+			handlerComandos->consultarEditorial(ss3.str());
 		}else{
 			printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");}
 		break;}

@@ -1203,7 +1203,7 @@ Solucion ArbolBMas::buscarSecuencialClave(int nodo, Elementos* elemento, int pos
 	return res;
 }
 
-void ArbolBMas::buscar(list<Elementos>* listaElementos, Clave* clave){
+void ArbolBMas::buscar(list<Elementos*>* listaElementos, Clave* clave){
 
 	Nodo *unNodo = raiz;
 	if (unNodo){
@@ -1224,13 +1224,13 @@ void ArbolBMas::buscar(list<Elementos>* listaElementos, Clave* clave){
 
 }
 
-void ArbolBMas::llenarListadeBusqueda(list<Elementos>* listaElementos, NodoHoja* nodo, int posicion, Clave* clave){
+void ArbolBMas::llenarListadeBusqueda(list<Elementos*>* listaElementos, NodoHoja* nodo, int posicion, Clave* clave){
 	bool distinto = false;
 	this->sacarFrontCodingNodoHoja(&nodo);
 	for (int i = posicion; (i < nodo->cantidadClaves) && (!distinto); ++i){
 		if (nodo->claves[i].getClave() == clave->getClave()){
 			Elementos* elemento = new Elementos(clave, new CadenaBytes(nodo->datos[i].toString()), new CadenaBytes(nodo->Ids[i].toString()));
-			listaElementos->push_back(*elemento);
+			listaElementos->push_back(elemento);
 		}else{
 			distinto = true;
 		}

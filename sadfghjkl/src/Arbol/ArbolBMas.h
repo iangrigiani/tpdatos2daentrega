@@ -56,11 +56,11 @@ public:
 
 	int getCantidadBloques();
 
-	void buscar(list<Elementos>* listaElementos, Clave* clave);
+	void buscar(list<Elementos*>* listaElementos, Clave* clave);
 
 private:
 
-	void llenarListadeBusqueda(list<Elementos>* listaElementos, NodoHoja* nodo, int posicion, Clave* clave);
+	void llenarListadeBusqueda(list<Elementos*>* listaElementos, NodoHoja* nodo, int posicion, Clave* clave);
 
 	bool claveMenor(Clave clave1, Clave clave2);
 
