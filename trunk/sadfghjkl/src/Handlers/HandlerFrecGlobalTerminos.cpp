@@ -20,7 +20,7 @@ void HandlerFrecGlobalTerminos::actualizarPesosYNormas(int idDocumento){
 	int i = 0 , frecGlobal= 0;
 	float pesoGlobal= 0, norma = 0;
 
-	while (i< (this->idTerminos.size()) ){
+	while (i< (int)(this->idTerminos.size()) ){
 		frecGlobal = this->incrementarPesoTermino(idTerminos[i]);
 		pesoGlobal = this->calc->calcularPesoGlobalTermino(frecGlobal);
 		pesoGlobal = pow(pesoGlobal, 2);
@@ -36,7 +36,7 @@ void HandlerFrecGlobalTerminos::actualizarPesosYNormas(int idDocumento){
 
 int HandlerFrecGlobalTerminos::incrementarPesoTermino(int IDTermino){
 	Clave* clave = new Clave(intToString(IDTermino));
-	list<Elementos*>* listaElementos;
+	list<Elementos*>* listaElementos = new list<Elementos*>();
 	this->arbolPesos->buscar(listaElementos, clave); //Debería devolver uno o ninguno
 	int pesoActual = 1;
 
@@ -51,6 +51,7 @@ int HandlerFrecGlobalTerminos::incrementarPesoTermino(int IDTermino){
 		string pesoNuevo = intToString(pesoActual);
 		CadenaBytes* pesoNuevoCad = new CadenaBytes(pesoNuevo);
 		elemento.setID(pesoNuevoCad);
+		delete listaElementos;
 		this->arbolPesos->modificar(&elemento);
 
 
@@ -68,7 +69,7 @@ int HandlerFrecGlobalTerminos::incrementarPesoTermino(int IDTermino){
 
 int HandlerFrecGlobalTerminos::decrementarPesoTermino (int IDTermino){
 	Clave* clave = new Clave(intToString(IDTermino));
-	list<Elementos*>* listaElementos;
+	list<Elementos*>* listaElementos = new list<Elementos*>();
 	this->arbolPesos->buscar(listaElementos, clave); //Debería devolver uno o ninguno
 
 	if (listaElementos!=NULL){
@@ -83,6 +84,7 @@ int HandlerFrecGlobalTerminos::decrementarPesoTermino (int IDTermino){
 		CadenaBytes* pesoNuevoCad = new CadenaBytes(pesoNuevo);
 		elemento.setID(pesoNuevoCad);
 		this->arbolPesos->modificar(&elemento);
+		delete listaElementos;
 		return OKEY;
 
 	}else{
@@ -94,17 +96,19 @@ int HandlerFrecGlobalTerminos::decrementarPesoTermino (int IDTermino){
 
 int HandlerFrecGlobalTerminos::buscarPesoTermino(int IDTermino){
 	Clave* clave = new Clave(intToString(IDTermino));
-	list<Elementos*>* listaElementos;
+	list<Elementos*>* listaElementos = new list<Elementos*>();
 	this->arbolPesos->buscar(listaElementos, clave);
 	Elementos elemento = *(*(listaElementos->begin()));
 	CadenaBytes* pesoActualCad = elemento.getID();
 	string pesoActualStr = pesoActualCad->toString();
+	delete listaElementos;
 	return atoi(pesoActualStr.c_str());
 
 }
 
 int HandlerFrecGlobalTerminos::eliminarNormaGuardada(int idDocumento){
-	int puntero = buscarRegistro(idDocumento);
+	int puntero = 0;
+	// TODO ESTO NO COMPILA ----->>>> puntero = buscarRegistro(idDocumento);
 	string linea = "\n";
 	ofstream archivoLog;
 
@@ -120,7 +124,7 @@ int HandlerFrecGlobalTerminos::eliminarNormaGuardada(int idDocumento){
 		archivoLog.write(linea.c_str(), linea.length());
 	    archivoLog.close();
 	}
-
+	return OKEY;
 }
 
 
@@ -140,7 +144,7 @@ string HandlerFrecGlobalTerminos::lineaArchivoNorma(int idDocument, float norma)
 
 
 void HandlerFrecGlobalTerminos::persistirNorma(int idDocumento, float norma){
-	string linea = lineaArchivoNorma(idDocument, norma);
+	string linea = lineaArchivoNorma(idDocumento, norma);
 	ofstream archivoLog;
 
 	archivoLog.open(PATH_ARCHIVO_NORMA,std::ios_base::app);
