@@ -9,13 +9,14 @@ ProcesadorConsulta::~ProcesadorConsulta() {
 }
 
 list<int> ProcesadorConsulta::consultaAutor(string autor){
+
 	list<Elementos*> listaRetornoBusqueda;
 	list<int> listaRetorno;
 
 	ArbolBMas* arbol = new ArbolBMas(PATH_AUTOR, 2);
 	Clave* clave = new Clave(autor);
 	arbol->buscar(&listaRetornoBusqueda, clave);
-//	delete clave;
+
 	if ( listaRetornoBusqueda.size() > 0){
 		list<Elementos*>::iterator it = listaRetornoBusqueda.begin();
 		while ( it != listaRetornoBusqueda.end()){
@@ -33,7 +34,7 @@ list<int> ProcesadorConsulta::consultaEditorial(string editorial){
 	ArbolBMas* arbol = new ArbolBMas(PATH_EDITORIAL, 2);
 	Clave* clave = new Clave(editorial);
 	arbol->buscar(&listaRetornoBusqueda, clave);
-//	delete clave;
+
 	if ( listaRetornoBusqueda.size() > 0){
 		list<Elementos*>::iterator it = listaRetornoBusqueda.begin();
 		while ( it != listaRetornoBusqueda.end()){
@@ -217,8 +218,9 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 	//mas de 1 entonces hay que hacer la consulta ranqueada
 //	if(documentosCoincidentes.size() > 1)
 //	{
-//		filtrarRanqueada(palabraFiltrada);
+//		documentosCoincidentes = filtrarRanqueada(palabraFiltrada);
 //	}
+
 
 	return documentosCoincidentes;
 }
@@ -351,7 +353,7 @@ list<int> ProcesadorConsulta::filtrarProximidad(Palabra & palabra)
 
 	}
 
-	return filtrarDistancias(distancias);
+	return filtrarDistancias(distancias,palabra);
 }
 
 Distancia ProcesadorConsulta::compararDistancias(Distancia distancia1,Distancia distancia2)
@@ -388,7 +390,7 @@ Distancia ProcesadorConsulta::compararDistancias(Distancia distancia1,Distancia 
 }
 
 
-list<int> ProcesadorConsulta::filtrarDistancias(list<Distancia> distancias)
+list<int> ProcesadorConsulta::filtrarDistancias(list<Distancia> distancias, Palabra & palabra)
 {
 	Distancia distanciaMinima;
 
@@ -418,9 +420,61 @@ list<int> ProcesadorConsulta::filtrarDistancias(list<Distancia> distancias)
 		itDistancias++;
 	}
 
+	filtrarDocumentos(distanciaMinima,palabra);
 
 	return distanciaMinima.getDocumentos();
 }
+
+void ProcesadorConsulta::filtrarDocumentos(Distancia distancia, Palabra & palabra)
+{
+	list<Aparicion> apariciones = palabra.getApariciones();
+	list<Aparicion> :: iterator itApariciones;
+
+	list<Aparicion> aparicionesFiltradas;
+
+	list<int> documentosCoincidentes = distancia.getDocumentos();
+	list<int> :: iterator itDocumentos = documentosCoincidentes.begin();
+
+	bool encontrado = false;
+
+
+	while(itDocumentos != documentosCoincidentes.end())
+	{
+		int docActual = *itDocumentos;
+
+		 itApariciones = apariciones.begin();
+
+		 while(itApariciones != apariciones.end() && !encontrado)
+		 {
+			 Aparicion aparicionActual = *itApariciones;
+			 if(aparicionActual.getIdDocumento() == docActual)
+			 {
+				 aparicionesFiltradas.push_back(aparicionActual);
+				 encontrado = true;
+
+			 }
+
+			 itApariciones++;
+
+		 }
+
+		 encontrado = false;
+		 itDocumentos++;
+	}
+
+	apariciones.clear();
+
+	list<Aparicion> :: iterator itAparicionFiltrada = aparicionesFiltradas.begin();
+
+	while(itAparicionFiltrada != aparicionesFiltradas.end())
+	{
+		apariciones.push_back(*itAparicionFiltrada);
+		itAparicionFiltrada++;
+
+	}
+
+}
+
 
 
 list<int> ProcesadorConsulta::filtrarRanqueada(Palabra & palabra)
