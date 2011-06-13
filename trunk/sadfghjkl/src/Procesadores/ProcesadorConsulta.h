@@ -70,7 +70,9 @@ private:
 		 * pre: recibe una lista de distancias.
 		 * post: devuelve una lista de documentos, aquellos que tienen la menor distancia.
 		 */
-		list<int> filtrarDistancias(list<Distancia> distancias);
+		list<int> filtrarDistancias(list<Distancia> distancias, Palabra & palabra);
+
+		void filtrarDocumentos(Distancia distancia, Palabra & palabra);
 
 		list<int> filtrarProximidad(Palabra & palabra);
 
