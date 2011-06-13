@@ -1,38 +1,38 @@
 
-#include "RegIndice.h"
+#include "RegTitulo.h"
 
-RegIndice::RegIndice() : clave(-1), bloque_sig(-1) {}
+RegTitulo::RegTitulo() : clave(-1), bloque_sig(-1) {}
 
-RegIndice::RegIndice(int clave) : clave(clave), bloque_sig(-1) {}
+RegTitulo::RegTitulo(int clave) : clave(clave), bloque_sig(-1) {}
 
-void RegIndice::set_clave(int clave) {
+void RegTitulo::set_clave(int clave) {
 	this->clave = clave;
 }
 
-void RegIndice::set_bloque_sig(int bloque_sig) {
+void RegTitulo::set_bloque_sig(int bloque_sig) {
 	this->bloque_sig = bloque_sig;
 }
 
-void RegIndice::set_elementos(const list < Elemento > & elementos) {
+void RegTitulo::set_elementos(const list < Elemento > & elementos) {
 	this->elementos = elementos;
 }
 
-bool RegIndice::esta_vacio() {
+bool RegTitulo::esta_vacio() {
 	if (this->bloque_sig == -1 && this->elementos.empty() == true)
 		return true;
 	return false;
 }
 
-int RegIndice::get_tam() {
+int RegTitulo::get_tam() {
 	CadenaBytes cadena_aux = this->Serializar();
 	return cadena_aux.getTamanio();
 }
 
-void RegIndice::agregar_nuevo_elemento(const Elemento& elemento) {
+void RegTitulo::agregar_nuevo_elemento(const Elemento& elemento) {
 	this->elementos.push_back(elemento);
 }
 
-bool RegIndice::eliminar_elemento(const string& termino) {
+bool RegTitulo::eliminar_elemento(const string& termino) {
 	list < Elemento > ::iterator it;
 
 	it = this->elementos.begin();
@@ -47,7 +47,7 @@ bool RegIndice::eliminar_elemento(const string& termino) {
 	return false;
 }
 
-bool RegIndice::existe_elemento(const string& termino) {
+bool RegTitulo::existe_elemento(const string& termino) {
 	list < Elemento > ::iterator it;
 
 	it = this->elementos.begin();
@@ -60,7 +60,7 @@ bool RegIndice::existe_elemento(const string& termino) {
 	return false;
 }
 
-Elemento& RegIndice::buscar_elemento(const string& termino) {
+Elemento& RegTitulo::buscar_elemento(const string& termino) {
 	list < Elemento > ::iterator it;
 
 	it = this->elementos.begin();
@@ -70,7 +70,7 @@ Elemento& RegIndice::buscar_elemento(const string& termino) {
 	return *it;
 }
 
-CadenaBytes RegIndice::Serializar() {
+CadenaBytes RegTitulo::Serializar() {
 	CadenaBytes cadena;
 
 	cadena.agregarAlFinal(&this->clave, sizeof(this->clave));
@@ -91,7 +91,7 @@ CadenaBytes RegIndice::Serializar() {
 	return cadena;
 }
 
-bool RegIndice::Hidratar(CadenaBytes& cadena) {
+bool RegTitulo::Hidratar(CadenaBytes& cadena) {
 	this->elementos.clear();
 
 	int offset = 0;
@@ -120,7 +120,7 @@ bool RegIndice::Hidratar(CadenaBytes& cadena) {
 	return true;
 }
 
-void RegIndice::toString(ostream& os) {
+void RegTitulo::toString(ostream& os) {
 	os << "   Registro --> " << endl;
 	os << "     Clave:   " << this->clave << endl;
 	os << "     Bloque siguiente:   " << this->bloque_sig << endl;

@@ -9,7 +9,7 @@
 #include "../Arbol/ArbolBMas.h"
 #include "../Handlers/HandlerArchivoOcurrencias.h"
 #include "../Hash/HashPalabra.h"
-#include "../Hash/HashTermino.h"
+#include "../Hash/HashTitulo.h"
 #include <math.h>
 //using namespace std;
 

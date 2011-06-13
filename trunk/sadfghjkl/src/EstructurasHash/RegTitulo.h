@@ -1,10 +1,10 @@
 
-#ifndef REGINDICE_H_
-#define REGINDICE_H_
+#ifndef REGTITULO_H_
+#define REGTITULO_H_
 
 #include "Elemento.h"
 
-class RegIndice : public Serializable {
+class RegTitulo : public Serializable {
 
 private:
 
@@ -14,9 +14,9 @@ private:
 
 public:
 
-	RegIndice();
-	RegIndice(int clave);
-	virtual ~RegIndice() {};
+	RegTitulo();
+	RegTitulo(int clave);
+	virtual ~RegTitulo() {};
 
 	void set_clave(int clave);
 	void set_bloque_sig(int bloque_sig);
@@ -42,4 +42,4 @@ public:
 
 };
 
-#endif /* REGINDICE_H_ */
+#endif /* REGTITULO_H_ */
