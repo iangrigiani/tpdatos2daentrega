@@ -1,7 +1,7 @@
 
-#include "HashTermino.h"
+#include "HashTitulo.h"
 
-HashTermino::HashTermino(const string& ruta_arch_bloques, const string& ruta_arch_esp_libre,
+HashTitulo::HashTitulo(const string& ruta_arch_bloques, const string& ruta_arch_esp_libre,
 		const string& ruta_arch_tabla) {
 	HandlerEspLibre handler_esp_libre(ruta_arch_esp_libre);
 	this->persistor.set_handler_bloques(ruta_arch_bloques, handler_esp_libre);
@@ -11,7 +11,7 @@ HashTermino::HashTermino(const string& ruta_arch_bloques, const string& ruta_arc
 	this->crear_condiciones_iniciales();
 }
 
-int HashTermino::funcion_hash(const string& termino) {
+int HashTitulo::funcion_hash(const string& termino) {
 	int clave = 0;
 
 	for (unsigned int i = 0; i < termino.size(); ++ i) {
@@ -22,7 +22,7 @@ int HashTermino::funcion_hash(const string& termino) {
 	return clave;
 }
 
-void HashTermino::crear_condiciones_iniciales() {
+void HashTitulo::crear_condiciones_iniciales() {
 	HandlerBloques& handler_bloques = this->persistor.get_handler_bloques();
 	handler_bloques.crear_arch_vacio();
 	handler_bloques.get_handler_esp_libre().crear_arch_inicial();
@@ -36,7 +36,7 @@ void HashTermino::crear_condiciones_iniciales() {
 	}
 }
 
-void HashTermino::insertar_reg(RegIndice& reg) {
+void HashTitulo::insertar_reg(RegTitulo& reg) {
 	CadenaBytes cadena;
 	Bucket bloque;
 
@@ -61,7 +61,7 @@ void HashTermino::insertar_reg(RegIndice& reg) {
 		}
 		else this->handler_tabla.reemplazar_referencias(pos_tabla_bloque, num_nuevo_bloque, nuevo_bloque);
 
-		list < RegIndice > regs_desactualizados = bloque.actualizar_regs(num_bloque, this->handler_tabla);
+		list < RegTitulo > regs_desactualizados = bloque.actualizar_regs(num_bloque, this->handler_tabla);
 
 		if (regs_desactualizados.empty() == false) {
 			nuevo_bloque.incorporar_regs(regs_desactualizados);
@@ -73,7 +73,7 @@ void HashTermino::insertar_reg(RegIndice& reg) {
 	}
 }
 
-bool HashTermino::elemento_repetido(RegIndice& reg, const string& termino) {
+bool HashTitulo::elemento_repetido(RegTitulo& reg, const string& termino) {
 	if (reg.existe_elemento(termino) == true)
 		return true;
 	else {
@@ -85,13 +85,13 @@ bool HashTermino::elemento_repetido(RegIndice& reg, const string& termino) {
 
 			this->persistor.recuperar_bloque(reg.get_bloque_sig(), cadena);
 			bloque_sig.Hidratar(cadena);
-			RegIndice& reg_aux = bloque_sig.buscar_reg(reg.get_clave());
+			RegTitulo& reg_aux = bloque_sig.buscar_reg(reg.get_clave());
 			return this->elemento_repetido(reg_aux, termino);
 		}
 	}
 }
 
-void HashTermino::agregar_nuevo_elemento(Bucket& bloque, int num_bloque, RegIndice& reg, Elemento& elemento) {
+void HashTitulo::agregar_nuevo_elemento(Bucket& bloque, int num_bloque, RegTitulo& reg, Elemento& elemento) {
 	if (bloque.entra_en_bloque(elemento) == true) {
 		reg.agregar_nuevo_elemento(elemento);
 		bloque.disminuir_esp_libre(elemento);
@@ -101,7 +101,7 @@ void HashTermino::agregar_nuevo_elemento(Bucket& bloque, int num_bloque, RegIndi
 		Bucket bloque_sig;
 
 		if (reg.get_bloque_sig() == -1) {
-			RegIndice reg_aux(reg.get_clave());
+			RegTitulo reg_aux(reg.get_clave());
 			reg_aux.agregar_nuevo_elemento(elemento);
 			bloque_sig.agregar_nuevo_reg(reg_aux);
 			int num_bloque_sig = this->persistor.guardar_bloque(bloque_sig.Serializar());
@@ -113,13 +113,13 @@ void HashTermino::agregar_nuevo_elemento(Bucket& bloque, int num_bloque, RegIndi
 			CadenaBytes cadena;
 			this->persistor.recuperar_bloque(reg.get_bloque_sig(), cadena);
 			bloque_sig.Hidratar(cadena);
-			RegIndice& reg_aux = bloque_sig.buscar_reg(reg.get_clave());
+			RegTitulo& reg_aux = bloque_sig.buscar_reg(reg.get_clave());
 			this->agregar_nuevo_elemento(bloque_sig, reg.get_bloque_sig(), reg_aux, elemento);
 		}
 	}
 }
 
-int HashTermino::alta(const string& termino, int ID) {
+int HashTitulo::alta(const string& termino, int ID) {
 	CadenaBytes cadena;
 	Bucket bloque;
 
@@ -129,7 +129,7 @@ int HashTermino::alta(const string& termino, int ID) {
 	bloque.Hidratar(cadena);
 
 	if (bloque.existe_reg(clave) == true) {
-		RegIndice& reg = bloque.buscar_reg(clave);
+		RegTitulo& reg = bloque.buscar_reg(clave);
 
 		if (this->elemento_repetido(reg, termino) == false) {
 			Elemento elemento(termino, ID);
@@ -138,7 +138,7 @@ int HashTermino::alta(const string& termino, int ID) {
 	}
 	else {
 		Elemento elemento(termino, ID);
-		RegIndice reg(clave);
+		RegTitulo reg(clave);
 		reg.agregar_nuevo_elemento(elemento);
 		this->insertar_reg(reg);
 	}
@@ -146,7 +146,7 @@ int HashTermino::alta(const string& termino, int ID) {
 	return ID;
 }
 
-bool HashTermino::eliminar_reg(int clave) {
+bool HashTitulo::eliminar_reg(int clave) {
 	CadenaBytes cadena;
 	Bucket bloque;
 
@@ -183,7 +183,7 @@ bool HashTermino::eliminar_reg(int clave) {
 	return true;
 }
 
-void HashTermino::obtener_reg(RegIndice& reg, Bucket& bloque_sig, list < int > & bloques_sigs, int clave) {
+void HashTitulo::obtener_reg(RegTitulo& reg, Bucket& bloque_sig, list < int > & bloques_sigs, int clave) {
 	CadenaBytes cadena;
 
 	this->persistor.recuperar_bloque(reg.get_bloque_sig(), cadena);
@@ -192,9 +192,9 @@ void HashTermino::obtener_reg(RegIndice& reg, Bucket& bloque_sig, list < int > &
 	reg = bloque_sig.buscar_reg(clave);
 }
 
-void HashTermino::eliminar_reg_y_bloques_sigs(Bucket& bloque, int num_bloque, int clave) {
+void HashTitulo::eliminar_reg_y_bloques_sigs(Bucket& bloque, int num_bloque, int clave) {
 	if (bloque.existe_reg(clave) == true) {
-		RegIndice& reg = bloque.buscar_reg(clave);
+		RegTitulo& reg = bloque.buscar_reg(clave);
 
 		if (reg.esta_vacio() == true)
 			this->eliminar_reg(clave);
@@ -221,9 +221,9 @@ void HashTermino::eliminar_reg_y_bloques_sigs(Bucket& bloque, int num_bloque, in
 	}
 }
 
-void HashTermino::eliminar_elemento(Bucket& bloque, int num_bloque, int clave, const string& termino) {
+void HashTitulo::eliminar_elemento(Bucket& bloque, int num_bloque, int clave, const string& termino) {
 	if (bloque.existe_reg(clave) == true) {
-		RegIndice& reg = bloque.buscar_reg(clave);
+		RegTitulo& reg = bloque.buscar_reg(clave);
 
 		if (reg.existe_elemento(termino) == false) {
 			if (reg.get_bloque_sig() == -1)
@@ -246,7 +246,7 @@ void HashTermino::eliminar_elemento(Bucket& bloque, int num_bloque, int clave, c
 	}
 }
 
-void HashTermino::baja(const string& termino) {
+void HashTitulo::baja(const string& termino) {
 	CadenaBytes cadena;
 	Bucket bloque;
 
@@ -259,9 +259,9 @@ void HashTermino::baja(const string& termino) {
 	this->eliminar_reg_y_bloques_sigs(bloque, num_bloque, clave);
 }
 
-int HashTermino::consultar_elemento(Bucket& bloque, int num_bloque, int clave, const string& termino) {
+int HashTitulo::consultar_elemento(Bucket& bloque, int num_bloque, int clave, const string& termino) {
 	if (bloque.existe_reg(clave) == true) {
-		RegIndice& reg = bloque.buscar_reg(clave);
+		RegTitulo& reg = bloque.buscar_reg(clave);
 
 		if (reg.existe_elemento(termino) == false) {
 			if (reg.get_bloque_sig() == -1)
@@ -283,7 +283,7 @@ int HashTermino::consultar_elemento(Bucket& bloque, int num_bloque, int clave, c
 	else return ERROR;
 }
 
-int HashTermino::consultar(const string& termino) {
+int HashTitulo::consultar(const string& termino) {
 	CadenaBytes cadena;
 	Bucket bloque;
 
@@ -294,7 +294,7 @@ int HashTermino::consultar(const string& termino) {
 	return this->consultar_elemento(bloque, num_bloque, clave, termino);
 }
 
-void HashTermino::mostrar(ostream& os) {
+void HashTitulo::mostrar(ostream& os) {
 	CadenaBytes cadena;
 	Bucket bloque;
 	int cant_bloques = this->persistor.get_handler_bloques().get_tam_arch_bloques() / TAM_CUBO;
@@ -313,7 +313,7 @@ void HashTermino::mostrar(ostream& os) {
 	}
 }
 
-void HashTermino::mostrar(const string& nombre_arch) {
+void HashTitulo::mostrar(const string& nombre_arch) {
 	ofstream arch;
 
 	arch.open(nombre_arch.c_str(), fstream::out);
@@ -321,6 +321,6 @@ void HashTermino::mostrar(const string& nombre_arch) {
 	arch.close();
 }
 
-void HashTermino::mostrar() {
+void HashTitulo::mostrar() {
 	this->mostrar(cout);
 }

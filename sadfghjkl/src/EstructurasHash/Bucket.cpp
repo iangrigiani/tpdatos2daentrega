@@ -16,7 +16,7 @@ bool Bucket::esta_vacio() const {
 	return false;
 }
 
-bool Bucket::entra_en_bloque(RegIndice& reg) const {
+bool Bucket::entra_en_bloque(RegTitulo& reg) const {
 	CadenaBytes cadena;
 
 	int tam = reg.get_tam();
@@ -62,7 +62,7 @@ void Bucket::disminuir_esp_libre(Elemento& elemento) {
 	this->esp_libre -= cadena.getTamanio();
 }
 
-void Bucket::agregar_nuevo_reg(RegIndice& reg) {
+void Bucket::agregar_nuevo_reg(RegTitulo& reg) {
 	this->regs.push_back(reg);
 
 	CadenaBytes cadena;
@@ -75,7 +75,7 @@ void Bucket::agregar_nuevo_reg(RegIndice& reg) {
 }
 
 bool Bucket::eliminar_reg(int clave) {
-	list < RegIndice > ::iterator it;
+	list < RegTitulo > ::iterator it;
 
 	it = this->regs.begin();
 	while (it != this->regs.end() && (*it).get_clave() != clave)
@@ -99,7 +99,7 @@ bool Bucket::eliminar_reg(int clave) {
 }
 
 bool Bucket::existe_reg(int clave) {
-	list < RegIndice > ::iterator it;
+	list < RegTitulo > ::iterator it;
 
 	it = this->regs.begin();
 	while (it != this->regs.end() && (*it).get_clave() != clave)
@@ -111,8 +111,8 @@ bool Bucket::existe_reg(int clave) {
 	return false;
 }
 
-RegIndice& Bucket::buscar_reg(int clave) {
-	list < RegIndice > ::iterator it;
+RegTitulo& Bucket::buscar_reg(int clave) {
+	list < RegTitulo > ::iterator it;
 
 	it = this->regs.begin();
 	while ((*it).get_clave() != clave)
@@ -127,16 +127,16 @@ void Bucket::vaciar() {
 	this->esp_libre = TAM_CUBO - this->get_tam();
 }
 
-void Bucket::incorporar_regs(list < RegIndice > & regs) {
-	list < RegIndice > ::iterator it;
+void Bucket::incorporar_regs(list < RegTitulo > & regs) {
+	list < RegTitulo > ::iterator it;
 	for (it = regs.begin(); it != regs.end(); ++ it)
 		this->agregar_nuevo_reg(*it);
 }
 
-list < RegIndice > Bucket::actualizar_regs(int num_bloque, HandlerTabla& handler) {
-	list < RegIndice > ::iterator it;
-	list < RegIndice > list_aux;
-	RegIndice reg_desact;
+list < RegTitulo > Bucket::actualizar_regs(int num_bloque, HandlerTabla& handler) {
+	list < RegTitulo > ::iterator it;
+	list < RegTitulo > list_aux;
+	RegTitulo reg_desact;
 	int tam;
 	unsigned int tam_regs;
 	unsigned int contador = 0;
@@ -176,7 +176,7 @@ CadenaBytes Bucket::Serializar() {
 	cadena.agregarAlFinal(&tam, sizeof(tam));
 
 	int tam2;
-	list < RegIndice > ::iterator it;
+	list < RegTitulo > ::iterator it;
 	for (it = this->regs.begin(); it != this->regs.end(); ++ it) {
 		tam2 = (*it).get_tam();
 		cadena.agregarAlFinal(&tam2, sizeof(tam2));
@@ -203,7 +203,7 @@ bool Bucket::Hidratar(CadenaBytes& cadena) {
 		offset += sizeof(tam2);
 		CadenaBytes cadena_aux;
 		cadena_aux = cadena.leer(offset, tam2);
-		RegIndice reg;
+		RegTitulo reg;
 		reg.Hidratar(cadena_aux);
 		this->agregar_nuevo_reg(reg);
 		offset += tam2;
@@ -217,7 +217,7 @@ void Bucket::toString(ostream& os) {
 	os << "  Tamaño de dispersión:   " << this->tam_disp << endl;
 	os << "  Cantidad de espacio libre:   " << this->esp_libre << endl;
 
-	list < RegIndice > ::iterator it;
+	list < RegTitulo > ::iterator it;
 	for (it = this->regs.begin(); it != this->regs.end(); ++ it)
 		(*it).toString(os);
 }

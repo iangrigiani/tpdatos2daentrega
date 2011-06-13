@@ -4,7 +4,7 @@
 
 class HandlerTabla;
 
-#include "RegIndice.h"
+#include "RegTitulo.h"
 #include "../Hash/HandlerTabla.h"
 
 class Bucket : public Bloque {
@@ -12,7 +12,7 @@ class Bucket : public Bloque {
 private:
 
 	int esp_libre;
-	list < RegIndice > regs;
+	list < RegTitulo > regs;
 
 public:
 
@@ -21,22 +21,22 @@ public:
 
 	int get_tam();
 	bool esta_vacio() const;
-	bool entra_en_bloque(RegIndice& reg) const;
+	bool entra_en_bloque(RegTitulo& reg) const;
 	bool entra_en_bloque(Elemento& elemento) const;
 
-	list < RegIndice > & get_regs() { return this->regs; }
+	list < RegTitulo > & get_regs() { return this->regs; }
 
 	void aumentar_esp_libre(Elemento& elemento);
 	void disminuir_esp_libre(Elemento& elemento);
 
-	void agregar_nuevo_reg(RegIndice& reg);
+	void agregar_nuevo_reg(RegTitulo& reg);
 	bool eliminar_reg(int clave);
 
 	bool existe_reg(int clave);
-	RegIndice& buscar_reg(int clave);
+	RegTitulo& buscar_reg(int clave);
 
-	void incorporar_regs(list < RegIndice > & regs);
-	list < RegIndice > actualizar_regs(int num_bloque, HandlerTabla& handler);
+	void incorporar_regs(list < RegTitulo > & regs);
+	list < RegTitulo > actualizar_regs(int num_bloque, HandlerTabla& handler);
 
 	void vaciar();
 

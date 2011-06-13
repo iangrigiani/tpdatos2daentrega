@@ -46,7 +46,7 @@ list<int> ProcesadorConsulta::consultaEditorial(string editorial){
 }
 
 int ProcesadorConsulta::consultaTitulo(string titulo){
-	HashTermino hash(NOM_BLOQUES_TITULO, NOM_ESP_LIBRE_TITULO, NOM_TABLA_TITULO);
+	HashTitulo hash(NOM_BLOQUES_TITULO, NOM_ESP_LIBRE_TITULO, NOM_TABLA_TITULO);
 	return (hash.consultar(titulo));
 }
 

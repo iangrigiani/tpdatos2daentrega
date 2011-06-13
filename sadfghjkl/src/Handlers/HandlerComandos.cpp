@@ -129,7 +129,7 @@ void HandlerComandos::verEstructura(int parametro){
 
 	case 't': {
 		printf("Viendo estructura del hash de títulos. \n");
-		HashTermino hash(NOM_BLOQUES_TITULO, NOM_ESP_LIBRE_TITULO, NOM_TABLA_TITULO);
+		HashTitulo hash(NOM_BLOQUES_TITULO, NOM_ESP_LIBRE_TITULO, NOM_TABLA_TITULO);
 		hash.mostrar(NOM_SALIDA_TITULO);
 		break; }
 	case 'p': {
@@ -164,7 +164,7 @@ void HandlerComandos::insertar_en_hash_titulo(int offset) {
 	RegistroLibro reg;
 	this->parser->obtenerRegistroDeLibro(this->handler->buscarRegistro(offset), reg);
 	if (reg.getAutor() != REGISTRO_ERRONEO){
-		HashTermino hash(NOM_BLOQUES_TITULO, NOM_ESP_LIBRE_TITULO, NOM_TABLA_TITULO);
+		HashTitulo hash(NOM_BLOQUES_TITULO, NOM_ESP_LIBRE_TITULO, NOM_TABLA_TITULO);
 		hash.alta(reg.getTitulo(), offset);
 		cout<<"ID:"<<offset<<".Libro indexado por titulo.\n"<<endl;
 	}else{
@@ -177,7 +177,7 @@ void HandlerComandos::eliminar_de_hash_titulo(int offset) {
 	RegistroLibro reg;
 	this->parser->obtenerRegistroDeLibro(this->handler->buscarRegistro(offset), reg);
 	if (reg.getAutor() != REGISTRO_ERRONEO){
-		HashTermino hash(NOM_BLOQUES_TITULO, NOM_ESP_LIBRE_TITULO, NOM_TABLA_TITULO);
+		HashTitulo hash(NOM_BLOQUES_TITULO, NOM_ESP_LIBRE_TITULO, NOM_TABLA_TITULO);
 		hash.baja(reg.getTitulo());
 	}else{
 		cout<<"ID:"<<offset<<"No pudo ser insertado en el hash de titulo.\n"<<endl;
