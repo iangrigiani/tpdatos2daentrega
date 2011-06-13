@@ -64,11 +64,13 @@
 #define NOM_TABLA_PALABRA "TablaPalabra"
 #define NOM_ESP_LIBRE_PALABRA "EspLibrePalabra"
 #define NOM_BLOQUES_PALABRA "BloquesPalabra"
+#define NOM_SALIDA_PALABRA "SalidaPalabra"
 
 /****************** Hash de Titulo ********************/
 #define NOM_TABLA_TITULO "TablaTitulo"
 #define NOM_ESP_LIBRE_TITULO "EspLibreTitulo"
 #define NOM_BLOQUES_TITULO "BloquesTitulo"
+#define NOM_SALIDA_TITULO "SalidaTitulo"
 
 /*********************Testing ***************************/
 #define PATH_BLOQUES_TITULO_TEST "BloquesTituloTest"

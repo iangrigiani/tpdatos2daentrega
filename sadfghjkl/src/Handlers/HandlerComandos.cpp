@@ -130,12 +130,12 @@ void HandlerComandos::verEstructura(int parametro){
 	case 't': {
 		printf("Viendo estructura del hash de títulos. \n");
 		HashTermino hash(NOM_BLOQUES_TITULO, NOM_ESP_LIBRE_TITULO, NOM_TABLA_TITULO);
-		hash.mostrar();
+		hash.mostrar(NOM_SALIDA_TITULO);
 		break; }
 	case 'p': {
 		printf("Viendo estructura del hash de palabras. \n");
 		HashPalabra hash(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
-		hash.mostrar();
+		hash.mostrar(NOM_SALIDA_PALABRA);
 		break; }
 
 	}
@@ -394,12 +394,16 @@ void HandlerComandos::consultarAutor(string autor){
 		cout << "No se recuperaron documentos para esta consulta" << endl;
 	}
 }
-void HandlerComandos::consultarTitulo(string titulo){
+void HandlerComandos::consultarTitulo(string titulo) {
 	ProcesadorConsulta procesador;
+
+	ParserDeLibros parser;
+	parser.downCase(titulo);
+
 	int documento = procesador.consultaTitulo(titulo);
-	if ( documento != ERROR){
-		cout << "Se recuperó el libro cuyo título es ->" <<
-				titulo << "<-. Se genero un archivo en el directorio con el resultado ( Path: Consulta titulo )" << endl;
+	if (documento != ERROR) {
+		cout << "Se recuperó el libro cuyo título es: " << titulo << endl;
+		cout << "Se generó un archivo en el directorio con el resultado ( Path: Consulta titulo )" << endl;
 		fstream off;
 		off.open(PATH_CONSULTA_TITULO, ios_base::out);
 		off.close();
@@ -410,10 +414,10 @@ void HandlerComandos::consultarTitulo(string titulo){
 		off.write(ss.str().c_str(), ss.str().length());
 		off.flush();
 		off.close();
-	}else{
-		cout << "No se recuperaron documentos para esta consulta" << endl;
 	}
+	else cout << "No se recuperaron documentos para esta consulta." << endl;
 }
+
 void HandlerComandos::consultarPalabras(list<string> palabras){
 	ProcesadorConsulta procesador;
 	string busqueda;
