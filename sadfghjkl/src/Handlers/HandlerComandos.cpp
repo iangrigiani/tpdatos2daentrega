@@ -216,8 +216,6 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 
 	if (palabras.size() > 0){
 
-		cout << offset << endl;
-
 		HashPalabra hash(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
 
 		ProcesadorOcurrencia procesador;
