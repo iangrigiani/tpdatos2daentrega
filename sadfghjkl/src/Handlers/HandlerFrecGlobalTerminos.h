@@ -8,8 +8,6 @@ class ArbolBMas;
 #include <string.h>
 #include <math.h>
 #include <vector>
-#include "../EstructurasArbol/Elementos.h"
-#include "../EstructurasArbol/Clave.h"
 #include "../NormasAInfinito/CalculadorDePesoGlobal.h"
 #include "../Comunes/Constantes.h"
 #include "../Arbol/ArbolBMas.h"
@@ -65,8 +63,7 @@ private:
 	CalculadorDePesoGlobal* calc;
 	vector<int> idTerminos;
 	string intToString(int integer);
-	void persistirNorma(int idDocumento, float norma){
+	void persistirNorma(int idDocumento, float norma);
+	string lineaArchivoNorma(int idDocument, float norma);
 };
-
-
 #endif /* HANDLERNORMASAINFINITO_H_ */
