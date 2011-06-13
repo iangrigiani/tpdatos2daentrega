@@ -34,7 +34,7 @@ int main (int argc , char *argv[]){
 		if (argv[2])
 			path = argv[2];
 	}
-	(opcion1 = getopt(argc,argv, "ieatploqvhwxyz?:")) ;
+	(opcion1 = getopt(argc,argv, "ieatploqvhc?:")) ;
 	switch ( opcion1 ) {
 	case 'i':   {
 		if (argv[2]) {
@@ -91,56 +91,69 @@ int main (int argc , char *argv[]){
 			printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");}
 		break;}
 
-	case 'w':   {
+	case 'c':   {
+		printf("-q -a/-t/-e/-p	<Consulta> Consultar archivos de índice.\n");
 		if (argv[2]) {
-			printf("-qa <Autor> Consulta puntual por <Autor> \n");
-			stringstream ss2;
-			for ( int i = 2 ; i < argc; ++i){
-				if (i == (argc - 1)){
-					ss2 << argv[i];
-				}else{
-					ss2 << argv[i] << " ";
+			opcion2 = getopt(argc, argv, "aept?:");
+			switch (opcion2) {
+				case 'e': {
+					printf("-q -a <Autor> Consulta puntual por <Autor>.\n");
+					stringstream ss;
+					for (int i = 2; i < argc; ++ i) {
+						if (i == (argc - 1))
+							ss << argv[i];
+						else ss << argv[i] << " ";
+					}
+					handlerComandos->consultarAutor(ss.str());
+					break;
+				}
+
+				case 'a': {
+					printf("-q -e <Editorial> Consulta puntual por <Editorial>.\n");
+					stringstream ss;
+					for (int i = 2; i < argc; ++ i) {
+						if (i == (argc - 1))
+							ss << argv[i];
+						else ss << argv[i] << " ";
+					}
+					handlerComandos->consultarEditorial(ss.str());
+					break;
+				}
+
+				case 't': {
+					printf("-q -t <Título> Consulta puntual por <Título>.\n");
+					stringstream ss;
+					for (int i = 3; i < argc; ++ i) {
+						if (i == (argc - 1))
+							ss << argv[i];
+						else ss << argv[i] << " ";
+					}
+					handlerComandos->consultarTitulo(ss.str());
+					break;
+				}
+
+				case 'p': {
+					printf("-q -p <Palabra> Consulta puntual por <Palabra>.\n");
+					stringstream ss;
+					for (int i = 2; i < argc; ++ i) {
+						if (i == (argc - 1))
+							ss << argv[i];
+						else ss << argv[i] << " ";
+					}
+					handlerComandos->consultarTitulo(ss.str());
+					break;
+				}
+
+				case '?': {
+					printf("Bookerio: Parámetro inválido. \n");
+					printf("Bookerio: Ingrese el parámetro -r para ver la referencia de parámetros.\n");
+					break;
 				}
 			}
-			handlerComandos->consultarAutor(ss2.str());
-		}else{
-			printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");}
-		break;}
-
-	case 'x':   {
-		if (argv[2]) {
-			printf("-qe <Editorial> Consulta puntual por <Editorial> \n \n");
-			stringstream ss3;
-			for ( int i = 2 ; i < argc; ++i){
-				if (i == (argc - 1)){
-					ss3 << argv[i];
-				}else{
-					ss3 << argv[i] << " ";
-				}
-			}
-			handlerComandos->consultarEditorial(ss3.str());
-		}else{
-			printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");}
-		break;}
-
-	case 'y':   {
-		if (argv[2]) {
-			printf("-qt <Título> Consulta puntual por <Título> \n");
-			handlerComandos->consultarTitulo(argv[2]);
-		}else{
-			printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");}
-		break;}
-
-	case 'z':   {
-		if (argv[2]) {
-			printf("-qp <Palabra/s> Consulta por cercanía y Ranqueada por <Palabra/s> \n");
-			list<string> listaPalabras;
-			for ( int i = 2; i < argc; ++i)
-				listaPalabras.push_back(argv[i]);
-			handlerComandos->consultarPalabras(listaPalabras);
-		}else{
-			printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");}
-		break;}
+		}
+		else printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");
+		break;
+	}
 
 	case 'v':   {
 		printf("-v -archivo         Ver archivos de índice\n");

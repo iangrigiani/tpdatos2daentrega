@@ -14,8 +14,10 @@ HashTermino::HashTermino(const string& ruta_arch_bloques, const string& ruta_arc
 int HashTermino::funcion_hash(const string& termino) {
 	int clave = 0;
 
-	for (unsigned int i = 0; i < termino.size(); ++ i)
-		clave += ((int)termino[i]) * (termino.size() - i);
+	for (unsigned int i = 0; i < termino.size(); ++ i) {
+		if (termino[i] != 'z')
+			clave += ((int)termino[i]) * (termino.size() - i);
+	}
 
 	return clave;
 }
