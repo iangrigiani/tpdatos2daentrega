@@ -119,7 +119,7 @@ void HashTitulo::agregar_nuevo_elemento(Bucket& bloque, int num_bloque, RegTitul
 	}
 }
 
-int HashTitulo::alta(const string& termino, int ID) {
+void HashTitulo::alta(const string& termino, int ID) {
 	CadenaBytes cadena;
 	Bucket bloque;
 
@@ -142,8 +142,6 @@ int HashTitulo::alta(const string& termino, int ID) {
 		reg.agregar_nuevo_elemento(elemento);
 		this->insertar_reg(reg);
 	}
-
-	return ID;
 }
 
 bool HashTitulo::eliminar_reg(int clave) {
