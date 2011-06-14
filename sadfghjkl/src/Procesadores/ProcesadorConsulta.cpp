@@ -305,12 +305,7 @@ void ProcesadorConsulta::filtrarPosiciones(list<int> & posiciones, Posicion posi
 	list<int> pos = posicion.getPosiciones();
 	list<int> :: iterator itPosiciones = pos.begin();
 
-	while(itPosiciones!= pos.end())
-	{
-		posiciones.push_back(*itPosiciones);
-		itPosiciones++;
-	}
-
+	posiciones.push_back(*itPosiciones);
 }
 
 
@@ -322,16 +317,6 @@ int ProcesadorConsulta::procesarPosiciones(list<Posicion> & posiciones)
 	list<Posicion> posicionesMinimas;
 
 	int distancia = -1;
-
-	//Una vez que tenemos todas las posiciones en una misma lista las comparamos
-	while(itPosiciones != posiciones.end())
-	{
-		Posicion posicionActual = *itPosiciones;
-		this->filtrarPosiciones(pos,posicionActual);
-		++itPosiciones;
-	}
-
-	itPosiciones = posiciones.begin();
 
 
 	Posicion posicionActual = *itPosiciones;
@@ -365,6 +350,17 @@ int ProcesadorConsulta::procesarPosiciones(list<Posicion> & posiciones)
 		posiciones.push_back(posActual);
 
 		itPosicionesMinimas++;
+	}
+
+
+	itPosicionesMinimas = posicionesMinimas.begin();
+
+	//Una vez que tenemos todas las posiciones en una misma lista las comparamos
+	while(itPosicionesMinimas != posicionesMinimas.end())
+	{
+		Posicion posicionActual = *itPosicionesMinimas;
+		this->filtrarPosiciones(pos,posicionActual);
+		++itPosicionesMinimas;
 	}
 
 
@@ -438,7 +434,6 @@ Posicion ProcesadorConsulta::compararPosiciones(Posicion posicionActual, Posicio
 		itPosicionesMinimas++;
 	}
 
-
 	return posicionMinima;
 
 
@@ -459,46 +454,70 @@ void ProcesadorConsulta::crearPosicionesNuevas(string palabra1,int posicion1, st
 
 	bool encontrado = false;
 
+	list<Posicion> actuales1;
+	list<Posicion> actuales2;
 
 	if(posicionesMinimas.size() > 0)
 	{
-		while(itPosiciones != posicionesMinimas.end() && !encontrado)
+
+		//Agrego todos los elementos en mi nueva lista
+		while(itPosiciones != posicionesMinimas.end())
 		{
 			Posicion posicionActual = *itPosiciones;
+
+			list<int> pos;
 
 			if(posicionActual.getPalabra() == palabra1)
 			{
-				posicionActual.agregarPosicion(posicion1);
+				pos.push_back(posicion1);
+				posicionActual.agregarPosiciones(pos);
 				encontrado = true;
 
 			}
+
+			actuales1.push_back(posicionActual);
 
 			itPosiciones++;
 		}
 
 		if(!encontrado)
-			posicionesMinimas.push_back(pos1);
+			actuales1.push_back(pos1);
 
 		encontrado = false;
-		itPosiciones = posicionesMinimas.begin();
+		itPosiciones = actuales1.begin();
 
-		while(itPosiciones != posicionesMinimas.end() && !encontrado)
+
+		while(itPosiciones != actuales1.end())
 		{
 			Posicion posicionActual = *itPosiciones;
 
+			list<int> pos;
+
 			if(posicionActual.getPalabra() == palabra2)
 			{
-				posicionActual.agregarPosicion(posicion2);
+				pos.push_back(posicion2);
+				posicionActual.agregarPosiciones(pos);
 				encontrado = true;
-
 			}
+
+			actuales2.push_back(posicionActual);
 
 			itPosiciones++;
 
 		}
 
 		if(!encontrado)
-			posicionesMinimas.push_back(pos2);
+			actuales2.push_back(pos2);
+
+		posicionesMinimas.clear();
+		itPosiciones = actuales2.begin();
+
+		while(itPosiciones != actuales2.end())
+		{
+			Posicion actual = *itPosiciones;
+			posicionesMinimas.push_back(actual);
+			itPosiciones++;
+		}
 
 	}
 	else
@@ -562,37 +581,6 @@ Palabra ProcesadorConsulta::filtrarProximidad(Palabra  palabra, list<int> & docu
 		itApActualizadas++;
 	}
 
-	/*list<Aparicion> apariciones1 = palabraFiltrada.getApariciones();
-	list<Aparicion> :: iterator it = apariciones1.begin();
-
-	while(it != apariciones1.end())
-	{
-		Aparicion apActual = *it;
-		cout<<"Aparicion "<<apActual.getIdDocumento()<<endl;
-
-		list<Posicion> posiciones = apActual.getPosiciones();
-		list<Posicion> :: iterator itPos = posiciones.begin();
-
-		while(itPos != posiciones.end())
-		{
-			cout<<"Pos "<<(*itPos).getPalabra()<<endl;
-			Posicion actual = *itPos;
-
-			list<int> enteros = actual.getPosiciones();
-			list<int> :: iterator itEn = enteros.begin();
-			while(itEn != enteros.begin())
-			{
-				cout<<"Pos actual"<<(*itEn)<<endl;
-				itEn++;
-			}
-
-			itPos++;
-
-		}
-
-		it++;
-	}*/
-
 
 	palabraFiltrada.setPalabra(palabra.getPalabra());
 
@@ -609,9 +597,11 @@ void ProcesadorConsulta::actualizarApariciones(int idDocumento,list<Posicion> po
 
 	list<Posicion> :: iterator itPos = posiciones.begin();
 
+
 	while(itPos != posiciones.end())
 	{
-		aparicionActualizada.agregarPosicion(*itPos);
+		Posicion pos = *itPos;
+		aparicionActualizada.agregarPosicion(pos);
 		itPos++;
 
 	}
@@ -753,7 +743,9 @@ Palabra ProcesadorConsulta::filtrarDocumentos(Distancia distancia, Palabra  pala
 
 	while(itAparicionFiltrada != aparicionesFiltradas.end())
 	{
-		filtrada.agregarAparicion(*itAparicionFiltrada);
+		Aparicion actual = *itAparicionFiltrada;
+
+		filtrada.agregarAparicion(actual);
 		itAparicionFiltrada++;
 
 	}
