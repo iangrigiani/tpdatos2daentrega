@@ -395,11 +395,8 @@ void HandlerComandos::consultarAutor(string autor){
 	}
 }
 void HandlerComandos::consultarTitulo(string titulo) {
+	this->parser->downCase(titulo);
 	ProcesadorConsulta procesador;
-
-	ParserDeLibros parser;
-	parser.downCase(titulo);
-
 	int documento = procesador.consultaTitulo(titulo);
 	if (documento != ERROR) {
 		cout << "Se recuperó el libro cuyo título es: " << titulo << endl;
@@ -420,8 +417,13 @@ void HandlerComandos::consultarTitulo(string titulo) {
 
 void HandlerComandos::consultarPalabras(list<string> palabras){
 	ProcesadorConsulta procesador;
+
+	list < string > ::iterator it;
+	for (it = palabras.begin(); it != palabras.end(); ++ it)
+		this->parser->downCase(*it);
+
 	string busqueda;
-	list<string>::iterator it = palabras.begin();
+	it = palabras.begin();
 	while( it != palabras.end()){
 		busqueda += (*it);
 		++it;

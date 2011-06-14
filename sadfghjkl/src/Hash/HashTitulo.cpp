@@ -280,7 +280,7 @@ int HashTitulo::consultar_elemento(Bucket& bloque, int num_bloque, int clave, co
 			return elemento.get_ID();
 		}
 	}
-	else return ERROR;
+	else return -1;
 }
 
 int HashTitulo::consultar(const string& termino) {
