@@ -39,6 +39,9 @@ public:
 
 	bool modificar(Elementos* registro);
 
+	bool incrementarID(Elementos* elemento, int& frecuencia);
+
+	bool decrementarID(Elementos* elemento);
 	//	IteradorArbolBMas* begin();
 
 	/*

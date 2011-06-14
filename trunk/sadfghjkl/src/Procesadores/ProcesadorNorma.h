@@ -1,6 +1,7 @@
 #ifndef PROCESADORNORMA_H_
 #define PROCESADORNORMA_H_
 class ArbolBMas;
+class HashTitulo;
 #include <fstream>
 #include <list>
 #include <sstream>
@@ -9,8 +10,8 @@ class ArbolBMas;
 #include <math.h>
 #include <vector>
 #include "../NormasAInfinito/CalculadorDePesoGlobal.h"
-#include "../Comunes/Constantes.h"
 #include "../Arbol/ArbolBMas.h"
+#include "../Hash/HashTitulo.h"
 
 using namespace std;
 
@@ -56,14 +57,20 @@ public:
 	 * PRE: Recibe por parámetro el id del documento
 	 * POS:
 	 */
-	int eliminarNormaGuardada(int idDocumento);
+	void eliminarNormaGuardada(int idDocumento);
+	/*
+	 * Se usa para consultar la norma de un Documento
+	 * PRE: Recibe por parámetro el id del documento
+	 * POS:
+	 */
+	float consultarNorma(int idDocumento);
 
 private:
-	ArbolBMas* arbolPesos;
+//	ArbolBMas* arbolPesos;
 	CalculadorDePesoGlobal* calc;
 	vector<int> idTerminos;
 	string intToString(int integer);
 	void persistirNorma(int idDocumento, float norma);
-	string lineaArchivoNorma(int idDocument, float norma);
+//	string lineaArchivoNorma(int idDocument, float norma);
 };
 #endif /* PROCESADORNORMA_H_ */
