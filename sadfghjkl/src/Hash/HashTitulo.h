@@ -46,7 +46,7 @@ public:
 
 	virtual ~HashTitulo() {};
 
-	int alta(const string& termino, int ID);
+	void alta(const string& termino, int ID);
 
 	void baja(const string& termino);
 
