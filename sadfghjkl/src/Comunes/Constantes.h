@@ -15,6 +15,9 @@
 #define REGISTRO_ERRONEO "-1"
 #define TIPO_CLAVE_NUMERICA 1
 
+/*********************** TOTAL DOC *************************/
+#define PATH_TOTAL_DOCUMENTOS "Total_documentos_Norma.txt"
+
 /***********************Archivo Maestro*********************/
 #define PATH_REG_LONG_VARIABLE "ArchivoDeRLV.txt"
 #define PATH_ESPACIO_LIBRE_RLV "controlEspaciosLibresRLV.txt"
@@ -71,6 +74,11 @@
 #define NOM_ESP_LIBRE_TITULO "EspLibreTitulo"
 #define NOM_BLOQUES_TITULO "BloquesTitulo"
 #define NOM_SALIDA_TITULO "SalidaTitulo"
+
+/******************* Hash de Normas *******************/
+#define NOM_BLOQUES_NORMA "BloquesNorma"
+#define NOM_ESP_LIBRE_NORMA "EspLibreNorma"
+#define NOM_TABLA_NORMA "TablaNorma"
 
 /*********************Testing ***************************/
 #define PATH_BLOQUES_TITULO_TEST "BloquesTituloTest"

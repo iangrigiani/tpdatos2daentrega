@@ -1,6 +1,13 @@
 #ifndef CALCULADORDEPESOGLOBAL_H_
 #define CALCULADORDEPESOGLOBAL_H_
 
+#include <fstream>
+#include <sstream>
+#include <stdlib.h>
+#include <stdio.h>
+
+#include "../Comunes/Constantes.h"
+
 class CalculadorDePesoGlobal{
 private:
 	int cantDeDocs;
