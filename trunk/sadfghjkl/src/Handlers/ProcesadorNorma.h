@@ -1,5 +1,5 @@
-#ifndef HANDLERNORMASAINFINITO_H_
-#define HANDLERNORMASAINFINITO_H_
+#ifndef PROCESADORNORMA_H_
+#define PROCESADORNORMA_H_
 class ArbolBMas;
 #include <fstream>
 #include <list>
@@ -14,12 +14,12 @@ class ArbolBMas;
 
 using namespace std;
 
-class HandlerFrecGlobalTerminos{
+class ProcesadorNorma{
 public:
 	/* -------- Constructor y Destructor ---------*/
-	HandlerFrecGlobalTerminos();
-	HandlerFrecGlobalTerminos(vector<int> idTerminos);
-	virtual ~HandlerFrecGlobalTerminos();
+	ProcesadorNorma();
+	ProcesadorNorma(vector<int> idTerminos);
+	virtual ~ProcesadorNorma();
 
 	/* Actualiza el archivo de normas incrementando en 1 el valor del peso que estaba
 	 * guardado en el archivo para cada IDTermino del vector idTerminos.
@@ -66,4 +66,4 @@ private:
 	void persistirNorma(int idDocumento, float norma);
 	string lineaArchivoNorma(int idDocument, float norma);
 };
-#endif /* HANDLERNORMASAINFINITO_H_ */
+#endif /* PROCESADORNORMA_H_ */
