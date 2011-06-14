@@ -61,6 +61,7 @@ void ProcesadorConsulta::crearAparicion(Aparicion aparicion1, Aparicion aparicio
 	list<Posicion> :: iterator itPosiciones1 = posiciones1.begin();
 	list<Posicion> :: iterator itPosiciones2 = posiciones2.begin();
 
+
 	while(itPosiciones1 != posiciones1.end())
 	{
 		nuevaAparicion.agregarPosiciones((*itPosiciones1).getPosiciones(), (*itPosiciones1).getPalabra());
@@ -88,6 +89,7 @@ Palabra ProcesadorConsulta::compararApariciones(Palabra palabra1, Palabra palabr
 	bool encontrado = false;
 
 	palabraCoincidente.setPalabra(palabra1.getPalabra() +" "+ palabra2.getPalabra());
+
 
 	while (itApariciones1 != apariciones1.end())
 	 {
@@ -197,7 +199,7 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 
 		offsetsArchivoOcurrencias = hashPalabra.consultar((*it2));
 
-		palabra = handlerArchivoOcurrencias.obtenerPalabra(offsetsArchivoOcurrencias);
+		palabra = handlerArchivoOcurrencias.obtenerPalabra(offsetsArchivoOcurrencias,*itPalabras);
 
 		palabra.setPalabra(*itPalabras);
 
@@ -207,21 +209,24 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 
 	palabraFiltrada = this->procesarApariciones(palabrasConsulta);
 
+	Palabra palabraFiltroProximidad;
+
 	//Si obtengo mas de un documento es porque primero debo filtrar por proximidad
 	if (palabraFiltrada.obtenerDocumentos().size() > 1)
 	{
-		documentosCoincidentes = filtrarProximidad(palabraFiltrada);
+		palabraFiltroProximidad = filtrarProximidad(palabraFiltrada,documentosCoincidentes);
 	}
 	else
 		documentosCoincidentes = palabraFiltrada.obtenerDocumentos();
 
+
 	//Si los documentos coincidentes, una vez filtrado por proximidad siguen siendo
 	//mas de 1 entonces hay que hacer la consulta ranqueada
+
 	if(documentosCoincidentes.size() > 1)
 	{
-		documentosCoincidentes = filtrarRanqueada(palabraFiltrada);
+		documentosCoincidentes = filtrarRanqueada(palabraFiltroProximidad);
 	}
-
 
 	return documentosCoincidentes;
 }
@@ -272,7 +277,7 @@ int ProcesadorConsulta::compararPosiciones(list<int> posiciones)
 		{
 			int posicion2Actual = *itPosiciones2;
 
-			if(posicion1Actual != posicion2Actual)
+			if(posicion1Actual < posicion2Actual)
 			{
 				distanciaMinima = abs(posicion2Actual - posicion1Actual);
 
@@ -310,10 +315,13 @@ void ProcesadorConsulta::filtrarPosiciones(list<int> & posiciones, Posicion posi
 
 
 
-int ProcesadorConsulta::procesarPosiciones(list<Posicion> posiciones)
+int ProcesadorConsulta::procesarPosiciones(list<Posicion> & posiciones)
 {
 	list<Posicion> :: iterator itPosiciones = posiciones.begin();
 	list<int> pos;
+	list<Posicion> posicionesMinimas;
+
+	int distancia = -1;
 
 	//Una vez que tenemos todas las posiciones en una misma lista las comparamos
 	while(itPosiciones != posiciones.end())
@@ -323,13 +331,189 @@ int ProcesadorConsulta::procesarPosiciones(list<Posicion> posiciones)
 		++itPosiciones;
 	}
 
-	return compararPosiciones(pos);
+	itPosiciones = posiciones.begin();
+
+
+	Posicion posicionActual = *itPosiciones;
+	++itPosiciones;
+	Posicion posicionSiguiente;
+	Posicion posicionCalculada;
+
+	bool procesar = true;
+
+	while(itPosiciones != posiciones.end() && procesar)
+	{
+		posicionSiguiente = *itPosiciones;
+		posicionCalculada = this->compararPosiciones(posicionActual,posicionSiguiente,posicionesMinimas);
+		posicionActual = posicionCalculada;
+
+		if(posicionCalculada.getPosiciones().size() == 0)
+			procesar = false;
+		++itPosiciones;
+	}
+
+
+	//Actualizo la lista de posiciones con la minima.
+	posiciones.clear();
+
+	list<Posicion> :: iterator itPosicionesMinimas = posicionesMinimas.begin();
+
+	while(itPosicionesMinimas != posicionesMinimas.end())
+	{
+		Posicion posActual = *itPosicionesMinimas;
+
+		posiciones.push_back(posActual);
+
+		itPosicionesMinimas++;
+	}
+
+
+	if(procesar)
+		distancia = compararPosiciones(pos);
+
+	return distancia;
+}
+
+Posicion ProcesadorConsulta::compararPosiciones(Posicion posicionActual, Posicion posicionSiguiente, list<Posicion> & posicionesMinimas)
+{
+
+	list<int> posiciones1 = posicionActual.getPosiciones();
+	list<int> posiciones2 = posicionSiguiente.getPosiciones();
+
+	list<int> :: iterator itPosiciones1 = posiciones1.begin();
+	list<int> :: iterator itPosiciones2;
+
+	int distanciaMinima = 0;
+	int distanciaMinimaAnterior = 0;
+
+	Posicion posicionMinima;
+
+	while(itPosiciones1!= posiciones1.end())
+	{
+		int pos1Actual = *itPosiciones1;
+
+		itPosiciones2 = posiciones2.begin();
+
+		while(itPosiciones2 != posiciones2.end())
+		{
+			int pos2Actual = *itPosiciones2;
+
+			if(pos1Actual < pos2Actual)
+			{
+				distanciaMinima = abs(pos2Actual - pos1Actual);
+
+				if(distanciaMinimaAnterior == 0)
+					distanciaMinimaAnterior = distanciaMinima;
+
+				if(distanciaMinima < distanciaMinimaAnterior)
+				{
+					distanciaMinimaAnterior = distanciaMinima;
+					posicionesMinimas.clear();
+					crearPosicionesNuevas(posicionActual.getPalabra(),pos1Actual,posicionSiguiente.getPalabra(),pos2Actual,posicionesMinimas);
+				}
+				else
+					if(distanciaMinima == distanciaMinimaAnterior)
+						crearPosicionesNuevas(posicionActual.getPalabra(),pos1Actual,posicionSiguiente.getPalabra(),pos2Actual,posicionesMinimas);
+			}
+
+			itPosiciones2++;
+
+		}
+
+		itPosiciones1++;
+	}
+
+
+	list<Posicion> :: iterator itPosicionesMinimas = posicionesMinimas.begin();
+	bool encontrado = false;
+	while(itPosicionesMinimas != posicionesMinimas.end() && !encontrado)
+	{
+		Posicion posicionActual = *itPosicionesMinimas;
+		if(posicionActual.getPalabra() == posicionSiguiente.getPalabra())
+		{
+			posicionMinima = posicionActual;
+			encontrado = true;
+		}
+
+		itPosicionesMinimas++;
+	}
+
+
+	return posicionMinima;
+
+
+}
+
+
+void ProcesadorConsulta::crearPosicionesNuevas(string palabra1,int posicion1, string palabra2,int posicion2, list<Posicion> & posicionesMinimas)
+{
+	Posicion pos1;
+	Posicion pos2;
+
+	list<Posicion> :: iterator itPosiciones = posicionesMinimas.begin();
+
+	pos1.setPalabra(palabra1);
+	pos1.agregarPosicion(posicion1);
+	pos2.setPalabra(palabra2);
+	pos2.agregarPosicion(posicion2);
+
+	bool encontrado = false;
+
+
+	if(posicionesMinimas.size() > 0)
+	{
+		while(itPosiciones != posicionesMinimas.end() && !encontrado)
+		{
+			Posicion posicionActual = *itPosiciones;
+
+			if(posicionActual.getPalabra() == palabra1)
+			{
+				posicionActual.agregarPosicion(posicion1);
+				encontrado = true;
+
+			}
+
+			itPosiciones++;
+		}
+
+		if(!encontrado)
+			posicionesMinimas.push_back(pos1);
+
+		encontrado = false;
+		itPosiciones = posicionesMinimas.begin();
+
+		while(itPosiciones != posicionesMinimas.end() && !encontrado)
+		{
+			Posicion posicionActual = *itPosiciones;
+
+			if(posicionActual.getPalabra() == palabra2)
+			{
+				posicionActual.agregarPosicion(posicion2);
+				encontrado = true;
+
+			}
+
+			itPosiciones++;
+
+		}
+
+		if(!encontrado)
+			posicionesMinimas.push_back(pos2);
+
+	}
+	else
+	{
+		posicionesMinimas.push_back(pos1);
+		posicionesMinimas.push_back(pos2);
+	}
+
 
 }
 
 
 
-list<int> ProcesadorConsulta::filtrarProximidad(Palabra & palabra)
+
+Palabra ProcesadorConsulta::filtrarProximidad(Palabra  palabra, list<int> & documentosCoincidentes)
 {
 	list<Distancia> distancias;
 
@@ -337,25 +521,103 @@ list<int> ProcesadorConsulta::filtrarProximidad(Palabra & palabra)
 
 	list<Aparicion> :: iterator itApariciones = apariciones.begin();
 
+	list<Posicion> posiciones;
+
+	list<Aparicion> aparicionesActualizadas;
+
+	Palabra palabraFiltrada;
+
+	Palabra palabraResultado;
+
 	while(itApariciones != apariciones.end())
 	{
 		//Obtengo la aparicion actual
 		Aparicion aparicionActual = *itApariciones;
+
+		posiciones = aparicionActual.getPosiciones();
+
 		list<int> idDocumento;
 
 		Distancia nuevaDistancia;
 
-		nuevaDistancia.setDistancia(this->procesarPosiciones(aparicionActual.getPosiciones()));
+		nuevaDistancia.setDistancia(this->procesarPosiciones(posiciones));
 		idDocumento.push_back(aparicionActual.getIdDocumento());
 		nuevaDistancia.setDocumentos(idDocumento);
 
-		distancias.push_back(nuevaDistancia);
+		if(nuevaDistancia.getDistancia() != -1)
+		{
+			distancias.push_back(nuevaDistancia);
+		}
+		this->actualizarApariciones(aparicionActual.getIdDocumento(),posiciones,aparicionesActualizadas);
 
 		itApariciones++;
 
 	}
 
-	return filtrarDistancias(distancias,palabra);
+	list<Aparicion> :: iterator itApActualizadas = aparicionesActualizadas.begin();
+
+	while(itApActualizadas != aparicionesActualizadas.end())
+	{
+		palabraFiltrada.agregarAparicion(*itApActualizadas);
+		itApActualizadas++;
+	}
+
+	/*list<Aparicion> apariciones1 = palabraFiltrada.getApariciones();
+	list<Aparicion> :: iterator it = apariciones1.begin();
+
+	while(it != apariciones1.end())
+	{
+		Aparicion apActual = *it;
+		cout<<"Aparicion "<<apActual.getIdDocumento()<<endl;
+
+		list<Posicion> posiciones = apActual.getPosiciones();
+		list<Posicion> :: iterator itPos = posiciones.begin();
+
+		while(itPos != posiciones.end())
+		{
+			cout<<"Pos "<<(*itPos).getPalabra()<<endl;
+			Posicion actual = *itPos;
+
+			list<int> enteros = actual.getPosiciones();
+			list<int> :: iterator itEn = enteros.begin();
+			while(itEn != enteros.begin())
+			{
+				cout<<"Pos actual"<<(*itEn)<<endl;
+				itEn++;
+			}
+
+			itPos++;
+
+		}
+
+		it++;
+	}*/
+
+
+	palabraFiltrada.setPalabra(palabra.getPalabra());
+
+	palabraResultado = filtrarDistancias(distancias,palabraFiltrada,documentosCoincidentes);
+
+	return palabraResultado;
+}
+
+void ProcesadorConsulta::actualizarApariciones(int idDocumento,list<Posicion> posiciones, list<Aparicion> & aparicionesActualizadas)
+{
+	Aparicion aparicionActualizada;
+
+	aparicionActualizada.setIdDocumento(idDocumento);
+
+	list<Posicion> :: iterator itPos = posiciones.begin();
+
+	while(itPos != posiciones.end())
+	{
+		aparicionActualizada.agregarPosicion(*itPos);
+		itPos++;
+
+	}
+
+	aparicionesActualizadas.push_back(aparicionActualizada);
+
 }
 
 Distancia ProcesadorConsulta::compararDistancias(Distancia distancia1,Distancia distancia2)
@@ -392,47 +654,67 @@ Distancia ProcesadorConsulta::compararDistancias(Distancia distancia1,Distancia 
 }
 
 
-list<int> ProcesadorConsulta::filtrarDistancias(list<Distancia> distancias, Palabra & palabra)
+Palabra ProcesadorConsulta::filtrarDistancias(list<Distancia> distancias, Palabra  palabra, list<int> & documentosCoincidentes)
 {
 	Distancia distanciaMinima;
 
-
-	list<Distancia> :: iterator itDistancias = distancias.begin();
-
-	Distancia distanciaActual = *itDistancias;
-	++itDistancias;
-	Distancia distanciaSiguiente;
+	Palabra palabraFiltrada;
 
 
-	while(itDistancias != distancias.end())
+	if(distancias.begin() != distancias.end())
 	{
-		distanciaSiguiente = *itDistancias;
 
-		if(distanciaMinima.getDocumentos().size() == 0)
+		list<Distancia> :: iterator itDistancias = distancias.begin();
+
+		Distancia distanciaActual = *itDistancias;
+		distanciaMinima = distanciaActual;
+		++itDistancias;
+		Distancia distanciaSiguiente;
+
+
+		while(itDistancias != distancias.end())
 		{
-			distanciaMinima = compararDistancias(distanciaActual,distanciaSiguiente);
-		}
-		else
-		{
-			distanciaMinima = compararDistancias(distanciaMinima,distanciaSiguiente);
+			distanciaSiguiente = *itDistancias;
 
+			if(distanciaMinima.getDocumentos().size() == 0)
+			{
+				distanciaMinima = compararDistancias(distanciaActual,distanciaSiguiente);
+			}
+			else
+			{
+				distanciaMinima = compararDistancias(distanciaMinima,distanciaSiguiente);
+
+			}
+
+			distanciaActual = distanciaSiguiente;
+			itDistancias++;
 		}
 
-		distanciaActual = distanciaSiguiente;
-		itDistancias++;
+		palabraFiltrada = filtrarDocumentos(distanciaMinima,palabra);
+
 	}
 
-	filtrarDocumentos(distanciaMinima,palabra);
 
-	return distanciaMinima.getDocumentos();
+	list<int> docs = distanciaMinima.getDocumentos();
+
+	list<int> :: iterator itDocs = docs.begin();
+
+	while(itDocs != docs.end())
+	{
+		documentosCoincidentes.push_back(*itDocs);
+		itDocs++;
+	}
+
+	return palabraFiltrada;
 }
 
-void ProcesadorConsulta::filtrarDocumentos(Distancia distancia, Palabra & palabra)
+Palabra ProcesadorConsulta::filtrarDocumentos(Distancia distancia, Palabra  palabra)
 {
 	list<Aparicion> apariciones = palabra.getApariciones();
 	list<Aparicion> :: iterator itApariciones;
-
 	list<Aparicion> aparicionesFiltradas;
+
+	Palabra filtrada;
 
 	list<int> documentosCoincidentes = distancia.getDocumentos();
 	list<int> :: iterator itDocumentos = documentosCoincidentes.begin();
@@ -464,26 +746,31 @@ void ProcesadorConsulta::filtrarDocumentos(Distancia distancia, Palabra & palabr
 		 itDocumentos++;
 	}
 
-	apariciones.clear();
+	filtrada.setPalabra(palabra.getPalabra());
+
 
 	list<Aparicion> :: iterator itAparicionFiltrada = aparicionesFiltradas.begin();
 
 	while(itAparicionFiltrada != aparicionesFiltradas.end())
 	{
-		apariciones.push_back(*itAparicionFiltrada);
+		filtrada.agregarAparicion(*itAparicionFiltrada);
 		itAparicionFiltrada++;
 
 	}
+
+	return filtrada;
 
 }
 
 
 
-list<int> ProcesadorConsulta::filtrarRanqueada(Palabra & palabra)
+list<int> ProcesadorConsulta::filtrarRanqueada(Palabra palabra)
 {
 	list<int> documentos;
 
 	int cantidadApariciones = (palabra.getApariciones()).size();
+
+
 	int frecTerminoEnDoc = 0;
 	list<Aparicion>::iterator itAparicionFiltrada;
 	list<Posicion>::iterator itPosicionEnDoc;
@@ -492,11 +779,12 @@ list<int> ProcesadorConsulta::filtrarRanqueada(Palabra & palabra)
 	float pesoGlobal, pesoTermino, mayorPeso;
 	CalculadorDePesoGlobal calcPesoGlobal;
 
+	list<Aparicion> apariciones = palabra.getApariciones();
 
 	// por cada documento hay una aparicion
 	for (int a = 0; a<cantidadApariciones; a++){
 
-		itAparicionFiltrada = palabra.getApariciones().begin();
+		itAparicionFiltrada = apariciones.begin();
 
 		for (int b =0; b < a; b++){
 			++itAparicionFiltrada;
@@ -504,8 +792,8 @@ list<int> ProcesadorConsulta::filtrarRanqueada(Palabra & palabra)
 		aparicion = *itAparicionFiltrada;
 
 
-		/*
-		 * CODIGO COMENTADO HASTA QUE DECIDAMOS COMO HACER, SI CALCULAR POR FRASE O POR PALABRAS SEPARADAS
+
+		 /* CODIGO COMENTADO HASTA QUE DECIDAMOS COMO HACER, SI CALCULAR POR FRASE O POR PALABRAS SEPARADAS
 		// Calculo el peso:
 		itPosicionEnDoc = aparicion.getPosiciones().begin();
 		posicion = *itPosicionEnDoc;

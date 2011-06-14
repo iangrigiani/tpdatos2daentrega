@@ -351,7 +351,7 @@ list<int> HandlerArchivoOcurrencias::obtenerListaDocumentos(list<int> offsets){
 }
 
 
-Palabra HandlerArchivoOcurrencias::obtenerPalabra(list<int> offsets)
+Palabra HandlerArchivoOcurrencias::obtenerPalabra(list<int> offsets, string nombrePalabra)
 {
 
 	Palabra palabra;
@@ -369,7 +369,7 @@ Palabra HandlerArchivoOcurrencias::obtenerPalabra(list<int> offsets)
 
 		Aparicion aparicion;
 		aparicion.setIdDocumento(numeroDocumento);
-		aparicion.agregarPosiciones(ocurrencia.getPosiciones(),ocurrencia.getPalabra());
+		aparicion.agregarPosiciones(ocurrencia.getPosiciones(),nombrePalabra);
 		palabra.agregarAparicion(aparicion);
 
 		++it;

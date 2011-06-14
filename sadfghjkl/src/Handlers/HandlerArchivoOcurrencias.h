@@ -73,7 +73,7 @@ public:
 		 * pre: recibe la lista de offset al archivo de ocurrencias donde aparece ese termino.
 		 * post: devuelve palabra.
 		 */
-		Palabra obtenerPalabra(list<int> offsets);
+		Palabra obtenerPalabra(list<int> offsets, string nombrePalabra);
 };
 
 #endif /* HANDLERARCHIVOOCURRENCIAS_H_ */
