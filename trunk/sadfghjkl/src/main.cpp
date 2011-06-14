@@ -134,13 +134,13 @@ int main (int argc , char *argv[]){
 
 				case 'p': {
 					printf("-q -p <Palabra> Consulta puntual por <Palabra>.\n");
-					stringstream ss;
-					for (int i = 2; i < argc; ++ i) {
-						if (i == (argc - 1))
-							ss << argv[i];
-						else ss << argv[i] << " ";
+					string s;
+					list < string > palabras;
+					for (int i = 3; i < argc; ++ i) {
+						s = argv[i];
+						palabras.push_back(s);
 					}
-					handlerComandos->consultarTitulo(ss.str());
+					handlerComandos->consultarPalabras(palabras);
 					break;
 				}
 
