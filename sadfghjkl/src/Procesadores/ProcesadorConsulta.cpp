@@ -217,10 +217,10 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 
 	//Si los documentos coincidentes, una vez filtrado por proximidad siguen siendo
 	//mas de 1 entonces hay que hacer la consulta ranqueada
-//	if(documentosCoincidentes.size() > 1)
-//	{
-//		documentosCoincidentes = filtrarRanqueada(palabraFiltrada);
-//	}
+	if(documentosCoincidentes.size() > 1)
+	{
+		documentosCoincidentes = filtrarRanqueada(palabraFiltrada);
+	}
 
 
 	return documentosCoincidentes;
@@ -483,6 +483,55 @@ list<int> ProcesadorConsulta::filtrarRanqueada(Palabra & palabra)
 {
 	list<int> documentos;
 
-	return documentos;
+	int cantidadApariciones = (palabra.getApariciones()).size();
+	int frecTerminoEnDoc = 0;
+	list<Aparicion>::iterator itAparicionFiltrada;
+	list<Posicion>::iterator itPosicionEnDoc;
+	Aparicion aparicion;
+	Posicion posicion;
+	float pesoGlobal, pesoTermino, mayorPeso;
+	CalculadorDePesoGlobal calcPesoGlobal;
 
+
+	// por cada documento hay una aparicion
+	for (int a = 0; a<cantidadApariciones; a++){
+
+		itAparicionFiltrada = palabra.getApariciones().begin();
+
+		for (int b =0; b < a; b++){
+			++itAparicionFiltrada;
+		}
+		aparicion = *itAparicionFiltrada;
+
+
+		/*
+		 * CODIGO COMENTADO HASTA QUE DECIDAMOS COMO HACER, SI CALCULAR POR FRASE O POR PALABRAS SEPARADAS
+		// Calculo el peso:
+		itPosicionEnDoc = aparicion.getPosiciones().begin();
+		posicion = *itPosicionEnDoc;
+		frecTerminoEnDoc = (posicion.getPosiciones()).size();
+
+		buscarPesoTermino
+		pesoGlobal = calcPesoGlobal.calcularPesoGlobalTermino(cantidadApariciones);
+		*/
+
+		// Si la lista de documentos esta vacia, no importa el peso que tenga, sera siempre el de mayor peso hasta ahora
+		if (documentos.empty()){
+			documentos.push_back(aparicion.getIdDocumento());
+			mayorPeso = pesoTermino;
+		} else {
+			// Comparo pesos
+			if (pesoTermino > mayorPeso){
+				mayorPeso = pesoTermino;
+				// TODO: Vaciar lista y agregar el nuevo documento
+			} else if (pesoTermino == mayorPeso){
+				// Si el peso es el mismo, agrego el id del documento a la lista
+				documentos.push_back(aparicion.getIdDocumento());
+			}
+
+		}
+
+	}
+
+	return documentos;
 }
