@@ -194,6 +194,7 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 		list<int> offsetsArchivoOcurrencias;
 
 		//Esto devuelve la lista de offsets al archivo de ocurrencias correspondiente a ese termino
+
 		offsetsArchivoOcurrencias = hashPalabra.consultar((*it2));
 
 		palabra = handlerArchivoOcurrencias.obtenerPalabra(offsetsArchivoOcurrencias);
@@ -245,9 +246,10 @@ list<int> ProcesadorConsulta::consultaPuntualPalabra(string palabra){
 		idTermino.push_back(atoi((*it)->getID()->toString().c_str()));
 	}
 
-	list<int>::iterator it2 = idTermino.begin();
-
-	offsetsArchivoOcurrencias = hashPalabra.consultar((*it2));
+	if (idTermino.size() > 0) {
+		list<int>::iterator it2 = idTermino.begin();
+		offsetsArchivoOcurrencias = hashPalabra.consultar((*it2));
+	}
 
 	return (handlerArchivoOcurrencias.obtenerListaDocumentos(offsetsArchivoOcurrencias));
 }
