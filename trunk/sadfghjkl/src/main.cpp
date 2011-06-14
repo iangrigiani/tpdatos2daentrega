@@ -35,13 +35,13 @@ int main (int argc , char *argv[]){
 			path = argv[2];
 	}
 	(opcion1 = getopt(argc,argv, "ieatploqvhc?:")) ;
-	switch ( opcion1 ) {
+	switch (opcion1) {
 	case 'i':   {
 		if (argv[2]) {
 			handlerComandos->guardarLibroEnArchivoMaestro(path);
 			printf("Bookerio: Libro guardado. \n");
-		}else{
-			printf("Bookerio: No se puede procesar la orden: falta ruta de archivo.\n");}
+		}else
+			printf("Bookerio: No se puede procesar la orden: falta ruta de archivo.\n");
 		break;}
 
 	case 'e':   {
@@ -79,27 +79,27 @@ int main (int argc , char *argv[]){
 			printf("Bookerio: Obtener Libro %s \n", path.c_str());
 			handlerComandos->obtenerLibro(atoi(argv[2]));
 			printf("Bookerio: Obtener Libro %s \n", path.c_str());
-		}else{
-			printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");}
+		}else
+			printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");
 		break;}
 
 	case 'q':   {
 		if (argv[2]) {
-			printf("-q <ID> Quita un archivo por ID \n");
+			printf("-q <ID> Eliminar un archivo por ID. \n");
 			handlerComandos->quitarLibro(atoi(path.c_str()));
-		}else{
-			printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");}
+		}else
+			printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");
 		break;}
 
 	case 'c':   {
-		printf("-q -a/-t/-e/-p	<Consulta> Consultar archivos de índice.\n");
+		printf("-q -archivo     Consultar un archivo de índice. \n");
 		if (argv[2]) {
 			opcion2 = getopt(argc, argv, "aept?:");
 			switch (opcion2) {
 				case 'e': {
 					printf("-q -a <Autor> Consulta puntual por <Autor>.\n");
 					stringstream ss;
-					for (int i = 2; i < argc; ++ i) {
+					for (int i = 3; i < argc; ++ i) {
 						if (i == (argc - 1))
 							ss << argv[i];
 						else ss << argv[i] << " ";
@@ -111,7 +111,7 @@ int main (int argc , char *argv[]){
 				case 'a': {
 					printf("-q -e <Editorial> Consulta puntual por <Editorial>.\n");
 					stringstream ss;
-					for (int i = 2; i < argc; ++ i) {
+					for (int i = 3; i < argc; ++ i) {
 						if (i == (argc - 1))
 							ss << argv[i];
 						else ss << argv[i] << " ";
@@ -156,7 +156,7 @@ int main (int argc , char *argv[]){
 	}
 
 	case 'v':   {
-		printf("-v -archivo         Ver archivos de índice\n");
+		printf("-v -archivo     Ver un archivo de índice. \n");
 		if (argv[2]){
 			opcion2 = getopt(argc,argv, "eatp?:");
 			switch (opcion2){
@@ -189,25 +189,41 @@ int main (int argc , char *argv[]){
 				printf(" Bookerio: Ingrese el parámetro -r para ver la referencia de parámetros.\n");
 				break;}
 			}
-		}else{
-			printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");}
+		}else
+			printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");
 		break;
 	}
 	case 'h': {
 		printf("Parámetros válidos: \n");
-		printf("-i <ruta>   Tomar texto de un archivo\n");
-		printf("-e              Indexar por Editorial los libros agregados recientemente \n");
-		printf("-a              Indexar por Autor los libros agregados recientemente \n");
-		printf("-t              Indexar por Título los libros agregados recientemente \n");
-		printf("-p              Indexar por Palabras los libros agregados recientemente \n");
-		printf("-l              Listar todos los archivos tomados recientemente \n");
-		printf("-o <ID>         Obtener archivo por ID \n");
-		printf("-q <ID>         Quita un archivo por ID \n");
-		printf("-v -archivo         Ver archivos de índice, donde -archivo puede ser: \n");
-		printf("    -e          Ver árbol de Editorial\n");
-		printf("    -a          Ver árbol de Autor\n");
-		printf("    -t          Ver hash de Título\n");
-		printf("    -p          Ver hash de Palabras\n");
+
+		printf("-i <ruta>   	Guardar el libro indicado en la ruta. \n");
+
+		printf("-e              Indexar por Editorial los libros agregados recientemente. \n");
+
+		printf("-a              Indexar por Autor los libros agregados recientemente. \n");
+
+		printf("-t              Indexar por Título los libros agregados recientemente. \n");
+
+		printf("-p              Indexar por Palabra los libros agregados recientemente. \n");
+
+		printf("-l              Listar todos los archivos guardados recientemente. \n");
+
+		printf("-o <ID>         Obtener un libro por ID. \n");
+
+		printf("-q <ID>         Eliminar un libro por ID. \n");
+
+		printf("-c -archivo    Consultar un archivo de índice, donde -archivo puede ser: \n");
+		printf("   -e          Para consultar el árbol de Editoriales. \n");
+		printf("   -a          Para consultar el árbol de Autores. \n");
+		printf("   -t          Para consultar el hash de Títulos. \n");
+		printf("   -p          Para consultar el hash de Palabras. \n");
+
+		printf("-v -archivo    Ver un archivo de índice, donde -archivo puede ser: \n");
+		printf("   -e          Para ver el árbol de Editoriales. \n");
+		printf("   -a          Para ver el árbol de Autores. \n");
+		printf("   -t          Para ver el hash de Títulos. \n");
+		printf("   -p          Para ver el hash de Palabras. \n");
+
 		break;}
 
 	case '?':   printf("Bookerio: Parámetro inválido. \nBookerio: Ingrese el parámetro -h(help) para ver la referencia de parámetros. \n"); break;
