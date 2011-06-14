@@ -74,7 +74,7 @@ void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, list<Ocurrencia
 	/*
     int idDocumento = 0; //TODO Sacar esta basura harcodeada,
     //ver como guardar el número de documento indexado (total de docs +1
-    HandlerFrecGlobalTerminos handlerFrec(this->idTerminos);
+    ProcesadorNorma handlerFrec(this->idTerminos);
     handlerFrec.actualizarPesosYNormas(idDocumento);
     */
 }

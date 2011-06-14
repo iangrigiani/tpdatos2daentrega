@@ -1,22 +1,22 @@
-#include "HandlerFrecGlobalTerminos.h"
+#include "ProcesadorNorma.h"
 
-HandlerFrecGlobalTerminos::HandlerFrecGlobalTerminos() {
+ProcesadorNorma::ProcesadorNorma() {
 }
 
-HandlerFrecGlobalTerminos::HandlerFrecGlobalTerminos(vector<int> idTerminos){
+ProcesadorNorma::ProcesadorNorma(vector<int> idTerminos){
 	this->idTerminos = idTerminos;
 	this->arbolPesos = new ArbolBMas(PATH_ARCHIVO_FREC_GLOB, 1);
 	this->calc       = new CalculadorDePesoGlobal();
 }
 
 
-HandlerFrecGlobalTerminos::~HandlerFrecGlobalTerminos() {
+ProcesadorNorma::~ProcesadorNorma() {
 	delete this->arbolPesos;
 	delete this->calc;
 }
 
 
-void HandlerFrecGlobalTerminos::actualizarPesosYNormas(int idDocumento){
+void ProcesadorNorma::actualizarPesosYNormas(int idDocumento){
 	int i = 0 , frecGlobal= 0;
 	float pesoGlobal= 0, norma = 0;
 
@@ -34,7 +34,7 @@ void HandlerFrecGlobalTerminos::actualizarPesosYNormas(int idDocumento){
 }
 
 
-int HandlerFrecGlobalTerminos::incrementarPesoTermino(int IDTermino){
+int ProcesadorNorma::incrementarPesoTermino(int IDTermino){
 	Clave* clave = new Clave(intToString(IDTermino));
 	list<Elementos*>* listaElementos = new list<Elementos*>();
 	this->arbolPesos->buscar(listaElementos, clave); //Debería devolver uno o ninguno
@@ -67,7 +67,7 @@ int HandlerFrecGlobalTerminos::incrementarPesoTermino(int IDTermino){
 }
 
 
-int HandlerFrecGlobalTerminos::decrementarPesoTermino (int IDTermino){
+int ProcesadorNorma::decrementarPesoTermino (int IDTermino){
 	Clave* clave = new Clave(intToString(IDTermino));
 	list<Elementos*>* listaElementos = new list<Elementos*>();
 	this->arbolPesos->buscar(listaElementos, clave); //Debería devolver uno o ninguno
@@ -94,7 +94,7 @@ int HandlerFrecGlobalTerminos::decrementarPesoTermino (int IDTermino){
 }
 
 
-int HandlerFrecGlobalTerminos::buscarPesoTermino(int IDTermino){
+int ProcesadorNorma::buscarPesoTermino(int IDTermino){
 	Clave* clave = new Clave(intToString(IDTermino));
 	list<Elementos*>* listaElementos = new list<Elementos*>();
 	this->arbolPesos->buscar(listaElementos, clave);
@@ -106,7 +106,7 @@ int HandlerFrecGlobalTerminos::buscarPesoTermino(int IDTermino){
 
 }
 
-int HandlerFrecGlobalTerminos::eliminarNormaGuardada(int idDocumento){
+int ProcesadorNorma::eliminarNormaGuardada(int idDocumento){
 	int puntero = 0;
 	// TODO ESTO NO COMPILA ----->>>> puntero = buscarRegistro(idDocumento);
 	string linea = "\n";
@@ -129,21 +129,21 @@ int HandlerFrecGlobalTerminos::eliminarNormaGuardada(int idDocumento){
 
 
 /*private*/
-string HandlerFrecGlobalTerminos::intToString(int integer){
+string ProcesadorNorma::intToString(int integer){
 	stringstream ss;
 	ss << integer;
 	return ss.str();
 }
 
 
-string HandlerFrecGlobalTerminos::lineaArchivoNorma(int idDocument, float norma){
+string ProcesadorNorma::lineaArchivoNorma(int idDocument, float norma){
 	stringstream ss;
 	ss << idDocument<<"|"<<norma<< "\n";
 	return ss.str();
 }
 
 
-void HandlerFrecGlobalTerminos::persistirNorma(int idDocumento, float norma){
+void ProcesadorNorma::persistirNorma(int idDocumento, float norma){
 	string linea = lineaArchivoNorma(idDocumento, norma);
 	ofstream archivoLog;
 
