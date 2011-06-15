@@ -17,14 +17,12 @@ int main (int argc , char *argv[]){
 	string path;
 
 	int opcion1, opcion2;
-	if ((argc!= 2) && (argc!=3) ) {
+	if ((argc!= 2) && (argc!=3)) {
 		stringstream ss;
-		for ( int i = 2 ; i < argc; ++i){
+		for ( int i = 2 ; i < argc; ++i) {
 			if (i == (argc - 1)){
 				ss << argv[i];
-			}else{
-				ss << argv[i] << " ";
-			}
+			}else ss << argv[i] << " ";
 		}
 		path = ss.str();
 		//    	printf("Bookerio: Cantidad errónea de parámetros. Sólo puede pasar un parámetro o ");
@@ -40,8 +38,7 @@ int main (int argc , char *argv[]){
 		if (argv[2]) {
 			handlerComandos->guardarLibroEnArchivoMaestro(path);
 			printf("Bookerio: Libro guardado. \n");
-		}else
-			printf("Bookerio: No se puede procesar la orden: falta ruta de archivo.\n");
+		}else printf("Bookerio: No se puede procesar la orden: falta ruta de archivo.\n");
 		break;}
 
 	case 'e':   {
@@ -79,24 +76,22 @@ int main (int argc , char *argv[]){
 			printf("Bookerio: Obtener Libro %s \n", path.c_str());
 			handlerComandos->obtenerLibro(atoi(argv[2]));
 			printf("Bookerio: Obtener Libro %s \n", path.c_str());
-		}else
-			printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");
+		}else printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");
 		break;}
 
 	case 'q':   {
 		if (argv[2]) {
 			printf("-q <ID> Eliminar un archivo por ID. \n");
 			handlerComandos->quitarLibro(atoi(path.c_str()));
-		}else
-			printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");
+		}else printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");
 		break;}
 
 	case 'c':   {
 		printf("-q -archivo     Consultar un archivo de índice. \n");
 		if (argv[2]) {
-			opcion2 = getopt(argc, argv, "aept?:");
+			opcion2 = getopt(argc, argv, "eatp?:");
 			switch (opcion2) {
-				case 'e': {
+				case 'a':   {
 					printf("-q -a <Autor> Consulta puntual por <Autor>.\n");
 					stringstream ss;
 					for (int i = 3; i < argc; ++ i) {
@@ -105,10 +100,9 @@ int main (int argc , char *argv[]){
 						else ss << argv[i] << " ";
 					}
 					handlerComandos->consultarAutor(ss.str());
-					break;
-				}
+					break;}
 
-				case 'a': {
+				case 'e':   {
 					printf("-q -e <Editorial> Consulta puntual por <Editorial>.\n");
 					stringstream ss;
 					for (int i = 3; i < argc; ++ i) {
@@ -117,10 +111,9 @@ int main (int argc , char *argv[]){
 						else ss << argv[i] << " ";
 					}
 					handlerComandos->consultarEditorial(ss.str());
-					break;
-				}
+					break;}
 
-				case 't': {
+				case 't':   {
 					printf("-q -t <Título> Consulta puntual por <Título>.\n");
 					stringstream ss;
 					for (int i = 3; i < argc; ++ i) {
@@ -129,10 +122,9 @@ int main (int argc , char *argv[]){
 						else ss << argv[i] << " ";
 					}
 					handlerComandos->consultarTitulo(ss.str());
-					break;
-				}
+					break;}
 
-				case 'p': {
+				case 'p':   {
 					printf("-q -p <Palabra> Consulta puntual por <Palabra>.\n");
 					string s;
 					list < string > palabras;
@@ -141,14 +133,12 @@ int main (int argc , char *argv[]){
 						palabras.push_back(s);
 					}
 					handlerComandos->consultarPalabras(palabras);
-					break;
-				}
+					break;}
 
-				case '?': {
+				case '?':   {
 					printf("Bookerio: Parámetro inválido. \n");
 					printf("Bookerio: Ingrese el parámetro -r para ver la referencia de parámetros.\n");
-					break;
-				}
+					break;}
 			}
 		}
 		else printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");
@@ -160,40 +150,39 @@ int main (int argc , char *argv[]){
 		if (argv[2]){
 			opcion2 = getopt(argc,argv, "eatp?:");
 			switch (opcion2){
-			case 'e': {
+			case 'e':   {
 				printf("Bookerio: Viendo estructura de árbol de Editoriales.\n");
 				handlerComandos->verEstructura('e');
 				printf("Bookerio: Fin de estructura de árbol de Editoriales.\n");
 				break;}
 
-			case 'a': {
+			case 'a':   {
 				printf("Bookerio: Viendo estructura de árbol de Autores.\n");
 				handlerComandos->verEstructura('a');
 				printf("Bookerio: Fin de estructura de árbol de Autores.\n");
 				break;}
 
-			case 't': {
+			case 't':   {
 				printf("Bookerio: Viendo estructura de hash de Títulos.\n");
 				handlerComandos->verEstructura('t');
 				printf("Bookerio: Fin de estructura de hash de Títulos.\n");
 				break;}
 
-			case 'p': {
+			case 'p':   {
 				printf("Bookerio: Viendo estructura de hash de Palabras.\n");
 				handlerComandos->verEstructura('p');
 				printf("Bookerio: Fin de estructura de hash de Palabras.\n");
 				break;}
 
-			case '?': {
+			case '?':   {
 				printf("Bookerio: Parámetro inválido. \n");
-				printf(" Bookerio: Ingrese el parámetro -r para ver la referencia de parámetros.\n");
+				printf(" Bookerio: Ingrese el parámetro -h para ver la referencia de parámetros.\n");
 				break;}
 			}
-		}else
-			printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");
+		}else printf("Bookerio: No se puede procesar la orden: falta un parámetro.\n");
 		break;
 	}
-	case 'h': {
+	case 'h':   {
 		printf("Parámetros válidos: \n");
 
 		printf("-i <ruta>   	Guardar el libro indicado en la ruta. \n");
@@ -226,7 +215,9 @@ int main (int argc , char *argv[]){
 
 		break;}
 
-	case '?':   printf("Bookerio: Parámetro inválido. \nBookerio: Ingrese el parámetro -h(help) para ver la referencia de parámetros. \n"); break;
+	case '?':
+		printf("Bookerio: Parámetro inválido. \nBookerio: Ingrese el parámetro -h(help) para ver la referencia de parámetros. \n");
+		break;
 	}
 
 	delete handlerComandos;
