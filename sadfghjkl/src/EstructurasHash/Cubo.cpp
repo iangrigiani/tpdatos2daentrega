@@ -6,7 +6,7 @@ Cubo::Cubo(int tam_disp) : Bloque(tam_disp) {
 }
 
 int Cubo::get_tam() {
-	CadenaBytes cadena_aux = this->Serializar();
+	Persistencia cadena_aux = this->Serializar();
 	return cadena_aux.getTamanio();
 }
 
@@ -17,7 +17,7 @@ bool Cubo::esta_vacio() const {
 }
 
 bool Cubo::entra_en_bloque(RegPalabra& reg) const {
-	CadenaBytes cadena;
+	Persistencia cadena;
 
 	int tam = reg.get_tam();
 	cadena.agregarAlFinal(&tam, sizeof(tam));
@@ -30,7 +30,7 @@ bool Cubo::entra_en_bloque(RegPalabra& reg) const {
 }
 
 bool Cubo::entra_en_bloque(int offset) const {
-	CadenaBytes cadena;
+	Persistencia cadena;
 
 	cadena.agregarAlFinal(&offset, sizeof(offset));
 
@@ -41,7 +41,7 @@ bool Cubo::entra_en_bloque(int offset) const {
 }
 
 void Cubo::aumentar_esp_libre(int offset) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 
 	cadena.agregarAlFinal(&offset, sizeof(offset));
 
@@ -49,7 +49,7 @@ void Cubo::aumentar_esp_libre(int offset) {
 }
 
 void Cubo::disminuir_esp_libre(int offset) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 
 	cadena.agregarAlFinal(&offset, sizeof(offset));
 
@@ -59,7 +59,7 @@ void Cubo::disminuir_esp_libre(int offset) {
 void Cubo::agregar_nuevo_reg(RegPalabra& reg) {
 	this->regs.push_back(reg);
 
-	CadenaBytes cadena;
+	Persistencia cadena;
 
 	int tam = reg.get_tam();
 	cadena.agregarAlFinal(&tam, sizeof(tam));
@@ -76,7 +76,7 @@ bool Cubo::eliminar_reg(int clave) {
 		++ it;
 
 	if (it != this->regs.end() && (*it).get_clave() == clave) {
-		CadenaBytes cadena;
+		Persistencia cadena;
 
 		int tam = (*it).get_tam();
 		cadena.agregarAlFinal(&tam, sizeof(tam));
@@ -142,7 +142,7 @@ list < RegPalabra > Cubo::actualizar_regs(int num_bloque, HandlerTabla& handler)
 		if (num_bloque != handler.get_num_bloque((*it).get_clave())) {
 			reg_desact = *it;
 
-			CadenaBytes cadena;
+			Persistencia cadena;
 
 			tam = reg_desact.get_tam();
 			cadena.agregarAlFinal(&tam, sizeof(tam));
@@ -161,8 +161,8 @@ list < RegPalabra > Cubo::actualizar_regs(int num_bloque, HandlerTabla& handler)
 	return list_aux;
 }
 
-CadenaBytes Cubo::Serializar() {
-	CadenaBytes cadena;
+Persistencia Cubo::Serializar() {
+	Persistencia cadena;
 
 	cadena.agregarAlFinal(&this->tam_disp, sizeof(this->tam_disp));
 
@@ -180,7 +180,7 @@ CadenaBytes Cubo::Serializar() {
 	return cadena;
 }
 
-bool Cubo::Hidratar(CadenaBytes& cadena) {
+bool Cubo::Hidratar(Persistencia& cadena) {
 	this->vaciar();
 
 	int offset = 0;
@@ -195,7 +195,7 @@ bool Cubo::Hidratar(CadenaBytes& cadena) {
 	for (int i = 0; i < tam1; ++ i) {
 		tam2 = cadena.leerEntero(offset);
 		offset += sizeof(tam2);
-		CadenaBytes cadena_aux;
+		Persistencia cadena_aux;
 		cadena_aux = cadena.leer(offset, tam2);
 		RegPalabra reg;
 		reg.Hidratar(cadena_aux);

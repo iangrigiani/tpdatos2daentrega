@@ -14,12 +14,12 @@ void Elemento::set_ID(int ID) {
 }
 
 int Elemento::get_tam() {
-	CadenaBytes cadena_aux = this->Serializar();
+	Persistencia cadena_aux = this->Serializar();
 	return cadena_aux.getTamanio();
 }
 
-CadenaBytes Elemento::Serializar() {
-	CadenaBytes cadena;
+Persistencia Elemento::Serializar() {
+	Persistencia cadena;
 
 	char tam = this->termino.size();
 	cadena.agregarAlFinal(&tam, sizeof(tam));
@@ -31,7 +31,7 @@ CadenaBytes Elemento::Serializar() {
 	return cadena;
 }
 
-bool Elemento::Hidratar(CadenaBytes& cadena) {
+bool Elemento::Hidratar(Persistencia& cadena) {
 	this->termino.clear();
 
 	int offset = 0;

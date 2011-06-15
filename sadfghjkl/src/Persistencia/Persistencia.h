@@ -1,5 +1,5 @@
-#ifndef CADENABYTES_H_
-#define CADENABYTES_H_
+#ifndef PERSISTENCIA_H_
+#define PERSISTENCIA_H_
 
 #include <string>
 #include <iostream>
@@ -11,7 +11,7 @@
 
 using namespace std;
 
-class CadenaBytes {
+class Persistencia {
 private:
 
 	string bytes;
@@ -20,22 +20,22 @@ public:
 	/*
 	 * Constructor
 	 */
-	CadenaBytes();
+	Persistencia();
 
 	/*
 	 * Constructor que crea una nueva instancia con los bytes del objeto pasado por argumento.
 	 */
-	CadenaBytes(const CadenaBytes &cadDeBytes);
+	Persistencia(const Persistencia &cadDeBytes);
 
 	/*
 	 * Constructor que se crea con un string
 	 */
-	CadenaBytes (string bytes);
+	Persistencia (string bytes);
 
 	/*
 	 * Destructor
 	 */
-	virtual ~CadenaBytes();
+	virtual ~Persistencia();
 
 	/*
 	 * Metodo que dice si el objeto no tiene ningun byte
@@ -58,7 +58,7 @@ public:
 	 * Pos: Devuelve TRUE si pudo agregar los bytes en la posicion requerida,
 	 * 		de lo contrario devuelve FALSE.
 	 */
-	bool agregar(const CadenaBytes& bytes,unsigned int posicion);
+	bool agregar(const Persistencia& bytes,unsigned int posicion);
 
 	/*
 	 * Metodo que agrega los bytes del string en una posicion especifica (pasada por argumento)
@@ -90,7 +90,7 @@ public:
 	 * Pos: Devuelve TRUE si pudo agregar los bytes al final,
 	 * 		de lo contrario devuelve FALSE.
 	 */
-	bool agregarAlFinal(const CadenaBytes& bytes);
+	bool agregarAlFinal(const Persistencia& bytes);
 
 	/*
 	 * Metodo que agrega el valor convertido a bytes al final de la cadena.
@@ -113,7 +113,7 @@ public:
 	 * Pos: Devuelve TRUE si pudo reemplazar el contenido, de lo contrario
 	 *      devuelve FALSE.
 	 */
-	bool reemplazar(const CadenaBytes &cadDeBytes, unsigned int posicion);
+	bool reemplazar(const Persistencia &cadDeBytes, unsigned int posicion);
 
 	/*
 	 * Pre: Argumentos validos.
@@ -137,7 +137,7 @@ public:
 	 *      hasta inicio + tamanio. Si estos 2 valores no son validos,
 	 *      devuelve el contenido de la instancia vacia.
 	 */
-	CadenaBytes leer(unsigned int inicio, unsigned int tamanio) const;
+	Persistencia leer(unsigned int inicio, unsigned int tamanio) const;
 
 	/*
 	 * Metodo que sirve para leer una serie de bytes dados por el tamaño de un entero
@@ -166,4 +166,4 @@ public:
 
 };
 
-#endif /* CADENABYTES_H_ */
+#endif /* PERSISTENCIA_H_ */

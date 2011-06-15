@@ -16,8 +16,8 @@ public:
 	NodoInterior();
 	virtual ~NodoInterior();
 
-	CadenaBytes Serializar();
-	bool Hidratar(CadenaBytes & cadena);
+	Persistencia Serializar();
+	bool Hidratar(Persistencia & cadena);
 
     int *getHijos() const
     {

@@ -24,7 +24,7 @@ bool RegPalabra::esta_vacio() {
 }
 
 int RegPalabra::get_tam() {
-	CadenaBytes cadena_aux = this->Serializar();
+	Persistencia cadena_aux = this->Serializar();
 	return cadena_aux.getTamanio();
 }
 
@@ -47,8 +47,8 @@ bool RegPalabra::eliminar_offset(int offset) {
 	return false;
 }
 
-CadenaBytes RegPalabra::Serializar() {
-	CadenaBytes cadena;
+Persistencia RegPalabra::Serializar() {
+	Persistencia cadena;
 
 	cadena.agregarAlFinal(&this->clave, sizeof(this->clave));
 
@@ -64,7 +64,7 @@ CadenaBytes RegPalabra::Serializar() {
 	return cadena;
 }
 
-bool RegPalabra::Hidratar(CadenaBytes& cadena) {
+bool RegPalabra::Hidratar(Persistencia& cadena) {
 	this->offsets.clear();
 
 	int offset = 0;

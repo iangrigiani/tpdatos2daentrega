@@ -11,17 +11,17 @@ class NodoHoja : public Nodo {
 
 private:
 	int hojaSiguiente;
-	CadenaBytes* datos;
-	CadenaBytes* Ids;
+	Persistencia* datos;
+	Persistencia* Ids;
 
 public:
 	NodoHoja();
 	virtual ~NodoHoja();
 
-	CadenaBytes Serializar();
-	bool Hidratar(CadenaBytes & cadena);
+	Persistencia Serializar();
+	bool Hidratar(Persistencia & cadena);
 
-    CadenaBytes *getDatos() const
+    Persistencia *getDatos() const
     {
         return datos;
     }
@@ -31,7 +31,7 @@ public:
         return hojaSiguiente;
     }
 
-    CadenaBytes *getIds(){
+    Persistencia *getIds(){
     	return Ids;
     }
 

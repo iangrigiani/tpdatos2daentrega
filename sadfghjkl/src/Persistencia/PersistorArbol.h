@@ -1,7 +1,7 @@
 
 #ifndef PERSISTORARBOL_H_
 #define PERSISTORARBOL_H_
-#include "CadenaBytes.h"
+#include "Persistencia.h"
 #include "../Handlers/HandlerBloques.h"
 #include <string.h>
 #include <fstream>
@@ -25,7 +25,7 @@ public:
 	 * Pre:
 	 * Pos:
 	 */
-	bool guardarBloque (int nroBloque, CadenaBytes cadena);
+	bool guardarBloque (int nroBloque, Persistencia cadena);
 
 	/*
 	 * Metodo que sirve para leer un bloque del archivo
@@ -34,7 +34,7 @@ public:
 	 * 		Si el numero de bloque es invalido o no se puede realizar la lectura
 	 * 		se retorna un objeto "CadenaBytes" vacio
 	 */
-	CadenaBytes leerBloque (int nroBloque);
+	Persistencia leerBloque (int nroBloque);
 
 	int getTamanioArchivo();
 

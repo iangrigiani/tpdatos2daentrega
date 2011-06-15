@@ -14,8 +14,8 @@ NodoInterior::~NodoInterior() {
 	delete[] hijos;
 }
 
-CadenaBytes NodoInterior::Serializar() {
-	CadenaBytes cadena;
+Persistencia NodoInterior::Serializar() {
+	Persistencia cadena;
 
 	cadena.agregarAlFinal(&nivel,sizeof(nivel));
 	cadena.agregarAlFinal(&cantidadClaves, sizeof(cantidadClaves));
@@ -35,7 +35,7 @@ CadenaBytes NodoInterior::Serializar() {
 	return cadena;
 }
 
-bool NodoInterior::Hidratar(CadenaBytes & cadena) {
+bool NodoInterior::Hidratar(Persistencia & cadena) {
 	bool exito = true;
 
 	if ((int)cadena.getTamanio() != (TAM_TOTAL_NODO)) {
@@ -52,7 +52,7 @@ bool NodoInterior::Hidratar(CadenaBytes & cadena) {
 
 			char tamanioClave;
 			cadena.leer(&tamanioClave,offset,TAM_LONG_CLAVE);
-			CadenaBytes cadenaClave = cadena.leer(offset, TAM_LONG_CLAVE + tamanioClave);
+			Persistencia cadenaClave = cadena.leer(offset, TAM_LONG_CLAVE + tamanioClave);
 			Clave unaClave;
 			unaClave.Hidratar(cadenaClave);
 			claves[posicion] = unaClave;

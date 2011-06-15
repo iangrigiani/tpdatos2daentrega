@@ -8,11 +8,11 @@ Elementos::Elementos()
 	 * habra que aditar su valor.
 	 */
 	this->clave = new Clave("");
-	this->datos = new CadenaBytes;
-	this->ID = new CadenaBytes;
+	this->datos = new Persistencia;
+	this->ID = new Persistencia;
 }
 
-Elementos::Elementos(Clave* clave, CadenaBytes* datos, CadenaBytes* id)
+Elementos::Elementos(Clave* clave, Persistencia* datos, Persistencia* id)
 {
 	this->clave = clave;
 	this->datos = datos;
@@ -20,9 +20,9 @@ Elementos::Elementos(Clave* clave, CadenaBytes* datos, CadenaBytes* id)
 }
 
 
-CadenaBytes Elementos::Serializar()
+Persistencia Elementos::Serializar()
 {
-	CadenaBytes cadena;
+	Persistencia cadena;
 	int tamanio = getTamanio();
 	cadena.agregarAlFinal(&tamanio,sizeof(int));
 	cadena.agregarAlFinal(clave->Serializar());
@@ -32,7 +32,7 @@ CadenaBytes Elementos::Serializar()
 }
 
 
-bool Elementos::Hidratar(CadenaBytes &cadena){
+bool Elementos::Hidratar(Persistencia &cadena){
 	bool exito;
 	//el tamaño debe ser al menos el tamaño de la longitud del registro y la clave
 	if (cadena.getTamanio() < (TAM_LONG_REGISTRO + TAM_LONG_CLAVE))  {
@@ -40,12 +40,12 @@ bool Elementos::Hidratar(CadenaBytes &cadena){
 	}else{
 		if (this->datos) {
 			delete (this->datos);
-			this->datos = new CadenaBytes;
+			this->datos = new Persistencia;
 		}
 		int tamanioRegistro = cadena.leerEntero(0);
 		char tamanioClave;
 		cadena.leer(&tamanioClave,TAM_LONG_REGISTRO,TAM_LONG_CLAVE);
-		CadenaBytes cadenaClave = cadena.leer(TAM_LONG_REGISTRO,TAM_LONG_CLAVE + int(tamanioClave));
+		Persistencia cadenaClave = cadena.leer(TAM_LONG_REGISTRO,TAM_LONG_CLAVE + int(tamanioClave));
 		this->clave->Hidratar(cadenaClave);
 		unsigned int posicionComienzoDatos = (TAM_LONG_REGISTRO + TAM_LONG_CLAVE + int(tamanioClave));
 		this->datos->agregarAlFinal(cadena.leer(posicionComienzoDatos,tamanioRegistro - posicionComienzoDatos));
@@ -59,13 +59,13 @@ bool Elementos::Hidratar(CadenaBytes &cadena){
 
 Elementos* Elementos::Clonar()
 {
-	return new Elementos(clave->Clonar(),new CadenaBytes(*datos), new CadenaBytes(*ID));
+	return new Elementos(clave->Clonar(),new Persistencia(*datos), new Persistencia(*ID));
 }
 
-CadenaBytes* Elementos::getID(){
+Persistencia* Elementos::getID(){
 	return this->ID;
 }
-void Elementos::setID (CadenaBytes* id){
+void Elementos::setID (Persistencia* id){
 	this->ID = id;
 }
 /*
@@ -76,7 +76,7 @@ Clave *Elementos::getClave() const
     return clave;
 }
 
-CadenaBytes* Elementos::getDatos() const
+Persistencia* Elementos::getDatos() const
 {
     return datos;
 }
@@ -92,7 +92,7 @@ void Elementos::setClave(Clave *clave)
     this->clave = clave;
 }
 
-void Elementos::setDatos(CadenaBytes* datos)
+void Elementos::setDatos(Persistencia* datos)
 {
 	if (this->datos) delete (this->datos);
     this->datos = datos;

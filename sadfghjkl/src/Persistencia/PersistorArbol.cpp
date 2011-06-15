@@ -11,12 +11,12 @@ PersistorArbol::PersistorArbol(string ruta, int tamanioBloque) {
 PersistorArbol::~PersistorArbol() {
 	delete this->handlerBloque;
 }
-bool PersistorArbol::guardarBloque (int nroBloque, CadenaBytes cadena){
+bool PersistorArbol::guardarBloque (int nroBloque, Persistencia cadena){
 	this->handlerBloque->guardar_bloque_arbol((char*)cadena.toString().c_str(), nroBloque);
 	return true;
 }
-CadenaBytes PersistorArbol::leerBloque (int nroBloque){
-	CadenaBytes cadena;
+Persistencia PersistorArbol::leerBloque (int nroBloque){
+	Persistencia cadena;
 	int uno = (nroBloque) * tamanioBloque + tamanioBloque;
 	int dos = this->handlerBloque->get_tam_arch_bloques();
 
