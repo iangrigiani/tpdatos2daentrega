@@ -760,51 +760,78 @@ list<int> ProcesadorConsulta::filtrarRanqueada(Palabra palabra)
 {
 	list<int> documentos;
 
+	// cantidadApariciones representa la cantidad de libros donde hay coincidencias
 	int cantidadApariciones = (palabra.getApariciones()).size();
-
 
 	int frecTerminoEnDoc = 0;
 	list<Aparicion>::iterator itAparicionFiltrada;
 	list<Posicion>::iterator itPosicionEnDoc;
+	list<int>::iterator itPosicionDocumentos;
+
 	Aparicion aparicion;
 	Posicion posicion;
-	float pesoGlobal, pesoTermino, mayorPeso;
+	float pesoGlobal, mayorPeso, pesoTerminosEnDocumento, normaDocumento, sumaParcial;
 	CalculadorDePesoGlobal calcPesoGlobal;
-
+	int cantPalabras = 0;
+	int cantDocumentosTermino = 0;
 	list<Aparicion> apariciones = palabra.getApariciones();
 
 	// por cada documento hay una aparicion
 	for (int a = 0; a<cantidadApariciones; a++){
+
+		sumaParcial = 0;
+		pesoTerminosEnDocumento = 0;
 
 		itAparicionFiltrada = apariciones.begin();
 
 		for (int b =0; b < a; b++){
 			++itAparicionFiltrada;
 		}
+
 		aparicion = *itAparicionFiltrada;
 
 
-
-		 /* CODIGO COMENTADO HASTA QUE DECIDAMOS COMO HACER, SI CALCULAR POR FRASE O POR PALABRAS SEPARADAS
 		// Calculo el peso:
+		// para eso recorro la lista de posiciones (cada una representa a una palabra) y calculo su peso y su frecuencia
+		cantPalabras = (aparicion.getPosiciones()).size();
 		itPosicionEnDoc = aparicion.getPosiciones().begin();
-		posicion = *itPosicionEnDoc;
-		frecTerminoEnDoc = (posicion.getPosiciones()).size();
+		for (int c = 0; c < cantPalabras; c++){
 
-		buscarPesoTermino
-		pesoGlobal = calcPesoGlobal.calcularPesoGlobalTermino(cantidadApariciones);
-		*/
+			posicion = *itPosicionEnDoc;
+			frecTerminoEnDoc = (posicion.getPosiciones()).size();
+
+			// TODO: Obtengo del arbol la cantidad de documentos donde aparece el termino (NECESITO EL ID!!)
+			//cantDocumentosTermino = procesarNorma.buscarPesoTermino(idTermino);
+			pesoGlobal = calcPesoGlobal.calcularPesoGlobalTermino(cantDocumentosTermino);
+
+			sumaParcial += frecTerminoEnDoc * pesoGlobal;
+			++itPosicionEnDoc;
+		}
+
+		// TODO: obtener la norma del documento:
+		// normaDocumento = procesarNorma.consultarNorma(aparicion.getIdDocumento());
+		pesoTerminosEnDocumento = sumaParcial / normaDocumento;
 
 		// Si la lista de documentos esta vacia, no importa el peso que tenga, sera siempre el de mayor peso hasta ahora
 		if (documentos.empty()){
 			documentos.push_back(aparicion.getIdDocumento());
-			mayorPeso = pesoTermino;
+			mayorPeso = pesoTerminosEnDocumento;
 		} else {
 			// Comparo pesos
-			if (pesoTermino > mayorPeso){
-				mayorPeso = pesoTermino;
-				// TODO: Vaciar lista y agregar el nuevo documento
-			} else if (pesoTermino == mayorPeso){
+			if (pesoTerminosEnDocumento > mayorPeso){
+
+				int cantDocumentosADevolver = documentos.size();
+				// Vacio la lista de documentos
+				for (int d = 0; d<cantDocumentosADevolver; d++){
+					documentos.pop_back();
+				}
+
+				// Inserto el id del documento con mayor peso
+				documentos.push_back(aparicion.getIdDocumento());
+				mayorPeso = pesoTerminosEnDocumento;
+
+
+			} else if (pesoTerminosEnDocumento == mayorPeso){
 				// Si el peso es el mismo, agrego el id del documento a la lista
 				documentos.push_back(aparicion.getIdDocumento());
 			}
