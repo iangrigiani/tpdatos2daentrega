@@ -9,8 +9,8 @@ class Elementos : public Serializable {
 
 private:
 	Clave* clave;
-	CadenaBytes* datos;
-	CadenaBytes* ID;
+	Persistencia* datos;
+	Persistencia* ID;
 public:
 	/*
 	 * Constructor vacio
@@ -20,7 +20,7 @@ public:
 	/*
 	 * Constructor
 	 */
-	Elementos(Clave* clave, CadenaBytes* datos, CadenaBytes* ID);
+	Elementos(Clave* clave, Persistencia* datos, Persistencia* ID);
 
 	/*
 	 * Clone
@@ -30,20 +30,20 @@ public:
 	/*
 	 * Serializar
 	 */
-	CadenaBytes Serializar();
+	Persistencia Serializar();
 
 	/*
 	 * Metodo que hidrata un registro.
 	 * Pre: la cadena debe representar a un registro
 	 * Pos: queda hidratado el registro
 	 */
-	bool Hidratar(CadenaBytes &cadena);
+	bool Hidratar(Persistencia &cadena);
 
 	/*
 	 * Getters y setters
 	 */
 	Clave *getClave() const;
-    CadenaBytes* getDatos() const;
+    Persistencia* getDatos() const;
 
     /* El getTamanio calcula la suma de los sizeof de:
      * 		datos
@@ -51,10 +51,10 @@ public:
      * 		int
      */
     int getTamanio() const;
-    CadenaBytes* getID();
+    Persistencia* getID();
     void setClave(Clave *clave);
-    void setDatos(CadenaBytes* datos);
-	void setID (CadenaBytes* id);
+    void setDatos(Persistencia* datos);
+	void setID (Persistencia* id);
     string toString();
 
 	/*

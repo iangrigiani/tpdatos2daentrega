@@ -24,7 +24,7 @@ bool RegTitulo::esta_vacio() {
 }
 
 int RegTitulo::get_tam() {
-	CadenaBytes cadena_aux = this->Serializar();
+	Persistencia cadena_aux = this->Serializar();
 	return cadena_aux.getTamanio();
 }
 
@@ -70,8 +70,8 @@ Elemento& RegTitulo::buscar_elemento(const string& termino) {
 	return *it;
 }
 
-CadenaBytes RegTitulo::Serializar() {
-	CadenaBytes cadena;
+Persistencia RegTitulo::Serializar() {
+	Persistencia cadena;
 
 	cadena.agregarAlFinal(&this->clave, sizeof(this->clave));
 
@@ -91,7 +91,7 @@ CadenaBytes RegTitulo::Serializar() {
 	return cadena;
 }
 
-bool RegTitulo::Hidratar(CadenaBytes& cadena) {
+bool RegTitulo::Hidratar(Persistencia& cadena) {
 	this->elementos.clear();
 
 	int offset = 0;
@@ -109,7 +109,7 @@ bool RegTitulo::Hidratar(CadenaBytes& cadena) {
 	for (int i = 0; i < tam1; ++ i) {
 		tam2 = cadena.leerEntero(offset);
 		offset += sizeof(tam2);
-		CadenaBytes cadena_aux;
+		Persistencia cadena_aux;
 		cadena_aux = cadena.leer(offset, tam2);
 		Elemento elemento;
 		elemento.Hidratar(cadena_aux);

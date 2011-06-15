@@ -33,8 +33,8 @@ public:
 	void agregar_nuevo_offset(int offset);
 	bool eliminar_offset(int offset);
 
-	CadenaBytes Serializar();
-	bool Hidratar(CadenaBytes& cadena);
+	Persistencia Serializar();
+	bool Hidratar(Persistencia& cadena);
 
 	void toString(ostream& os);
 

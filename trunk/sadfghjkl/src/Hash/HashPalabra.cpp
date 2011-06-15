@@ -26,7 +26,7 @@ void HashPalabra::crear_condiciones_iniciales() {
 }
 
 void HashPalabra::insertar_reg(RegPalabra& reg) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 	Cubo bloque;
 
 	int pos_tabla_bloque = this->handler_tabla.get_pos_tabla(reg.get_clave());
@@ -81,7 +81,7 @@ void HashPalabra::agregar_nuevo_offset(Cubo& bloque, int num_bloque, RegPalabra&
 			cout << "el bloque " << num_bloque << " tiene un reg con clave " << reg.get_clave() << " q apunta al bloque " << num_bloque_sig << endl;
 		}
 		else {
-			CadenaBytes cadena;
+			Persistencia cadena;
 			this->persistor.recuperar_bloque(reg.get_bloque_sig(), cadena);
 			bloque_sig.Hidratar(cadena);
 			RegPalabra& reg_aux = bloque_sig.buscar_reg(reg.get_clave());
@@ -91,7 +91,7 @@ void HashPalabra::agregar_nuevo_offset(Cubo& bloque, int num_bloque, RegPalabra&
 }
 
 void HashPalabra::alta(int clave, int offset) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 	Cubo bloque;
 
 	int num_bloque = this->handler_tabla.get_num_bloque(clave);
@@ -108,7 +108,7 @@ void HashPalabra::alta(int clave, int offset) {
 }
 
 bool HashPalabra::eliminar_reg(int clave) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 	Cubo bloque;
 
 	int pos_tabla_bloque = this->handler_tabla.get_pos_tabla(clave);
@@ -145,7 +145,7 @@ bool HashPalabra::eliminar_reg(int clave) {
 }
 
 void HashPalabra::obtener_reg(RegPalabra& reg, Cubo& bloque_sig, list < int > & bloques_sigs, int clave) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 
 	this->persistor.recuperar_bloque(reg.get_bloque_sig(), cadena);
 	bloque_sig.Hidratar(cadena);
@@ -190,7 +190,7 @@ void HashPalabra::eliminar_offset(Cubo& bloque, int num_bloque, int clave, int o
 			if (reg.get_bloque_sig() == -1)
 				return;
 			else {
-				CadenaBytes cadena;
+				Persistencia cadena;
 				Cubo bloque_sig;
 
 				this->persistor.recuperar_bloque(reg.get_bloque_sig(), cadena);
@@ -206,7 +206,7 @@ void HashPalabra::eliminar_offset(Cubo& bloque, int num_bloque, int clave, int o
 }
 
 void HashPalabra::baja(int clave, int offset) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 	Cubo bloque;
 
 	int num_bloque = this->handler_tabla.get_num_bloque(clave);
@@ -224,7 +224,7 @@ void HashPalabra::concatenar_offsets(list < int > & lista_1, list < int > & list
 }
 
 list < int > HashPalabra::consultar_offsets(Cubo& bloque, int num_bloque, int clave) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 	list < int > lista_1;
 
 	if (bloque.existe_reg(clave) == true) {
@@ -246,7 +246,7 @@ list < int > HashPalabra::consultar_offsets(Cubo& bloque, int num_bloque, int cl
 }
 
 list < int > HashPalabra::consultar(int clave) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 	Cubo bloque;
 
 	int num_bloque = this->handler_tabla.get_num_bloque(clave);
@@ -256,7 +256,7 @@ list < int > HashPalabra::consultar(int clave) {
 }
 
 void HashPalabra::mostrar(ostream& os) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 	Cubo bloque;
 	int cant_bloques = this->persistor.get_handler_bloques().get_tam_arch_bloques() / TAM_CUBO;
 

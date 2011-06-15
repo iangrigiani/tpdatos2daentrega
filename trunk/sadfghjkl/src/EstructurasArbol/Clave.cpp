@@ -20,16 +20,16 @@ string Clave::toString() const{
 /*
  * Hay que guardar el tamaño tambien.
  */
-CadenaBytes Clave::Serializar()
+Persistencia Clave::Serializar()
 {
-	CadenaBytes cadena;
+	Persistencia cadena;
 	char tamano = this->getTamanio();
 	cadena.agregarAlFinal(&tamano,TAM_LONG_CLAVE);
 	cadena.agregarAlFinal(this->clave);
 	return cadena;
 }
 
-bool Clave::Hidratar(CadenaBytes &cadena){
+bool Clave::Hidratar(Persistencia &cadena){
 	bool exito;
 	if (cadena.getTamanio() < TAM_LONG_CLAVE){
 		exito = false;

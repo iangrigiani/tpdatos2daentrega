@@ -85,8 +85,8 @@ Termino ProcesadorOcurrencia::agregarTermino(string palabraActual){
 
 	ArbolBMas arbol(PATH_ID_TERMINOS, 1);
 	Clave * clave = new Clave(palabraActual);
-	CadenaBytes * cadenaDato = new CadenaBytes(palabraActual);
-	CadenaBytes * cadenaID = new CadenaBytes(" ");
+	Persistencia * cadenaDato = new Persistencia(palabraActual);
+	Persistencia * cadenaID = new Persistencia(" ");
 	Elementos elemento(clave, cadenaDato, cadenaID);
 	int idTermino = arbol.insertar(&elemento);
 	termino.setIdTermino(idTermino);

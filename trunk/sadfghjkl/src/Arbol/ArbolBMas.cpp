@@ -46,7 +46,7 @@ int ArbolBMas::insertar(Elementos* registro) {
 	// Saco el frontcoding antes de insertar recursivamente
 	registro->getDatos()->sacarElFrontCoding(palabra, persistor->getRuta());
 
-	CadenaBytes idInsertado;
+	Persistencia idInsertado;
 	insertarRecursivo(raiz, *(registro->getClave()), *(registro->getDatos()), *(registro->getID()), &clavePromocion, &nuevoNodoHijo, &idInsertado);
 
 	// Si el arbol es primario, devuelvo lo que inserte, sino devuelvo lo mismo que traia
@@ -336,7 +336,7 @@ int ArbolBMas::obtenerPosicion(Nodo *unNodo, Clave clave) {
 }
 
 
-bool ArbolBMas::insertarRecursivo(Nodo* nodoCorriente, Clave clave, CadenaBytes dato, CadenaBytes id, Clave* clavePromocion, Nodo** nuevoNodo, CadenaBytes* idInsertado) {
+bool ArbolBMas::insertarRecursivo(Nodo* nodoCorriente, Clave clave, Persistencia dato, Persistencia id, Clave* clavePromocion, Nodo** nuevoNodo, Persistencia* idInsertado) {
 
 	if (!nodoCorriente->isNodoHoja()) {
 
@@ -1087,7 +1087,7 @@ void ArbolBMas::persistirNodo(Nodo* unNodo) {
 
 Nodo* ArbolBMas::hidratarNodo(int numeroDeNodo) {
 
-	CadenaBytes cadena = this->persistor->leerBloque(numeroDeNodo);
+	Persistencia cadena = this->persistor->leerBloque(numeroDeNodo);
 	if (cadena.estaVacia()) {
 		return NULL;
 	} else {
@@ -1229,7 +1229,7 @@ void ArbolBMas::llenarListadeBusqueda(list<Elementos*>* listaElementos, NodoHoja
 	this->sacarFrontCodingNodoHoja(&nodo);
 	for (int i = posicion; (i < nodo->cantidadClaves) && (!distinto); ++i){
 		if (nodo->claves[i].getClave() == clave->getClave()){
-			Elementos* elemento = new Elementos(clave, new CadenaBytes(nodo->datos[i].toString()), new CadenaBytes(nodo->Ids[i].toString()));
+			Elementos* elemento = new Elementos(clave, new Persistencia(nodo->datos[i].toString()), new Persistencia(nodo->Ids[i].toString()));
 			listaElementos->push_back(elemento);
 		}else{
 			distinto = true;
@@ -1242,8 +1242,8 @@ void ArbolBMas::llenarListadeBusqueda(list<Elementos*>* listaElementos, NodoHoja
 		llenarListadeBusqueda(listaElementos, nuevoNodoHoja, 0 , clave);
 	}
 }
-CadenaBytes ArbolBMas::obtenerNuevoId(){
-	CadenaBytes cadenaRetorno;
+Persistencia ArbolBMas::obtenerNuevoId(){
+	Persistencia cadenaRetorno;
 	string modificacion;
 	modificacion.clear();
 	std::fstream archivoId;

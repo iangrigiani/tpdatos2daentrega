@@ -79,7 +79,7 @@ private:
 
 	int obtenerPosicion(Nodo *unNodo, Clave clave);
 
-	bool insertarRecursivo(Nodo* nodoCorriente, Clave clave, CadenaBytes dato, CadenaBytes id,  Clave* clavePromocion, Nodo** nuevoNodo, CadenaBytes* idInsertado);
+	bool insertarRecursivo(Nodo* nodoCorriente, Clave clave, Persistencia dato, Persistencia id,  Clave* clavePromocion, Nodo** nuevoNodo, Persistencia* idInsertado);
 
 	void dividirNodoHoja(NodoHoja* unNodoHoja, Clave* clavePromocion, Nodo** nuevoNodoHoja);
 
@@ -122,7 +122,7 @@ private:
 
 	Solucion buscarSecuencialClave(int nodo, Elementos* elemento, int posicion);
 
-	CadenaBytes obtenerNuevoId();
+	Persistencia obtenerNuevoId();
 
 };
 

@@ -1,26 +1,26 @@
-#include "CadenaBytes.h"
+#include "Persistencia.h"
 
-CadenaBytes::CadenaBytes() {}
+Persistencia::Persistencia() {}
 
-CadenaBytes::CadenaBytes(string bytes){
+Persistencia::Persistencia(string bytes){
 	this->bytes = bytes;
 }
 
-CadenaBytes::CadenaBytes(const CadenaBytes &cadDeBytes) {
+Persistencia::Persistencia(const Persistencia &cadDeBytes) {
 	this->bytes = cadDeBytes.bytes;
 }
 
-CadenaBytes::~CadenaBytes() {}
+Persistencia::~Persistencia() {}
 
-bool CadenaBytes::estaVacia() const {
+bool Persistencia::estaVacia() const {
 	return (this->getTamanio() == 0);
 }
 
-string CadenaBytes::toString() const {
+string Persistencia::toString() const {
 	return this->bytes;
 }
 
-bool CadenaBytes::agregar(const CadenaBytes& bytes,unsigned int posicion) {
+bool Persistencia::agregar(const Persistencia& bytes,unsigned int posicion) {
 	bool exito = true;
 	if (posicion > this->bytes.length()) {
 		exito = false;
@@ -30,7 +30,7 @@ bool CadenaBytes::agregar(const CadenaBytes& bytes,unsigned int posicion) {
 	return exito;
 }
 
-bool CadenaBytes::agregar(const string &bytes,unsigned int posicion) {
+bool Persistencia::agregar(const string &bytes,unsigned int posicion) {
 	bool exito = true;
 	if (posicion > this->bytes.length()){
 		exito = false;
@@ -40,7 +40,7 @@ bool CadenaBytes::agregar(const string &bytes,unsigned int posicion) {
 	return exito;
 }
 
-bool CadenaBytes::agregar(void* valor, unsigned int tamanio, unsigned int posicion){
+bool Persistencia::agregar(void* valor, unsigned int tamanio, unsigned int posicion){
 	bool exito = true;
 		string cadena;
 		char* buffer = (char*)malloc(tamanio);
@@ -50,7 +50,7 @@ bool CadenaBytes::agregar(void* valor, unsigned int tamanio, unsigned int posici
 		free(buffer);
 	return exito;
 }
-void CadenaBytes::transformarAFrontCoding(string primera, string ruta){
+void Persistencia::transformarAFrontCoding(string primera, string ruta){
 	if (!estaTransformada(this->bytes)){
 		FrontCoding* fc = new FrontCoding(ruta);
 		string modificada = fc->pasarAFrontCoding(primera, this->bytes);
@@ -60,7 +60,7 @@ void CadenaBytes::transformarAFrontCoding(string primera, string ruta){
 	}
 }
 
-void CadenaBytes::sacarElFrontCoding(string palabra, string ruta){
+void Persistencia::sacarElFrontCoding(string palabra, string ruta){
 	if (estaTransformada(this->bytes)){
 		FrontCoding* fc = new FrontCoding(ruta);
 		string modificada = fc->interpretarFrontCoding(palabra);
@@ -70,26 +70,26 @@ void CadenaBytes::sacarElFrontCoding(string palabra, string ruta){
 	}
 }
 
-bool CadenaBytes::estaTransformada(string cadena){
+bool Persistencia::estaTransformada(string cadena){
 	if (strchr(cadena.c_str(), 46)) return true;
 	return false;
 }
-bool CadenaBytes::agregarAlFinal(const string &bytes) {
+bool Persistencia::agregarAlFinal(const string &bytes) {
 	this->bytes.append(bytes);
 	return true;
 }
 
-bool CadenaBytes::agregarAlFinal(const CadenaBytes& bytes) {
+bool Persistencia::agregarAlFinal(const Persistencia& bytes) {
 	bool exito = agregar(bytes,getTamanio());
 	return exito;
 }
 
-bool CadenaBytes::agregarAlFinal(void* valor,int tamanio){
+bool Persistencia::agregarAlFinal(void* valor,int tamanio){
 	bool exito = agregar(valor,tamanio,this->getTamanio());
 	return exito;
 }
 
-bool CadenaBytes::reemplazar(const string &bytes, unsigned int posicion) {
+bool Persistencia::reemplazar(const string &bytes, unsigned int posicion) {
 	bool exito = true;
 	if ((posicion + bytes.length()) > this->getTamanio()) {
 		exito = false;
@@ -100,13 +100,13 @@ bool CadenaBytes::reemplazar(const string &bytes, unsigned int posicion) {
 	return exito;
 }
 
-bool CadenaBytes::reemplazar(const CadenaBytes &cadDeBytes, unsigned int posicion){
+bool Persistencia::reemplazar(const Persistencia &cadDeBytes, unsigned int posicion){
 	bool exito = true;
 	exito = reemplazar(cadDeBytes.toString(),posicion);
 	return exito;
 }
 
-bool CadenaBytes::eliminar(unsigned int inicio,unsigned int fin) {
+bool Persistencia::eliminar(unsigned int inicio,unsigned int fin) {
 	bool exito = true;
 	if ((inicio > fin) || ((fin > this->bytes.length()) || ( fin > this->bytes.length()))) {
 		exito = false;
@@ -116,9 +116,9 @@ bool CadenaBytes::eliminar(unsigned int inicio,unsigned int fin) {
 	return exito;
 }
 
-bool CadenaBytes::leer(char* buffer, unsigned int inicio,unsigned int tamanio)const {
+bool Persistencia::leer(char* buffer, unsigned int inicio,unsigned int tamanio)const {
 	bool exito = true;
-	CadenaBytes aux = this->leer(inicio,tamanio);
+	Persistencia aux = this->leer(inicio,tamanio);
 	if(aux.getTamanio()==0){
 		exito = false;
 	}else{
@@ -128,14 +128,14 @@ bool CadenaBytes::leer(char* buffer, unsigned int inicio,unsigned int tamanio)co
 	return exito;
 }
 
-CadenaBytes CadenaBytes::leer(unsigned int inicio, unsigned int tamanio) const {
+Persistencia Persistencia::leer(unsigned int inicio, unsigned int tamanio) const {
 	if (inicio + tamanio > getTamanio()) {
-		return CadenaBytes("");
+		return Persistencia("");
 	}
 	return this->bytes.substr(inicio,tamanio);
 }
 
-int CadenaBytes::leerEntero(unsigned int inicio){
+int Persistencia::leerEntero(unsigned int inicio){
 	int n = -1;
 	char buffer[sizeof(int)];
 	bool leido = this->leer(buffer,inicio,sizeof(int));
@@ -143,15 +143,15 @@ int CadenaBytes::leerEntero(unsigned int inicio){
 	return n;
 }
 
-bool CadenaBytes::vaciar() {
+bool Persistencia::vaciar() {
 	this->bytes.clear();
 	return true;
 }
 
-unsigned int CadenaBytes::getTamanio() const {
+unsigned int Persistencia::getTamanio() const {
 	return this->bytes.length();
 }
 
-void CadenaBytes::setBytes(const string &bytes) {
+void Persistencia::setBytes(const string &bytes) {
 	this->bytes = bytes;
 }

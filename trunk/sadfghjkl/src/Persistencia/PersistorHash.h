@@ -2,7 +2,7 @@
 #ifndef PERSISTORHASH_H_
 #define PERSISTORHASH_H_
 
-#include "CadenaBytes.h"
+#include "Persistencia.h"
 #include "../Handlers/HandlerBloques.h"
 
 class PersistorHash {
@@ -21,11 +21,11 @@ public:
 
 	HandlerBloques& get_handler_bloques() { return this->handler_bloques; }
 
-	int guardar_bloque(const CadenaBytes& cadena);
+	int guardar_bloque(const Persistencia& cadena);
 
-	void guardar_bloque(const CadenaBytes& cadena, int num_bloque);
+	void guardar_bloque(const Persistencia& cadena, int num_bloque);
 
-	void recuperar_bloque(int num_bloque, CadenaBytes& cadena);
+	void recuperar_bloque(int num_bloque, Persistencia& cadena);
 
 };
 

@@ -35,8 +35,8 @@ public:
 	bool existe_elemento(const string& termino);
 	Elemento& buscar_elemento(const string& termino);
 
-	CadenaBytes Serializar();
-	bool Hidratar(CadenaBytes& cadena);
+	Persistencia Serializar();
+	bool Hidratar(Persistencia& cadena);
 
 	void toString(ostream& os);
 

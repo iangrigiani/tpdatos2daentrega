@@ -37,7 +37,7 @@ void HashTitulo::crear_condiciones_iniciales() {
 }
 
 void HashTitulo::insertar_reg(RegTitulo& reg) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 	Bucket bloque;
 
 	int pos_tabla_bloque = this->handler_tabla.get_pos_tabla(reg.get_clave());
@@ -80,7 +80,7 @@ bool HashTitulo::elemento_repetido(RegTitulo& reg, const string& termino) {
 		if (reg.get_bloque_sig() == -1)
 			return false;
 		else {
-			CadenaBytes cadena;
+			Persistencia cadena;
 			Bucket bloque_sig;
 
 			this->persistor.recuperar_bloque(reg.get_bloque_sig(), cadena);
@@ -110,7 +110,7 @@ void HashTitulo::agregar_nuevo_elemento(Bucket& bloque, int num_bloque, RegTitul
 			//cout << "el bloque " << num_bloque << " tiene un reg con clave " << reg.get_clave() << " q apunta al bloque " << num_bloque_sig << endl;
 		}
 		else {
-			CadenaBytes cadena;
+			Persistencia cadena;
 			this->persistor.recuperar_bloque(reg.get_bloque_sig(), cadena);
 			bloque_sig.Hidratar(cadena);
 			RegTitulo& reg_aux = bloque_sig.buscar_reg(reg.get_clave());
@@ -120,7 +120,7 @@ void HashTitulo::agregar_nuevo_elemento(Bucket& bloque, int num_bloque, RegTitul
 }
 
 void HashTitulo::alta(const string& termino, int ID) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 	Bucket bloque;
 
 	int clave = this->funcion_hash(termino);
@@ -145,7 +145,7 @@ void HashTitulo::alta(const string& termino, int ID) {
 }
 
 bool HashTitulo::eliminar_reg(int clave) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 	Bucket bloque;
 
 	int pos_tabla_bloque = this->handler_tabla.get_pos_tabla(clave);
@@ -182,7 +182,7 @@ bool HashTitulo::eliminar_reg(int clave) {
 }
 
 void HashTitulo::obtener_reg(RegTitulo& reg, Bucket& bloque_sig, list < int > & bloques_sigs, int clave) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 
 	this->persistor.recuperar_bloque(reg.get_bloque_sig(), cadena);
 	bloque_sig.Hidratar(cadena);
@@ -227,7 +227,7 @@ void HashTitulo::eliminar_elemento(Bucket& bloque, int num_bloque, int clave, co
 			if (reg.get_bloque_sig() == -1)
 				return;
 			else {
-				CadenaBytes cadena;
+				Persistencia cadena;
 				Bucket bloque_sig;
 
 				this->persistor.recuperar_bloque(reg.get_bloque_sig(), cadena);
@@ -245,7 +245,7 @@ void HashTitulo::eliminar_elemento(Bucket& bloque, int num_bloque, int clave, co
 }
 
 void HashTitulo::baja(const string& termino) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 	Bucket bloque;
 
 	int clave = this->funcion_hash(termino);
@@ -265,7 +265,7 @@ int HashTitulo::consultar_elemento(Bucket& bloque, int num_bloque, int clave, co
 			if (reg.get_bloque_sig() == -1)
 				return -1;
 			else {
-				CadenaBytes cadena;
+				Persistencia cadena;
 				Bucket bloque_sig;
 
 				this->persistor.recuperar_bloque(reg.get_bloque_sig(), cadena);
@@ -282,7 +282,7 @@ int HashTitulo::consultar_elemento(Bucket& bloque, int num_bloque, int clave, co
 }
 
 int HashTitulo::consultar(const string& termino) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 	Bucket bloque;
 
 	int clave = this->funcion_hash(termino);
@@ -293,7 +293,7 @@ int HashTitulo::consultar(const string& termino) {
 }
 
 void HashTitulo::mostrar(ostream& os) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 	Bucket bloque;
 	int cant_bloques = this->persistor.get_handler_bloques().get_tam_arch_bloques() / TAM_CUBO;
 

@@ -37,7 +37,7 @@ public:
 	 * Se utiliza 1 char para representar el tamaño de la clave (0 a 255)
 	 * El resto de los bytes representan la propia clave.
 	 */
-	CadenaBytes Serializar();
+	Persistencia Serializar();
 
 	/*
 	 * Metodo que hidrata la clave (heredado de Serializable)
@@ -46,7 +46,7 @@ public:
 	 * Pos: Devuelve TRUE si pudo hidratar correctamente la cadena y la guarda
 	 * 		en el atributo clave. Si la cadena tiene una longitud invalida devuelve FALSE.
 	 */
-	bool Hidratar(CadenaBytes &cadena);
+	bool Hidratar(Persistencia &cadena);
 
 	/*
 	 * Metodo que clona a la clave

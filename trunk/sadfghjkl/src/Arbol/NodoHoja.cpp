@@ -3,8 +3,8 @@
 
 NodoHoja::NodoHoja() : Nodo(0) {
 	hojaSiguiente = 0;
-	this->datos = new CadenaBytes[(TAM_EFECTIVO_NODO/(TAM_CONTROL_REGISTRO)) + 2];
-	this->Ids = new CadenaBytes[(TAM_EFECTIVO_NODO/(TAM_CONTROL_REGISTRO)) + 2];
+	this->datos = new Persistencia[(TAM_EFECTIVO_NODO/(TAM_CONTROL_REGISTRO)) + 2];
+	this->Ids = new Persistencia[(TAM_EFECTIVO_NODO/(TAM_CONTROL_REGISTRO)) + 2];
 }
 
 NodoHoja::~NodoHoja() {
@@ -12,8 +12,8 @@ NodoHoja::~NodoHoja() {
 	delete[] Ids;
 }
 
-CadenaBytes NodoHoja::Serializar() {
-	CadenaBytes cadena;
+Persistencia NodoHoja::Serializar() {
+	Persistencia cadena;
 
 	cadena.agregarAlFinal(&nivel,sizeof(nivel));
 	cadena.agregarAlFinal(&cantidadClaves, sizeof(cantidadClaves));
@@ -36,7 +36,7 @@ CadenaBytes NodoHoja::Serializar() {
 	return cadena;
 }
 
-bool NodoHoja::Hidratar(CadenaBytes & cadena) {
+bool NodoHoja::Hidratar(Persistencia & cadena) {
 	bool exito = true;
 
 	if ((int)cadena.getTamanio() != (TAM_TOTAL_NODO)) {
@@ -52,7 +52,7 @@ bool NodoHoja::Hidratar(CadenaBytes & cadena) {
 
 			char tamanioClave;
 			cadena.leer(&tamanioClave,offset,TAM_LONG_CLAVE);
-			CadenaBytes cadenaClave = cadena.leer(offset, TAM_LONG_CLAVE + tamanioClave);
+			Persistencia cadenaClave = cadena.leer(offset, TAM_LONG_CLAVE + tamanioClave);
 			Clave unaClave;
 			unaClave.Hidratar(cadenaClave);
 			claves[posicion] = unaClave;
@@ -60,14 +60,14 @@ bool NodoHoja::Hidratar(CadenaBytes & cadena) {
 
 			int tamanioDato = cadena.leerEntero(offset);
 			offset += TAM_LONG_DATO;
-			CadenaBytes unDato;
+			Persistencia unDato;
 			unDato.agregarAlFinal(cadena.leer(offset,tamanioDato));
 			datos[posicion] = unDato;
 			offset += tamanioDato;
 
 			int tamanioID = cadena.leerEntero(offset);
 			offset += TAM_LONG_DATO;
-			CadenaBytes unID;
+			Persistencia unID;
 			unID.agregarAlFinal(cadena.leer(offset,tamanioID));
 			Ids[posicion] = unID;
 			offset += tamanioID;

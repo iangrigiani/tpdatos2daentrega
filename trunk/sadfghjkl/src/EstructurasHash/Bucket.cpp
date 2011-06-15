@@ -6,7 +6,7 @@ Bucket::Bucket(int tam_disp) : Bloque(tam_disp) {
 }
 
 int Bucket::get_tam() {
-	CadenaBytes cadena_aux = this->Serializar();
+	Persistencia cadena_aux = this->Serializar();
 	return cadena_aux.getTamanio();
 }
 
@@ -17,7 +17,7 @@ bool Bucket::esta_vacio() const {
 }
 
 bool Bucket::entra_en_bloque(RegTitulo& reg) const {
-	CadenaBytes cadena;
+	Persistencia cadena;
 
 	int tam = reg.get_tam();
 	cadena.agregarAlFinal(&tam, sizeof(tam));
@@ -30,7 +30,7 @@ bool Bucket::entra_en_bloque(RegTitulo& reg) const {
 }
 
 bool Bucket::entra_en_bloque(Elemento& elemento) const {
-	CadenaBytes cadena;
+	Persistencia cadena;
 
 	int tam = elemento.get_tam();
 	cadena.agregarAlFinal(&tam, sizeof(tam));
@@ -43,7 +43,7 @@ bool Bucket::entra_en_bloque(Elemento& elemento) const {
 }
 
 void Bucket::aumentar_esp_libre(Elemento& elemento) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 
 	int tam = elemento.get_tam();
 	cadena.agregarAlFinal(&tam, sizeof(tam));
@@ -53,7 +53,7 @@ void Bucket::aumentar_esp_libre(Elemento& elemento) {
 }
 
 void Bucket::disminuir_esp_libre(Elemento& elemento) {
-	CadenaBytes cadena;
+	Persistencia cadena;
 
 	int tam = elemento.get_tam();
 	cadena.agregarAlFinal(&tam, sizeof(tam));
@@ -65,7 +65,7 @@ void Bucket::disminuir_esp_libre(Elemento& elemento) {
 void Bucket::agregar_nuevo_reg(RegTitulo& reg) {
 	this->regs.push_back(reg);
 
-	CadenaBytes cadena;
+	Persistencia cadena;
 
 	int tam = reg.get_tam();
 	cadena.agregarAlFinal(&tam, sizeof(tam));
@@ -82,7 +82,7 @@ bool Bucket::eliminar_reg(int clave) {
 		++ it;
 
 	if (it != this->regs.end() && (*it).get_clave() == clave) {
-		CadenaBytes cadena;
+		Persistencia cadena;
 
 		int tam = (*it).get_tam();
 		cadena.agregarAlFinal(&tam, sizeof(tam));
@@ -148,7 +148,7 @@ list < RegTitulo > Bucket::actualizar_regs(int num_bloque, HandlerTabla& handler
 		if (num_bloque != handler.get_num_bloque((*it).get_clave())) {
 			reg_desact = *it;
 
-			CadenaBytes cadena;
+			Persistencia cadena;
 
 			tam = reg_desact.get_tam();
 			cadena.agregarAlFinal(&tam, sizeof(tam));
@@ -167,8 +167,8 @@ list < RegTitulo > Bucket::actualizar_regs(int num_bloque, HandlerTabla& handler
 	return list_aux;
 }
 
-CadenaBytes Bucket::Serializar() {
-	CadenaBytes cadena;
+Persistencia Bucket::Serializar() {
+	Persistencia cadena;
 
 	cadena.agregarAlFinal(&this->tam_disp, sizeof(this->tam_disp));
 
@@ -186,7 +186,7 @@ CadenaBytes Bucket::Serializar() {
 	return cadena;
 }
 
-bool Bucket::Hidratar(CadenaBytes& cadena) {
+bool Bucket::Hidratar(Persistencia& cadena) {
 	this->vaciar();
 
 	int offset = 0;
@@ -201,7 +201,7 @@ bool Bucket::Hidratar(CadenaBytes& cadena) {
 	for (int i = 0; i < tam1; ++ i) {
 		tam2 = cadena.leerEntero(offset);
 		offset += sizeof(tam2);
-		CadenaBytes cadena_aux;
+		Persistencia cadena_aux;
 		cadena_aux = cadena.leer(offset, tam2);
 		RegTitulo reg;
 		reg.Hidratar(cadena_aux);

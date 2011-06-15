@@ -289,7 +289,7 @@ void HandlerComandos::insertarEnArbol (int tipoArbol, int offset){
 		if (tipoArbol == 1){
 			stringstream ss;
 			ss << offset;
-			Elementos* elemento = new Elementos(new Clave(reg.getAutor()), new CadenaBytes(reg.getAutor()), new CadenaBytes(ss.str()));
+			Elementos* elemento = new Elementos(new Clave(reg.getAutor()), new Persistencia(reg.getAutor()), new Persistencia(ss.str()));
 			if(elemento->getTamanio() > (TAM_EFECTIVO_NODO * PORC_TAMANIO_NODO / 100) ){
 				cout<<"Elemento demasiado grande.\n"<<endl;
 			}else{
@@ -300,7 +300,7 @@ void HandlerComandos::insertarEnArbol (int tipoArbol, int offset){
 		}else{
 			stringstream ss;
 			ss << offset;
-			Elementos* elemento2 = new Elementos(new Clave(reg.getEditorial()), new CadenaBytes(reg.getEditorial()), new CadenaBytes(ss.str()));
+			Elementos* elemento2 = new Elementos(new Clave(reg.getEditorial()), new Persistencia(reg.getEditorial()), new Persistencia(ss.str()));
 			if(elemento2->getTamanio() > (TAM_EFECTIVO_NODO * PORC_TAMANIO_NODO / 100) ){
 				cout<<"Elemento demasiado grande.\n"<<endl;
 			}else{
@@ -324,7 +324,7 @@ bool HandlerComandos::eliminarEnArbol(int tipoArbol, int offset) {
 			this->arbol = new ArbolBMas(PATH_AUTOR,2);
 			stringstream ss;
 			ss << offset;
-			Elementos* elemento = new Elementos(new Clave(reg.getAutor()), new CadenaBytes(reg.getAutor()), new CadenaBytes(ss.str()));
+			Elementos* elemento = new Elementos(new Clave(reg.getAutor()), new Persistencia(reg.getAutor()), new Persistencia(ss.str()));
 			retorno = arbol->borrar(elemento);
 			delete elemento;
 			delete arbol;
@@ -332,7 +332,7 @@ bool HandlerComandos::eliminarEnArbol(int tipoArbol, int offset) {
 			this->arbol = new ArbolBMas(PATH_EDITORIAL,2);
 			stringstream ss;
 			ss << offset;
-			Elementos* elemento = new Elementos(new Clave(reg.getEditorial()), new CadenaBytes(reg.getEditorial()), new CadenaBytes(ss.str()));
+			Elementos* elemento = new Elementos(new Clave(reg.getEditorial()), new Persistencia(reg.getEditorial()), new Persistencia(ss.str()));
 			retorno = arbol->borrar(elemento);
 			delete elemento;
 			delete arbol;

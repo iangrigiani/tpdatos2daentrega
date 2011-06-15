@@ -38,8 +38,8 @@ int ProcesadorNorma::incrementarPesoTermino(int IDTermino){
 
 	ArbolBMas arbol(PATH_ARCHIVO_FREC_GLOB, 1);
 	Clave* clave = new Clave(intToString(IDTermino));
-	CadenaBytes * cadenaDato = new CadenaBytes(intToString(IDTermino));
-	CadenaBytes * cadenaID = new CadenaBytes(" ");
+	Persistencia * cadenaDato = new Persistencia(intToString(IDTermino));
+	Persistencia * cadenaID = new Persistencia(" ");
 	Elementos elemento(clave, cadenaDato, cadenaID);
 	int pesoActual = 1;
 
@@ -50,7 +50,7 @@ int ProcesadorNorma::incrementarPesoTermino(int IDTermino){
 
 //	if (listaElementos->size() > 0){
 	if (!arbol.incrementarID(&elemento, pesoActual)){
-		elemento.setID(new CadenaBytes(intToString(pesoActual)));
+		elemento.setID(new Persistencia(intToString(pesoActual)));
 		arbol.insertar(&elemento);
 	}
 //		Elementos elemento = *(*(listaElementos->begin()));
@@ -82,8 +82,8 @@ int ProcesadorNorma::decrementarPesoTermino (int IDTermino){
 
 	ArbolBMas arbol(PATH_ARCHIVO_FREC_GLOB, 1);
 	Clave* clave = new Clave(intToString(IDTermino));
-	CadenaBytes * cadenaDato = new CadenaBytes(intToString(IDTermino));
-	CadenaBytes * cadenaID = new CadenaBytes(" ");
+	Persistencia * cadenaDato = new Persistencia(intToString(IDTermino));
+	Persistencia * cadenaID = new Persistencia(" ");
 	Elementos elemento(clave, cadenaDato, cadenaID);
 
 //	Clave* clave = new Clave(intToString(IDTermino));

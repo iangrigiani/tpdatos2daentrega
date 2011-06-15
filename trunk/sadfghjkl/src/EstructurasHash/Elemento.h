@@ -26,8 +26,8 @@ public:
 
 	int get_tam();
 
-	CadenaBytes Serializar();
-	bool Hidratar(CadenaBytes& cadena);
+	Persistencia Serializar();
+	bool Hidratar(Persistencia& cadena);
 
 	void toString(ostream& os);
 
