@@ -225,15 +225,15 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 		list<Ocurrencia> ocurrencias = procesador.obtenerOcurrencias(palabras, offset);
 
 		list<Ocurrencia> :: iterator itOcurrencias;
-
+		int cont = 0;
 		for(itOcurrencias = ocurrencias.begin(); itOcurrencias != ocurrencias.end();++itOcurrencias)
 		{
-
+			++cont;
 			Ocurrencia ocurrenciaActual = *itOcurrencias;
 			int offsetOcurrencia = this->handlerOcurrencias->insertarOcurrencia(ocurrenciaActual,offset);
 			int clave = ocurrenciaActual.getIdPalabra();
-			cout << "Indexando" << clave << endl;
 			hash.alta(clave, offsetOcurrencia);
+			cout << "Actualizando el Archivo de Ocurrencias" << " ..." << (int) (((cont+1) * 100 / ocurrencias.size())+1) << "%\r";
 		}
 
 
@@ -377,7 +377,7 @@ void HandlerComandos::consultarEditorial(string editorial){
 	list<int> listaDocumentos = procesador.consultaEditorial(editorial);
 	if (listaDocumentos.size() > 0){
 		cout << "Se recuperaron " << listaDocumentos.size() << " libros, cuya Editorial es ->" <<
-				editorial << "<-. Se genero un archivo en el directorio con el resultado ( Path: Consulta Editorial )" << endl;
+				editorial << "<-. Se genero un archivo en el directorio con el resultado ( Path: ConsultaEditorial.txt )" << endl;
 		fstream off;
 		off.open(PATH_CONSULTA_EDITORIAL, ios_base::out);
 		off.close();
@@ -387,6 +387,9 @@ void HandlerComandos::consultarEditorial(string editorial){
 			stringstream ss;
 			ss << this->handler->buscarRegistro((*it));
 			off.seekg(0, ios_base::end);
+			off << "********************************************************************"<<endl;
+			off << "*  						     NUEVO LIBRO						   *"<<endl;
+			off << "********************************************************************"<<endl;
 			off.write(ss.str().c_str(), ss.str().length());
 			off.flush();
 			++it;
@@ -402,7 +405,7 @@ void HandlerComandos::consultarAutor(string autor){
 	list<int> listaDocumentos = procesador.consultaAutor(autor);
 	if (listaDocumentos.size() > 0){
 		cout << "Se recuperaron " << listaDocumentos.size() << " libros, cuyo autor es ->" <<
-				autor << "<-. Se genero un archivo en el directorio con el resultado ( Path: Consulta autor )" << endl;
+				autor << "<-. Se genero un archivo en el directorio con el resultado ( Path: ConsultaAutor.txt )" << endl;
 		fstream off;
 		off.open(PATH_CONSULTA_AUTOR, ios_base::out);
 		off.close();
@@ -412,7 +415,9 @@ void HandlerComandos::consultarAutor(string autor){
 			stringstream ss;
 			ss << this->handler->buscarRegistro((*it));
 			off.seekg(0, ios_base::end);
-			off.write(ss.str().c_str(), ss.str().length());
+			off << "********************************************************************"<<endl;
+			off << "*  						     NUEVO LIBRO						   *"<<endl;
+			off << "********************************************************************"<<endl;			off.write(ss.str().c_str(), ss.str().length());
 			off.flush();
 			++it;
 		}
@@ -427,7 +432,7 @@ void HandlerComandos::consultarTitulo(string titulo) {
 	int documento = procesador.consultaTitulo(titulo);
 	if (documento != ERROR) {
 		cout << "Se recuperó el libro cuyo título es: " << titulo << endl;
-		cout << "Se generó un archivo en el directorio con el resultado ( Path: Consulta titulo )" << endl;
+		cout << "Se generó un archivo en el directorio con el resultado ( Path: ConsultaTitulo.txt )" << endl;
 		fstream off;
 		off.open(PATH_CONSULTA_TITULO, ios_base::out);
 		off.close();
@@ -450,15 +455,16 @@ void HandlerComandos::consultarPalabras(list<string> palabras){
 		this->parser->downCase(*it);
 
 	string busqueda;
+	string espacio = " ";
 	it = palabras.begin();
 	while( it != palabras.end()){
-		busqueda += (*it);
+		busqueda += (*it) + espacio;
 		++it;
 	}
 	list<int> listaDocumentos = procesador.consultaPalabras(palabras);
 	if (listaDocumentos.size() > 0){
-		cout << "Se recuperaron " << listaDocumentos.size() << " libros, para esta busqueda: ->" <<
-				busqueda << "<-. Se genero un archivo en el directorio con el resultado ( Path: Consulta Palabras )" << endl;
+		cout << "Se recuperaron " << listaDocumentos.size() << " libros, para esta busqueda: -> " <<
+				busqueda << "<-. Se genero un archivo en el directorio con el resultado ( Path: ConsultaPalabras.txt )" << endl;
 		fstream off;
 		off.open(PATH_CONSULTA_PALABRAS, ios_base::out);
 		off.close();
@@ -468,7 +474,9 @@ void HandlerComandos::consultarPalabras(list<string> palabras){
 			stringstream ss;
 			ss << this->handler->buscarRegistro((*it));
 			off.seekg(0, ios_base::end);
-			off.write(ss.str().c_str(), ss.str().length());
+			off << "********************************************************************"<<endl;
+			off << "*  						     NUEVO LIBRO						   *"<<endl;
+			off << "********************************************************************"<<endl;			off.write(ss.str().c_str(), ss.str().length());
 			off.flush();
 			++it;
 		}
