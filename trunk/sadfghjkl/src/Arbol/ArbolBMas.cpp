@@ -6,9 +6,10 @@
 /***************** Metodos Publicos **********************/
 
 
-ArbolBMas::ArbolBMas(string ruta_archivo, int tipoDeArbol) {
+ArbolBMas::ArbolBMas(string ruta_archivo, string ruta_id, int tipoDeArbol) {
 	this->primeraHoja = 0;
 	this->tipoDeArbol = tipoDeArbol;
+	this->pathId = ruta_id;
 	this->persistor = new PersistorArbol(ruta_archivo, TAM_TOTAL_NODO);
 	this->raiz = hidratarNodo(0);
 	if (this->raiz) {
@@ -28,7 +29,7 @@ ArbolBMas::~ArbolBMas() {
 }
 
 
-int ArbolBMas::insertar(Elementos* registro) {
+int ArbolBMas::insertar(Elementos* registro, bool incrementarID) {
 
 	Nodo* nuevoNodoHijo = NULL;
 	Clave clavePromocion;
@@ -47,7 +48,7 @@ int ArbolBMas::insertar(Elementos* registro) {
 	registro->getDatos()->sacarElFrontCoding(palabra, persistor->getRuta());
 
 	Persistencia idInsertado;
-	insertarRecursivo(raiz, *(registro->getClave()), *(registro->getDatos()), *(registro->getID()), &clavePromocion, &nuevoNodoHijo, &idInsertado);
+	insertarRecursivo(raiz, *(registro->getClave()), *(registro->getDatos()), *(registro->getID()), &clavePromocion, &nuevoNodoHijo, &idInsertado, incrementarID);
 
 	// Si el arbol es primario, devuelvo lo que inserte, sino devuelvo lo mismo que traia
 	if (this->tipoDeArbol == 1){
@@ -336,7 +337,7 @@ int ArbolBMas::obtenerPosicion(Nodo *unNodo, Clave clave) {
 }
 
 
-bool ArbolBMas::insertarRecursivo(Nodo* nodoCorriente, Clave clave, Persistencia dato, Persistencia id, Clave* clavePromocion, Nodo** nuevoNodo, Persistencia* idInsertado) {
+bool ArbolBMas::insertarRecursivo(Nodo* nodoCorriente, Clave clave, Persistencia dato, Persistencia id, Clave* clavePromocion, Nodo** nuevoNodo, Persistencia* idInsertado, bool incrementarID) {
 
 	if (!nodoCorriente->isNodoHoja()) {
 
@@ -346,7 +347,7 @@ bool ArbolBMas::insertarRecursivo(Nodo* nodoCorriente, Clave clave, Persistencia
 		int posicion = obtenerPosicion(nodoInteriorCorriente, clave);
 		Nodo* nodoHijo = hidratarNodo(nodoInteriorCorriente->hijos[posicion]);
 
-		bool resultado = insertarRecursivo(nodoHijo, clave, dato, id, &nuevaClave, &nuevoNodoHijo, idInsertado);
+		bool resultado = insertarRecursivo(nodoHijo, clave, dato, id, &nuevaClave, &nuevoNodoHijo, idInsertado, incrementarID);
 
 		if (nuevoNodoHijo) {
 
@@ -426,8 +427,13 @@ bool ArbolBMas::insertarRecursivo(Nodo* nodoCorriente, Clave clave, Persistencia
 		nodoHojaCorriente->claves[i + 1] = clave;
 		nodoHojaCorriente->datos[i + 1] = dato;
 		if (this->tipoDeArbol == 1){
-			id = obtenerNuevoId();
-			*idInsertado = id;
+			if (incrementarID){
+				id = obtenerNuevoId(this->pathId);
+			}else{
+				Persistencia uno("1");
+				id = uno;
+			}
+				*idInsertado = id;
 		}
 		nodoHojaCorriente->Ids[i + 1] = id;
 		nodoHojaCorriente->cantidadClaves++;
@@ -1153,18 +1159,20 @@ void ArbolBMas::hidratarDatosConfiguracion() {
 		ifs.seekg(0, ios_base::beg);
 
 
+	if (tamanio != 0){
 		char* sPrimeraHoja = new char[sizeof(int)];
 		ifs.read(sPrimeraHoja,sizeof(int));
 		primeraHoja = *((int*)sPrimeraHoja);
 		delete[] sPrimeraHoja;
 
-		while (ifs.tellg() < tamanio) {
-			char* s = new char[sizeof(int)];
-			ifs.read(s,sizeof(int));
-			int numeroDeNodo = *((int*)s);
-			nodosLibres.push_back(numeroDeNodo);
-			delete[] s;
+			while (ifs.tellg() < tamanio) {
+				char* s = new char[sizeof(int)];
+				ifs.read(s,sizeof(int));
+				int numeroDeNodo = *((int*)s);
+				nodosLibres.push_back(numeroDeNodo);
+				delete[] s;
 		}
+	}
 		ifs.close();
 	}else{
 		ifs.open(nombreArchivo.c_str(), ios_base::out);
@@ -1242,14 +1250,14 @@ void ArbolBMas::llenarListadeBusqueda(list<Elementos*>* listaElementos, NodoHoja
 		llenarListadeBusqueda(listaElementos, nuevoNodoHoja, 0 , clave);
 	}
 }
-Persistencia ArbolBMas::obtenerNuevoId(){
+Persistencia ArbolBMas::obtenerNuevoId(string path){
 	Persistencia cadenaRetorno;
 	string modificacion;
 	modificacion.clear();
 	std::fstream archivoId;
 	char  cadenaDeDatos[50];
 
-	archivoId.open(PATH_ID_TERMINOS, std::ios_base::in | std::ios_base::out);
+	archivoId.open(path.c_str(), std::ios_base::in | std::ios_base::out);
 
 	if (archivoId.is_open()){
 		archivoId.seekg(0);
@@ -1257,9 +1265,9 @@ Persistencia ArbolBMas::obtenerNuevoId(){
 		modificacion = cadenaDeDatos;
 		archivoId.close();
 	}else{
-		archivoId.open(PATH_ID_TERMINOS, std::ios_base::out);
+		archivoId.open(path.c_str(), std::ios_base::out);
 		archivoId.close();
-		archivoId.open(PATH_ID_TERMINOS, std::ios_base::in | std::ios_base::out);
+		archivoId.open(path.c_str(), std::ios_base::in | std::ios_base::out);
 		modificacion  = "0";
 		archivoId.close();
 	}
@@ -1268,9 +1276,9 @@ Persistencia ArbolBMas::obtenerNuevoId(){
 	++valor;
 	stringstream ss;
 	ss << valor;
-	archivoId.open(PATH_ID_TERMINOS, std::ios_base::out);
+	archivoId.open(path.c_str(), std::ios_base::out);
 	archivoId.close();
-	archivoId.open(PATH_ID_TERMINOS, std::ios_base::in | std::ios_base::out);
+	archivoId.open(path.c_str(), std::ios_base::in | std::ios_base::out);
 
 	archivoId.seekg(0);
 	archivoId.write(ss.str().c_str(), ss.str().length());

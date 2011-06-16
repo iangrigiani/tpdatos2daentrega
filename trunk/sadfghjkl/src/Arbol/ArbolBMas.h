@@ -23,6 +23,7 @@ private:
 	Nodo* raiz;
 	int primeraHoja;
 	int cantidadNodos;
+	string pathId;
 	int tipoDeArbol; // 1 es arbol primario, 2 es secundario
 	vector<int> nodosLibres;
 	PersistorArbol* persistor;
@@ -32,10 +33,10 @@ private:
 
 public:
 
-	ArbolBMas(string ruta_archivo,int tipoDeArbol);
+	ArbolBMas(string ruta_archivo,string ruta_Contador, int tipoDeArbol);
 
 	~ArbolBMas();
-	int insertar(Elementos* registro);
+	int insertar(Elementos* registro, bool incrementarID);
 
 	bool modificar(Elementos* registro);
 
@@ -79,7 +80,7 @@ private:
 
 	int obtenerPosicion(Nodo *unNodo, Clave clave);
 
-	bool insertarRecursivo(Nodo* nodoCorriente, Clave clave, Persistencia dato, Persistencia id,  Clave* clavePromocion, Nodo** nuevoNodo, Persistencia* idInsertado);
+	bool insertarRecursivo(Nodo* nodoCorriente, Clave clave, Persistencia dato, Persistencia id,  Clave* clavePromocion, Nodo** nuevoNodo, Persistencia* idInsertado, bool incrementarID);
 
 	void dividirNodoHoja(NodoHoja* unNodoHoja, Clave* clavePromocion, Nodo** nuevoNodoHoja);
 
@@ -122,7 +123,7 @@ private:
 
 	Solucion buscarSecuencialClave(int nodo, Elementos* elemento, int posicion);
 
-	Persistencia obtenerNuevoId();
+	Persistencia obtenerNuevoId(string path);
 
 };
 

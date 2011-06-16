@@ -53,7 +53,10 @@
 #define TAM_CONTROL_REGISTRO 10
 #define PATH_AUTOR "Autores"
 #define PATH_EDITORIAL "Editoriales"
-#define PATH_ID_TERMINOS "Ids_Terminos.txt"
+#define PATH_ID_TERMINOS "Terminos"
+#define PATH_ID_PESOS "Ids_Pesos_Globales.txt"
+#define PATH_IDS "Ids_Terminos.txt"
+#define PATH_IDS_BORRAR "No_sirve.txt"
 
 /************************ Hash ************************/
 #define TAM_CUBO 4096

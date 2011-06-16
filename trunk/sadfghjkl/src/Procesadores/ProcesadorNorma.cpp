@@ -18,6 +18,11 @@ void ProcesadorNorma::actualizarPesosYNormas(int idDocumento, int* lista, int ta
 	int i = 0;
 	float pesoGlobal= 0, norma = 0;
 
+	cout << tamanioLista << endl;
+	for ( int i = 0; i < tamanioLista; ++i){
+		cout << lista[i] << endl;
+	}
+
 	while (i < tamanioLista ){
 		frecGlobal = this->incrementarPesoTermino(lista[i]);
 		pesoGlobal = this->calc->calcularPesoGlobalTermino(frecGlobal);
@@ -35,7 +40,7 @@ void ProcesadorNorma::actualizarPesosYNormas(int idDocumento, int* lista, int ta
 
 int ProcesadorNorma::incrementarPesoTermino(int IDTermino){
 
-	ArbolBMas arbol(PATH_ARCHIVO_FREC_GLOB, 1);
+	ArbolBMas arbol(PATH_ARCHIVO_FREC_GLOB, PATH_ID_PESOS, 1);
 	Clave* clave = new Clave(intToString(IDTermino));
 	Persistencia * cadenaDato = new Persistencia(intToString(IDTermino));
 	Persistencia * cadenaID = new Persistencia(" ");
@@ -50,7 +55,7 @@ int ProcesadorNorma::incrementarPesoTermino(int IDTermino){
 //	if (listaElementos->size() > 0){
 	if (!arbol.incrementarID(&elemento, pesoActual)){
 		elemento.setID(new Persistencia(intToString(pesoActual)));
-		arbol.insertar(&elemento);
+		arbol.insertar(&elemento, false);
 	}
 //		Elementos elemento = *(*(listaElementos->begin()));
 //		CadenaBytes* pesoActualCad = elemento.getID();
@@ -79,7 +84,7 @@ int ProcesadorNorma::incrementarPesoTermino(int IDTermino){
 
 int ProcesadorNorma::decrementarPesoTermino (int IDTermino){
 
-	ArbolBMas arbol(PATH_ARCHIVO_FREC_GLOB, 1);
+	ArbolBMas arbol(PATH_ARCHIVO_FREC_GLOB, PATH_ID_PESOS, 1);
 	Clave* clave = new Clave(intToString(IDTermino));
 	Persistencia * cadenaDato = new Persistencia(intToString(IDTermino));
 	Persistencia * cadenaID = new Persistencia(" ");
@@ -113,7 +118,7 @@ int ProcesadorNorma::decrementarPesoTermino (int IDTermino){
 
 int ProcesadorNorma::buscarPesoTermino(int IDTermino){
 
-	ArbolBMas arbol(PATH_ARCHIVO_FREC_GLOB, 1);
+	ArbolBMas arbol(PATH_ARCHIVO_FREC_GLOB, PATH_ID_PESOS, 1);
 	Clave* clave = new Clave(intToString(IDTermino));
 	list<Elementos*>* listaElementos = new list<Elementos*>();
 	arbol.buscar(listaElementos, clave);
