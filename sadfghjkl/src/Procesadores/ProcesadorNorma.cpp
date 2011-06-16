@@ -24,7 +24,7 @@ void ProcesadorNorma::actualizarPesosYNormas(int idDocumento, int* lista, int ta
 		pesoGlobal = pow(pesoGlobal, 2);
 		norma += pesoGlobal;
 		i++;
-		cout << "Actualizando pesos y Norma de documento" << idDocumento << " ..." << (int) (((i+1) * 100 / tamanioLista)+1) << "%\r";
+		cout << "Actualizando pesos y Norma de documento " << idDocumento << " ..." << (int) (((i+1) * 100 / tamanioLista)+1) << "%\r";
 	}
 	norma = sqrt(norma);
 	norma = round(norma*1000)/1000;

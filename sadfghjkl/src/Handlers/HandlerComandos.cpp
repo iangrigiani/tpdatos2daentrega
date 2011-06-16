@@ -222,9 +222,9 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 		HashPalabra hash(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
 
 		ProcesadorOcurrencia procesador;
-		list<Ocurrencia> ocurrencias = procesador.obtenerOcurrencias(palabras, offset);
+		vector<Ocurrencia> ocurrencias = procesador.obtenerOcurrencias(palabras, offset);
 
-		list<Ocurrencia> :: iterator itOcurrencias;
+		vector<Ocurrencia> :: iterator itOcurrencias;
 		int cont = 0;
 		for(itOcurrencias = ocurrencias.begin(); itOcurrencias != ocurrencias.end();++itOcurrencias)
 		{
