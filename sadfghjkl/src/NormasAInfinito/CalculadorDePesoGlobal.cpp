@@ -46,6 +46,9 @@ CalculadorDePesoGlobal::CalculadorDePesoGlobal() {
 float CalculadorDePesoGlobal::calcularPesoGlobalTermino(int frecGlobalTermino) {
 	float pesoGlobal = 0;
 	float cociente = 0;
+	if (this->cantDeDocs < frecGlobalTermino){
+		return 0;
+	}
 	cociente = (this->cantDeDocs) / frecGlobalTermino;
 	pesoGlobal = log10(cociente);
 	return pesoGlobal;

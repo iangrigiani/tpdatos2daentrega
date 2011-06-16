@@ -37,12 +37,12 @@ void HandlerComandos::indexar(int parametro){
 	while ( it != listaDeIds.end()){
 		switch (parametro){
 		case 'a':{
-			this->arbol = new ArbolBMas(PATH_AUTOR,2);
+			this->arbol = new ArbolBMas(PATH_AUTOR, PATH_IDS_BORRAR, 2);
 			insertarEnArbol (1, (*it));
 			this->log->setearIndexado(*it,'a');break;}
 
 		case 'e':{
-			this->arbol = new ArbolBMas(PATH_EDITORIAL,2);
+			this->arbol = new ArbolBMas(PATH_EDITORIAL, PATH_IDS_BORRAR, 2);
 			insertarEnArbol (2, (*it));
 			this->log->setearIndexado(*it,'e'); break;}
 
@@ -115,13 +115,13 @@ void HandlerComandos::verEstructura(int parametro){
 	switch (parametro) {
 	case 'a': {
 		printf("Viendo estructura del árbol de autores. \n");
-		this->arbol = new ArbolBMas(PATH_AUTOR,2);
+		this->arbol = new ArbolBMas(PATH_AUTOR, PATH_IDS_BORRAR, 2);
 		arbol->mostrar();
 		//delete arbol;
 		break; }
 	case 'e': {
 		printf("Viendo estructura del árbol de editoriales. \n");
-		this->arbol = new ArbolBMas(PATH_EDITORIAL,2);
+		this->arbol = new ArbolBMas(PATH_EDITORIAL, PATH_IDS_BORRAR, 2);
 		//ArbolBMas* arbol = new ArbolBMas(2, PATH_NODOS);
 		arbol->mostrar();
 		delete arbol;
@@ -221,8 +221,8 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 
 		HashPalabra hash(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
 
-		ProcesadorOcurrencia procesador;
-		vector<Ocurrencia> ocurrencias = procesador.obtenerOcurrencias(palabras, offset);
+		ProcesadorOcurrencia* procesador = new ProcesadorOcurrencia();
+		vector<Ocurrencia> ocurrencias = procesador->obtenerOcurrencias(palabras, offset);
 
 		vector<Ocurrencia> :: iterator itOcurrencias;
 		int cont = 0;
@@ -235,7 +235,7 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 			hash.alta(clave, offsetOcurrencia);
 			cout << "Actualizando el Archivo de Ocurrencias" << " ..." << (int) (((cont+1) * 100 / ocurrencias.size())+1) << "%\r";
 		}
-
+		delete procesador;
 
 			/*
 			for (it_1 = palabras.begin(); it_1 != palabras.end(); ++ it_1) {
@@ -268,7 +268,7 @@ void HandlerComandos::eliminar_de_hash_palabra(int idDocumento) {
 	calculador.decrementarCantDeDocs();
 
 	ProcesadorNorma procesador;
-	ArbolBMas* arbol = new ArbolBMas(PATH_ID_TERMINOS, 1);
+	ArbolBMas* arbol = new ArbolBMas(PATH_ID_TERMINOS, PATH_IDS, 1);
 	list<Elementos*> listaBusqueda;
 
 
@@ -320,7 +320,7 @@ void HandlerComandos::insertarEnArbol (int tipoArbol, int offset){
 			if(elemento->getTamanio() > (TAM_EFECTIVO_NODO * PORC_TAMANIO_NODO / 100) ){
 				cout<<"Elemento demasiado grande.\n"<<endl;
 			}else{
-				if(arbol->insertar(elemento))
+				if(arbol->insertar(elemento, true))
 					cout<<"ID:"<<offset<<".Libro indexado por autor.\n"<<endl;
 			}
 			delete elemento;
@@ -331,7 +331,7 @@ void HandlerComandos::insertarEnArbol (int tipoArbol, int offset){
 			if(elemento2->getTamanio() > (TAM_EFECTIVO_NODO * PORC_TAMANIO_NODO / 100) ){
 				cout<<"Elemento demasiado grande.\n"<<endl;
 			}else{
-				if(arbol->insertar(elemento2))
+				if(arbol->insertar(elemento2, true))
 					cout<<"ID:"<<offset<<".Libro indexado por editorial.\n"<<endl;
 				delete elemento2;
 			}
@@ -348,7 +348,7 @@ bool HandlerComandos::eliminarEnArbol(int tipoArbol, int offset) {
 	bool retorno = false;
 	if (reg.getAutor() != REGISTRO_ERRONEO){
 		if (tipoArbol == 1){
-			this->arbol = new ArbolBMas(PATH_AUTOR,2);
+			this->arbol = new ArbolBMas(PATH_AUTOR, PATH_IDS_BORRAR, 2);
 			stringstream ss;
 			ss << offset;
 			Elementos* elemento = new Elementos(new Clave(reg.getAutor()), new Persistencia(reg.getAutor()), new Persistencia(ss.str()));
@@ -356,7 +356,7 @@ bool HandlerComandos::eliminarEnArbol(int tipoArbol, int offset) {
 			delete elemento;
 			delete arbol;
 		}else{
-			this->arbol = new ArbolBMas(PATH_EDITORIAL,2);
+			this->arbol = new ArbolBMas(PATH_EDITORIAL, PATH_IDS_BORRAR, 2);
 			stringstream ss;
 			ss << offset;
 			Elementos* elemento = new Elementos(new Clave(reg.getEditorial()), new Persistencia(reg.getEditorial()), new Persistencia(ss.str()));

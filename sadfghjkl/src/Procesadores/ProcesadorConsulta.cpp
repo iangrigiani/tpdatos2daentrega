@@ -13,7 +13,7 @@ list<int> ProcesadorConsulta::consultaAutor(string autor){
 	list<Elementos*> listaRetornoBusqueda;
 	list<int> listaRetorno;
 
-	ArbolBMas* arbol = new ArbolBMas(PATH_AUTOR, 2);
+	ArbolBMas* arbol = new ArbolBMas(PATH_AUTOR, PATH_IDS_BORRAR, 2);
 	Clave* clave = new Clave(autor);
 	arbol->buscar(&listaRetornoBusqueda, clave);
 
@@ -31,7 +31,7 @@ list<int> ProcesadorConsulta::consultaEditorial(string editorial){
 	list<Elementos*> listaRetornoBusqueda;
 	list<int> listaRetorno;
 
-	ArbolBMas* arbol = new ArbolBMas(PATH_EDITORIAL, 2);
+	ArbolBMas* arbol = new ArbolBMas(PATH_EDITORIAL, PATH_IDS_BORRAR, 2);
 	Clave* clave = new Clave(editorial);
 	arbol->buscar(&listaRetornoBusqueda, clave);
 
@@ -175,7 +175,7 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 
 	HashPalabra hashPalabra(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
 
-	ArbolBMas* arbol = new ArbolBMas(PATH_ID_TERMINOS,1);
+	ArbolBMas* arbol = new ArbolBMas(PATH_ID_TERMINOS,PATH_IDS,1);
 	HandlerArchivoOcurrencias handlerArchivoOcurrencias;
 
 	while( itPalabras!= palabras.end() )
@@ -241,7 +241,7 @@ list<int> ProcesadorConsulta::consultaPuntualPalabra(string palabra){
 	list<int> offsetsArchivoOcurrencias;
 	list<int> idTermino;
 
-	ArbolBMas* arbol = new ArbolBMas(PATH_ID_TERMINOS, 1);
+	ArbolBMas* arbol = new ArbolBMas(PATH_ID_TERMINOS, PATH_IDS, 1);
 	list<Elementos*> listaBusqueda;
 	Clave* clave = new Clave(palabra);
 	arbol->buscar(&listaBusqueda, clave);

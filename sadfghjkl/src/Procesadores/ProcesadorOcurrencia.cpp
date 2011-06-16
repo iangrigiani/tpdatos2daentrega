@@ -61,12 +61,12 @@ Termino ProcesadorOcurrencia::agregarTermino(string palabraActual){
 
 	Termino termino;
 
-	ArbolBMas arbol(PATH_ID_TERMINOS, 1);
+	ArbolBMas arbol(PATH_ID_TERMINOS, PATH_IDS, 1);
 	Clave * clave = new Clave(palabraActual);
 	Persistencia * cadenaDato = new Persistencia(palabraActual);
 	Persistencia * cadenaID = new Persistencia(" ");
 	Elementos elemento(clave, cadenaDato, cadenaID);
-	int idTermino = arbol.insertar(&elemento);
+	int idTermino = arbol.insertar(&elemento, true);
 	termino.setIdTermino(idTermino);
 
 	insertarIdTermino(termino.getIdTermino());
