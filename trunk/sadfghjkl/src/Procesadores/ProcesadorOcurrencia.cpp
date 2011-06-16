@@ -2,7 +2,7 @@
 
 ProcesadorOcurrencia::ProcesadorOcurrencia() {
 	this->cantidadTerminos = 0;
-	this->idTerminos = new int[STRING_BUFFER - TAM_CONTROL_NODO];
+	this->idTerminos = new int[STRING_BUFFER_PALABRAS];
 }
 
 ProcesadorOcurrencia::~ProcesadorOcurrencia() {
@@ -70,6 +70,7 @@ void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, list<Ocurrencia
 		}
 		free(cadena);
 		iteracion++;
+		cout << "Indexando palabras Libro de ID " << idDocumento << " ..." << (int) (((iteracion+1) * 100 / palabras.size())+1) << "%\r";
 	}
     // Le paso la lista de terminos al handler del archivo de normas.
 

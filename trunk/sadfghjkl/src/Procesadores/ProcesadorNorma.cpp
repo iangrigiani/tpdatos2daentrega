@@ -24,6 +24,7 @@ void ProcesadorNorma::actualizarPesosYNormas(int idDocumento, int* lista, int ta
 		pesoGlobal = pow(pesoGlobal, 2);
 		norma += pesoGlobal;
 		i++;
+		cout << "Actualizando pesos y Norma de documento" << idDocumento << " ..." << (int) (((i+1) * 100 / tamanioLista)+1) << "%\r";
 	}
 	norma = sqrt(norma);
 	norma = round(norma*1000)/1000;
@@ -116,7 +117,7 @@ int ProcesadorNorma::buscarPesoTermino(int IDTermino){
 	Clave* clave = new Clave(intToString(IDTermino));
 	list<Elementos*>* listaElementos = new list<Elementos*>();
 	arbol.buscar(listaElementos, clave);
-	delete clave;
+//	delete clave;
 
 	if ( listaElementos->size() > 0){
 

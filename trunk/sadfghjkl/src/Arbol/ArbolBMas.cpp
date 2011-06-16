@@ -32,7 +32,7 @@ int ArbolBMas::insertar(Elementos* registro) {
 
 	Nodo* nuevoNodoHijo = NULL;
 	Clave clavePromocion;
-	int idDevolucion;
+	int idDevolucion = 0;
 
 	if (raiz == NULL) {
 		raiz = crearNodoHoja();
