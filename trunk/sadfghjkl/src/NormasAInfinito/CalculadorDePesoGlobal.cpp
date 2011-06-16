@@ -13,24 +13,58 @@
 
 CalculadorDePesoGlobal::CalculadorDePesoGlobal(){
 
-	std::fstream off;
-	off.open(PATH_TOTAL_DOCUMENTOS, std::ios_base::in | std::ios_base::out);
-	if ( !off.is_open()){
-		off.open(PATH_TOTAL_DOCUMENTOS, std::ios_base::out);
-		std::string s = "0";
-		off.seekg(0, std::ios_base::beg);
-		off.write(s.c_str(), s.length());
-		off.flush();
-		off.close();
-		off.open(PATH_TOTAL_DOCUMENTOS, std::ios_base::in | std::ios_base::out);
+	std::string modificacion;
+	std::fstream archivoId;
+	char  cadenaDeDatos[50];
+
+	archivoId.open(PATH_TOTAL_DOCUMENTOS, std::ios_base::in | std::ios_base::out);
+
+	if (archivoId.is_open()){
+		archivoId.seekg(0);
+		archivoId.get(cadenaDeDatos,50);
+		modificacion = cadenaDeDatos;
+//		archivoId.close();
+	}else{
+		archivoId.open(PATH_TOTAL_DOCUMENTOS, std::ios_base::out);
+		archivoId.close();
+		archivoId.open(PATH_TOTAL_DOCUMENTOS, std::ios_base::in | std::ios_base::out);
+		modificacion  = "0";
+//		archivoId.close();
 	}
-	char buffer[100];
-	off.seekg(0, std::ios_base::beg);
-	off.get(buffer, 100);
+
 	std::stringstream ss;
-	ss << buffer;
-	this->cantDeDocs = atoi(ss.str().c_str());
-	off.close();
+	ss << modificacion;
+//	archivoId.open(PATH_ID_TERMINOS, std::ios_base::out);
+//	archivoId.close();
+//	archivoId.open(PATH_ID_TERMINOS, std::ios_base::in | std::ios_base::out);
+	archivoId.clear();
+	archivoId.seekg(0);
+	archivoId.write(ss.str().c_str(), ss.str().length());
+	archivoId.close();
+
+	this->cantDeDocs = atoi(modificacion.c_str());
+
+	//	std::fstream off;
+	//	off.open(PATH_TOTAL_DOCUMENTOS, std::ios_base::in | std::ios_base::out);
+	//	if ( !off.is_open()){
+	//		off.open(PATH_TOTAL_DOCUMENTOS, std::ios_base::out);
+	//		std::stringstream ss;
+	//		int p = 0;
+	//		ss << p << "\n";
+	//		off.seekg(0, std::ios_base::beg);
+	//		off.write(ss.str().c_str(), ss.str().length());
+	//		off.flush();
+	//		off.close();
+	//	}
+	//
+	//	std::ifstream iff;
+	//	iff.open(PATH_TOTAL_DOCUMENTOS);
+	//	char buffer[100];
+	//	iff.seekg(0, std::ios_base::beg);
+	//	iff.get(buffer, 100);
+	//	std::stringstream ss;
+	//	ss << buffer;
+	//	iff.close();
 }
 
 CalculadorDePesoGlobal::~CalculadorDePesoGlobal(){
@@ -46,55 +80,129 @@ float CalculadorDePesoGlobal::calcularPesoGlobalTermino(int frecGlobalTermino){
 
 void CalculadorDePesoGlobal::incrementarCantDeDocs(int diferencial){
 
-	std::fstream off;
-	off.open(PATH_TOTAL_DOCUMENTOS, std::ios_base::in | std::ios_base::out);
-	char buffer[100];
-	off.seekg(0, std::ios_base::beg);
-	off.get(buffer, 100);
+	std::string modificacion;
+	std::fstream archivoId;
+	char  cadenaDeDatos[50];
+
+	archivoId.open(PATH_TOTAL_DOCUMENTOS, std::ios_base::in | std::ios_base::out);
+
+	if (archivoId.is_open()){
+		archivoId.seekg(0);
+		archivoId.get(cadenaDeDatos,50);
+		modificacion = cadenaDeDatos;
+		archivoId.close();
+	}else{
+		archivoId.open(PATH_TOTAL_DOCUMENTOS, std::ios_base::out);
+		archivoId.close();
+		archivoId.open(PATH_TOTAL_DOCUMENTOS, std::ios_base::in | std::ios_base::out);
+		modificacion  = "0";
+//		archivoId.close();
+	}
+
+	//	cadenaRetorno.setBytes(modificacion);
+	int valor = atoi(modificacion.c_str());
+	++valor;
 	std::stringstream ss;
-	ss << buffer;
-	int valor =  atoi(ss.str().c_str());
-
-	valor += diferencial;
-	ss.clear();
 	ss << valor;
-
-	off.seekg(0, std::ios_base::beg);
-	off.write(ss.str().c_str(), ss.str().length());
-	off.flush();
-	off.close();
-
-//	this->cantDeDocs = cantDeDocs + diferencial;
-//	ss << this->cantDeDocs;
+//	archivoId.open(PATH_ID_TERMINOS, std::ios_base::out);
+//	archivoId.close();
+//	archivoId.open(PATH_ID_TERMINOS, std::ios_base::in | std::ios_base::out);
+	archivoId.clear();
+	archivoId.seekg(0);
+	archivoId.write(ss.str().c_str(), ss.str().length());
+	archivoId.flush();
+	archivoId.close();
+	//	std::ifstream iff;
+	//	iff.open(PATH_TOTAL_DOCUMENTOS);
+	////	off.open(PATH_TOTAL_DOCUMENTOS, std::ios_base::in | std::ios_base::out);
+	//	char buffer[100];
+	//	iff.seekg(0, std::ios_base::beg);
+	//	iff.get(buffer, 100);
+	//	std::stringstream ss;
+	//	ss << buffer;
+	//	int valor =  atoi(ss.str().c_str());
+	//	iff.close();
+	//	valor += diferencial;
+	//	ss.clear();
+	//	ss << valor << "\n";
+	//
+	//	std::ofstream off;
+	//	off.open(PATH_TOTAL_DOCUMENTOS);
+	//	off.seekp(0, std::ios_base::beg);
+	//	off.clear();
+	//	off.seekp(0, std::ios_base::beg);
+	//	off.write(ss.str().c_str(), ss.str().length());
+	//	off.flush();
+	//	off.close();
 
 }
 
 void CalculadorDePesoGlobal::decrementarCantDeDocs(){
 
-	std::fstream off;
-	off.open(PATH_TOTAL_DOCUMENTOS, std::ios_base::in | std::ios_base::out);
-	char buffer[100];
-	off.seekg(0, std::ios_base::beg);
-	off.get(buffer, 100);
-	std::stringstream ss;
-	ss << buffer;
-	int valor =  atoi(ss.str().c_str());
+	std::string modificacion;
+	std::fstream archivoId;
+	char  cadenaDeDatos[50];
 
-	if (valor > 0){
+	archivoId.open(PATH_TOTAL_DOCUMENTOS, std::ios_base::in | std::ios_base::out);
 
-		-- valor;
-		ss.clear();
-		ss << valor;
-
-		off.seekg(0, std::ios_base::beg);
-		off.write(ss.str().c_str(), ss.str().length());
-		off.flush();
-
+	if (archivoId.is_open()){
+		archivoId.seekg(0);
+		archivoId.get(cadenaDeDatos,50);
+		modificacion = cadenaDeDatos;
+		archivoId.close();
+	}else{
+		archivoId.open(PATH_TOTAL_DOCUMENTOS, std::ios_base::out);
+		archivoId.close();
+		archivoId.open(PATH_TOTAL_DOCUMENTOS, std::ios_base::in | std::ios_base::out);
+		modificacion  = "0";
+		archivoId.close();
 	}
 
-	off.close();
+	//	cadenaRetorno.setBytes(modificacion);
+	int valor = atoi(modificacion.c_str());
+	if (valor > 0){
+		--valor;
+		std::stringstream ss;
+		ss << valor;
+//		archivoId.open(PATH_ID_TERMINOS, std::ios_base::out);
+//		archivoId.close();
+		archivoId.open(PATH_ID_TERMINOS, std::ios_base::in | std::ios_base::out);
+		archivoId.clear();
+		archivoId.seekg(0);
+		archivoId.write(ss.str().c_str(), ss.str().length());
+		archivoId.flush();
+		archivoId.close();
+	}
+	//	std::ifstream iff;
+	//	iff.open(PATH_TOTAL_DOCUMENTOS);//, std::ios_base::in | std::ios_base::out);
+	//	char buffer[100];
+	//	iff.seekg(0, std::ios_base::beg);
+	//	iff.get(buffer, 100);
+	//	std::stringstream ss;
+	//	ss << buffer;
+	//	int valor =  atoi(ss.str().c_str());
+	//	iff.close();
+	//
+	//
+	//	if (valor > 0){
+	//		std::ofstream off;
+	//		off.open(PATH_TOTAL_DOCUMENTOS);//, std::ios_base::in | std::ios_base::out);
+	//
+	//		-- valor;
+	//		ss.clear();
+	//		ss << valor << "\n";
+	//
+	//		off.seekp(0, std::ios_base::beg);
+	//		off.clear();
+	//		off.seekp(0, std::ios_base::beg);
+	//		off.write(ss.str().c_str(), ss.str().length());
+	//		off.flush();
+	//		off.close();
+	//
+	//	}
 
-//	int aux = (this->cantDeDocs);
-//	--aux;
-//	this->cantDeDocs = aux;
+
+	//	int aux = (this->cantDeDocs);
+	//	--aux;
+	//	this->cantDeDocs = aux;
 }
