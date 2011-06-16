@@ -119,6 +119,30 @@ void HashTitulo::agregar_nuevo_elemento(Bucket& bloque, int num_bloque, RegTitul
 	}
 }
 
+void HashTitulo::alta(int clave, int ID) {
+	Persistencia cadena;
+	Bucket bloque;
+
+	int num_bloque = this->handler_tabla.get_num_bloque(clave);
+	this->persistor.recuperar_bloque(num_bloque, cadena);
+	bloque.Hidratar(cadena);
+
+	if (bloque.existe_reg(clave) == true) {
+		RegTitulo& reg = bloque.buscar_reg(clave);
+
+		if (this->elemento_repetido(reg, "") == false) {
+			Elemento elemento("", ID);
+			this->agregar_nuevo_elemento(bloque, num_bloque, reg, elemento);
+		}
+	}
+	else {
+		Elemento elemento("", ID);
+		RegTitulo reg(clave);
+		reg.agregar_nuevo_elemento(elemento);
+		this->insertar_reg(reg);
+	}
+}
+
 void HashTitulo::alta(const string& termino, int ID) {
 	Persistencia cadena;
 	Bucket bloque;
@@ -244,6 +268,18 @@ void HashTitulo::eliminar_elemento(Bucket& bloque, int num_bloque, int clave, co
 	}
 }
 
+void HashTitulo::baja(int clave) {
+	Persistencia cadena;
+	Bucket bloque;
+
+	int num_bloque = this->handler_tabla.get_num_bloque(clave);
+	this->persistor.recuperar_bloque(num_bloque, cadena);
+	bloque.Hidratar(cadena);
+
+	this->eliminar_elemento(bloque, num_bloque, clave, "");
+	this->eliminar_reg_y_bloques_sigs(bloque, num_bloque, clave);
+}
+
 void HashTitulo::baja(const string& termino) {
 	Persistencia cadena;
 	Bucket bloque;
@@ -279,6 +315,16 @@ int HashTitulo::consultar_elemento(Bucket& bloque, int num_bloque, int clave, co
 		}
 	}
 	else return -1;
+}
+
+int HashTitulo::consultar(int clave) {
+	Persistencia cadena;
+	Bucket bloque;
+
+	int num_bloque = this->handler_tabla.get_num_bloque(clave);
+	this->persistor.recuperar_bloque(num_bloque, cadena);
+	bloque.Hidratar(cadena);
+	return this->consultar_elemento(bloque, num_bloque, clave, "");
 }
 
 int HashTitulo::consultar(const string& termino) {

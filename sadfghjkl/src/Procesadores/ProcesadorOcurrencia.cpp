@@ -1,22 +1,23 @@
 #include "ProcesadorOcurrencia.h"
 
 ProcesadorOcurrencia::ProcesadorOcurrencia() {
-
+	this->cantidadTerminos = 0;
+	this->idTerminos = new int[STRING_BUFFER - TAM_CONTROL_NODO];
 }
 
 ProcesadorOcurrencia::~ProcesadorOcurrencia() {
-
+	if (this->idTerminos) delete[] this->idTerminos;
 }
 
-list<Ocurrencia> ProcesadorOcurrencia::obtenerOcurrencias (list<string> palabras)
+list<Ocurrencia> ProcesadorOcurrencia::obtenerOcurrencias (list<string> palabras, int idDocumento)
 {
 
 	list<Ocurrencia> ocurrencias;
-	this->getOcurrencias(palabras, ocurrencias);
+	this->getOcurrencias(palabras, ocurrencias, idDocumento);
 	return ocurrencias;
 }
 
-void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, list<Ocurrencia> & ocurrencias)
+void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, list<Ocurrencia> & ocurrencias, int idDocumento)
 {
 	list <string> ::iterator itPalabras;
 	list<Ocurrencia> :: iterator itOcurrencias;
@@ -71,12 +72,11 @@ void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, list<Ocurrencia
 		iteracion++;
 	}
     // Le paso la lista de terminos al handler del archivo de normas.
-	/*
-    int idDocumento = 0; //TODO Sacar esta basura harcodeada,
+
     //ver como guardar el número de documento indexado (total de docs +1
-    ProcesadorNorma handlerFrec(this->idTerminos);
-    handlerFrec.actualizarPesosYNormas(idDocumento);
-    */
+    ProcesadorNorma handlerFrec;
+    handlerFrec.actualizarPesosYNormas(idDocumento, this->idTerminos, this->cantidadTerminos);
+
 }
 
 Termino ProcesadorOcurrencia::agregarTermino(string palabraActual){

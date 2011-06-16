@@ -64,13 +64,13 @@ void ProcesadorConsulta::crearAparicion(Aparicion aparicion1, Aparicion aparicio
 
 	while(itPosiciones1 != posiciones1.end())
 	{
-		nuevaAparicion.agregarPosiciones((*itPosiciones1).getPosiciones(), (*itPosiciones1).getPalabra());
+		nuevaAparicion.agregarPosiciones((*itPosiciones1).getPosiciones(), (*itPosiciones1).getPalabra(),(*itPosiciones1).getIdPalabra());
 		++itPosiciones1;
 	}
 
 	while(itPosiciones2 != posiciones2.end())
 	{
-		nuevaAparicion.agregarPosiciones((*itPosiciones2).getPosiciones(),(*itPosiciones2).getPalabra());
+		nuevaAparicion.agregarPosiciones((*itPosiciones2).getPosiciones(),(*itPosiciones2).getPalabra(),(*itPosiciones2).getIdPalabra());
 		++itPosiciones2;
 	}
 }
@@ -566,8 +566,9 @@ Palabra ProcesadorConsulta::filtrarProximidad(Palabra  palabra, list<int> & docu
 		if(nuevaDistancia.getDistancia() != -1)
 		{
 			distancias.push_back(nuevaDistancia);
+			palabraFiltrada.agregarAparicion(*itApariciones);
 		}
-		this->actualizarApariciones(aparicionActual.getIdDocumento(),posiciones,aparicionesActualizadas);
+//		this->actualizarApariciones(aparicionActual.getIdDocumento(),posiciones,aparicionesActualizadas);
 
 		itApariciones++;
 
@@ -575,11 +576,11 @@ Palabra ProcesadorConsulta::filtrarProximidad(Palabra  palabra, list<int> & docu
 
 	list<Aparicion> :: iterator itApActualizadas = aparicionesActualizadas.begin();
 
-	while(itApActualizadas != aparicionesActualizadas.end())
-	{
-		palabraFiltrada.agregarAparicion(*itApActualizadas);
-		itApActualizadas++;
-	}
+//	while(itApActualizadas != aparicionesActualizadas.end())
+//	{
+//		palabraFiltrada.agregarAparicion(*itApActualizadas);
+//		itApActualizadas++;
+//	}
 
 
 	palabraFiltrada.setPalabra(palabra.getPalabra());
@@ -651,7 +652,7 @@ Palabra ProcesadorConsulta::filtrarDistancias(list<Distancia> distancias, Palabr
 	Palabra palabraFiltrada;
 
 
-	if(distancias.begin() != distancias.end())
+	if(distancias.size() > 0)
 	{
 
 		list<Distancia> :: iterator itDistancias = distancias.begin();
@@ -756,6 +757,7 @@ Palabra ProcesadorConsulta::filtrarDocumentos(Distancia distancia, Palabra  pala
 
 
 
+
 list<int> ProcesadorConsulta::filtrarRanqueada(Palabra palabra)
 {
 	list<int> documentos;
@@ -765,6 +767,7 @@ list<int> ProcesadorConsulta::filtrarRanqueada(Palabra palabra)
 
 	int frecTerminoEnDoc = 0;
 	list<Aparicion>::iterator itAparicionFiltrada;
+	list<Posicion> posicionEnDoc;
 	list<Posicion>::iterator itPosicionEnDoc;
 	list<int>::iterator itPosicionDocumentos;
 
@@ -775,6 +778,9 @@ list<int> ProcesadorConsulta::filtrarRanqueada(Palabra palabra)
 	int cantPalabras = 0;
 	int cantDocumentosTermino = 0;
 	list<Aparicion> apariciones = palabra.getApariciones();
+	ProcesadorNorma procesadorNorma;
+
+	itAparicionFiltrada = apariciones.begin();
 
 	// por cada documento hay una aparicion
 	for (int a = 0; a<cantidadApariciones; a++){
@@ -782,34 +788,26 @@ list<int> ProcesadorConsulta::filtrarRanqueada(Palabra palabra)
 		sumaParcial = 0;
 		pesoTerminosEnDocumento = 0;
 
-		itAparicionFiltrada = apariciones.begin();
-
-		for (int b =0; b < a; b++){
-			++itAparicionFiltrada;
-		}
-
 		aparicion = *itAparicionFiltrada;
-
 
 		// Calculo el peso:
 		// para eso recorro la lista de posiciones (cada una representa a una palabra) y calculo su peso y su frecuencia
 		cantPalabras = (aparicion.getPosiciones()).size();
-		itPosicionEnDoc = aparicion.getPosiciones().begin();
+		posicionEnDoc = aparicion.getPosiciones();
+		itPosicionEnDoc = posicionEnDoc.begin();
 		for (int c = 0; c < cantPalabras; c++){
 
 			posicion = *itPosicionEnDoc;
 			frecTerminoEnDoc = (posicion.getPosiciones()).size();
 
-			// TODO: Obtengo del arbol la cantidad de documentos donde aparece el termino (NECESITO EL ID!!)
-			//cantDocumentosTermino = procesarNorma.buscarPesoTermino(idTermino);
+			cantDocumentosTermino = procesadorNorma.buscarPesoTermino(posicion.getIdPalabra());
 			pesoGlobal = calcPesoGlobal.calcularPesoGlobalTermino(cantDocumentosTermino);
 
 			sumaParcial += frecTerminoEnDoc * pesoGlobal;
 			++itPosicionEnDoc;
 		}
 
-		// TODO: obtener la norma del documento:
-		// normaDocumento = procesarNorma.consultarNorma(aparicion.getIdDocumento());
+		normaDocumento = procesadorNorma.consultarNorma(aparicion.getIdDocumento());
 		pesoTerminosEnDocumento = sumaParcial / normaDocumento;
 
 		// Si la lista de documentos esta vacia, no importa el peso que tenga, sera siempre el de mayor peso hasta ahora
@@ -838,6 +836,7 @@ list<int> ProcesadorConsulta::filtrarRanqueada(Palabra palabra)
 
 		}
 
+		++itAparicionFiltrada;
 	}
 
 	return documentos;

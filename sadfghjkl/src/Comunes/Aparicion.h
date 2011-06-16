@@ -1,10 +1,3 @@
-/*
- * Aparicion.h
- *
- *  Created on: 08/06/2011
- *      Author: catu
- */
-
 #ifndef APARICION_H_
 #define APARICION_H_
 
@@ -61,11 +54,12 @@ public:
 
 	}
 
-	void agregarPosiciones(list<int> posiciones, string palabra)
+	void agregarPosiciones(list<int> posiciones, string palabra, int idPalabra)
 	{
 		Posicion posicion;
 		posicion.setPalabra(palabra);
 		posicion.agregarPosiciones(posiciones);
+		posicion.setIdPalabra(idPalabra);
 		this->posiciones.push_back(posicion);
 
 

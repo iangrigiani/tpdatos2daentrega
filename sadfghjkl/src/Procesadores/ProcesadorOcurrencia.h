@@ -12,12 +12,12 @@ class ProcesadorOcurrencia {
 private:
 		int cantidadTerminos;
 		int* idTerminos;
-		void getOcurrencias(list<string> palabras, list<Ocurrencia> & ocurrencias);
+		void getOcurrencias(list<string> palabras, list<Ocurrencia> & ocurrencias, int idDocumento);
 		Termino agregarTermino(string palabraActual);
 		void insertarIdTermino(int idTermino);
 public:
 		ProcesadorOcurrencia();
-		list<Ocurrencia> obtenerOcurrencias (list<string> palabras);
+		list<Ocurrencia> obtenerOcurrencias (list<string> palabras, int idDocumento);
 		virtual ~ProcesadorOcurrencia();
 };
 

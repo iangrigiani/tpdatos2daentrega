@@ -1,10 +1,7 @@
 #include "ProcesadorNorma.h"
 
-ProcesadorNorma::ProcesadorNorma() {
-}
-
-ProcesadorNorma::ProcesadorNorma(vector<int> idTerminos){
-	this->idTerminos = idTerminos;
+ProcesadorNorma::ProcesadorNorma(){
+//	this->idTerminos = idTerminos;
 //	this->arbolPesos = new ArbolBMas(PATH_ARCHIVO_FREC_GLOB, 1);
 	this->calc       = new CalculadorDePesoGlobal();
 }
@@ -16,12 +13,13 @@ ProcesadorNorma::~ProcesadorNorma() {
 }
 
 
-void ProcesadorNorma::actualizarPesosYNormas(int idDocumento){
-	int i = 0 , frecGlobal= 0;
+void ProcesadorNorma::actualizarPesosYNormas(int idDocumento, int* lista, int tamanioLista){
+	int frecGlobal= 0;
+	int i = 0;
 	float pesoGlobal= 0, norma = 0;
 
-	while (i< (int)(this->idTerminos.size()) ){
-		frecGlobal = this->incrementarPesoTermino(idTerminos[i]);
+	while (i < tamanioLista ){
+		frecGlobal = this->incrementarPesoTermino(lista[i]);
 		pesoGlobal = this->calc->calcularPesoGlobalTermino(frecGlobal);
 		pesoGlobal = pow(pesoGlobal, 2);
 		norma += pesoGlobal;
@@ -118,6 +116,7 @@ int ProcesadorNorma::buscarPesoTermino(int IDTermino){
 	Clave* clave = new Clave(intToString(IDTermino));
 	list<Elementos*>* listaElementos = new list<Elementos*>();
 	arbol.buscar(listaElementos, clave);
+	delete clave;
 
 	if ( listaElementos->size() > 0){
 
@@ -137,10 +136,7 @@ int ProcesadorNorma::buscarPesoTermino(int IDTermino){
 void ProcesadorNorma::eliminarNormaGuardada(int idDocumento){
 
 	HashTitulo hash(NOM_BLOQUES_NORMA, NOM_ESP_LIBRE_NORMA, NOM_TABLA_NORMA);
-	stringstream ss;
-	ss << idDocumento;
-
-	hash.baja(ss.str());
+	hash.baja(idDocumento);
 //	int puntero = 0;
 //	// TODO ESTO NO COMPILA ----->>>> puntero = buscarRegistro(idDocumento);
 //	string linea = "\n";
@@ -187,7 +183,7 @@ void ProcesadorNorma::persistirNorma(int idDocumento, float norma){
 	stringstream ss;
 	ss << idDocumento;
 
-	hash.alta(ss.str(), atoi(nn.str().c_str()));
+	hash.alta(idDocumento, atoi(nn.str().c_str()));
 //	string linea = lineaArchivoNorma(idDocumento, norma);
 //	ofstream archivoLog;
 //
@@ -210,7 +206,7 @@ float ProcesadorNorma::consultarNorma(int idDocumento){
 	stringstream ss;
 	ss << idDocumento;
 
-	retorno = (float)hash.consultar(ss.str());
+	retorno = (float)hash.consultar(idDocumento);
 
 	return retorno;
 }

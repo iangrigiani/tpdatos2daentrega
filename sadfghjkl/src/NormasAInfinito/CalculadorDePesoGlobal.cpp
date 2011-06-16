@@ -64,7 +64,6 @@ void CalculadorDePesoGlobal::incrementarCantDeDocs(int diferencial){
 	off.flush();
 	off.close();
 
-
 //	this->cantDeDocs = cantDeDocs + diferencial;
 //	ss << this->cantDeDocs;
 

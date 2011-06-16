@@ -19,7 +19,6 @@ class ProcesadorNorma{
 public:
 	/* -------- Constructor y Destructor ---------*/
 	ProcesadorNorma();
-	ProcesadorNorma(vector<int> idTerminos);
 	virtual ~ProcesadorNorma();
 
 	/* Actualiza el archivo de normas incrementando en 1 el valor del peso que estaba
@@ -27,7 +26,7 @@ public:
 	 * PRE: -
 	 * POS: Archivo de normas actualizado.
 	 */
-	void actualizarPesosYNormas(int idDocumento);
+	void actualizarPesosYNormas(int idDocumento, int* lista, int tamanioLista);
 
 
 	/* Actualiza el archivo de normas incrementando en 1 el valor del peso que estaba
@@ -68,7 +67,7 @@ public:
 private:
 //	ArbolBMas* arbolPesos;
 	CalculadorDePesoGlobal* calc;
-	vector<int> idTerminos;
+//	vector<int> idTerminos;
 	string intToString(int integer);
 	void persistirNorma(int idDocumento, float norma);
 //	string lineaArchivoNorma(int idDocument, float norma);
