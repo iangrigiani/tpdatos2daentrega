@@ -3,22 +3,23 @@
 
 #include <fstream>
 #include <sstream>
-#include <stdlib.h>
-#include <stdio.h>
+#include <math.h>
 
 #include "../Comunes/Constantes.h"
 
-class CalculadorDePesoGlobal{
+using namespace std;
+
+class CalculadorDePesoGlobal {
 private:
 	int cantDeDocs;
-
+	void consultar_archivo();
 public:
 	CalculadorDePesoGlobal();
-	~CalculadorDePesoGlobal();
+	~CalculadorDePesoGlobal() {};
 
-	void incrementarCantDeDocs(int diferencial);
+	void incrementarCantDeDocs();
 	float calcularPesoGlobalTermino(int frecGlobalTermino);
-	void decrementarCantDeDocs();
+	bool decrementarCantDeDocs();
 
 };
 
