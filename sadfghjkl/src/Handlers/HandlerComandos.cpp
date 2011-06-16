@@ -213,7 +213,7 @@ int HandlerComandos::funcion_hash_palabra(const string& str) {
 void HandlerComandos::insertar_en_hash_palabra(int offset) {
 
 	CalculadorDePesoGlobal calculador;
-	calculador.incrementarCantDeDocs(1);
+	calculador.incrementarCantDeDocs();
 
 	list<string> palabras = this->parser->obtenerPalabrasDeLibro(this->handler->buscarRegistro(offset));
 
