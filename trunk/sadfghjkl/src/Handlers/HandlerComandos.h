@@ -7,7 +7,7 @@
 #include "../Procesadores/ProcesadorOcurrencia.h"
 #include "../Procesadores/ProcesadorConsulta.h"
 #include "../Parser/ParserDeLibros.h"
-
+#include "../NormasAInfinito/CalculadorDePesoGlobal.h"
 #include <list>
 
 class HandlerComandos {

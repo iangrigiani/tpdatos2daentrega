@@ -10,7 +10,7 @@
 #include "../Handlers/HandlerArchivoOcurrencias.h"
 #include "../Hash/HashPalabra.h"
 #include "../Hash/HashTitulo.h"
-#include "../NormasAInfinito/CalculadorDePesoGlobal.h"
+#include "../Procesadores/ProcesadorNorma.h"
 #include <math.h>
 //using namespace std;
 

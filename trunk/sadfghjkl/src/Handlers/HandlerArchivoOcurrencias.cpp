@@ -1,10 +1,3 @@
-/*
- * HandlerArchivoOcurrencias.cpp
- *
- *  Created on: 22/05/2011
- *      Author: catu
- */
-
 #include "HandlerArchivoOcurrencias.h"
 
 HandlerArchivoOcurrencias::HandlerArchivoOcurrencias()
@@ -19,6 +12,32 @@ void HandlerArchivoOcurrencias::crearArchivoVacio()
 	fstream arch;
 	arch.open(PATH_ARCHIVO_OCURRENCIAS, fstream::app);
 	arch.close();
+}
+
+int HandlerArchivoOcurrencias::obtenerOffsetABorrar(list<int>& offsets,int idDocumento){
+
+	int retorno;
+	std:: fstream fEspLibreOcurrencias;
+	fEspLibreOcurrencias.open(PATH_ESPACIO_LIBRE_OCURRENCIAS, std::ios_base::in | std::ios_base::out);
+
+	if (!fEspLibreOcurrencias.is_open()){
+		fEspLibreOcurrencias.open(PATH_ESPACIO_LIBRE_OCURRENCIAS, std::ios_base::out);
+		fEspLibreOcurrencias.close();
+		fEspLibreOcurrencias.open(PATH_ESPACIO_LIBRE_OCURRENCIAS, std::ios_base::in | std::ios_base::out);
+	}
+
+	std::list<int>::iterator it = offsets.begin();
+	bool encontrado = false;
+	while ( it != offsets.end() && !encontrado){
+		Ocurrencia o = this->buscarOcurrencia((*it));
+		if (o.getIdDocumento() == idDocumento){
+			encontrado = true;
+			retorno = (*it);
+		}
+		++it;
+	}
+	if (encontrado) return retorno;
+	return ERROR;
 }
 
 
@@ -369,7 +388,7 @@ Palabra HandlerArchivoOcurrencias::obtenerPalabra(list<int> offsets, string nomb
 
 		Aparicion aparicion;
 		aparicion.setIdDocumento(numeroDocumento);
-		aparicion.agregarPosiciones(ocurrencia.getPosiciones(),nombrePalabra);
+		aparicion.agregarPosiciones(ocurrencia.getPosiciones(),nombrePalabra,ocurrencia.getIdPalabra());
 		palabra.agregarAparicion(aparicion);
 
 		++it;
@@ -377,4 +396,3 @@ Palabra HandlerArchivoOcurrencias::obtenerPalabra(list<int> offsets, string nomb
 
 	return palabra;
 }
-

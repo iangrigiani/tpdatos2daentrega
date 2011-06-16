@@ -212,6 +212,9 @@ int HandlerComandos::funcion_hash_palabra(const string& str) {
 //
 void HandlerComandos::insertar_en_hash_palabra(int offset) {
 
+	CalculadorDePesoGlobal calculador;
+	calculador.incrementarCantDeDocs(1);
+
 	list<string> palabras = this->parser->obtenerPalabrasDeLibro(this->handler->buscarRegistro(offset));
 
 	if (palabras.size() > 0){
@@ -219,7 +222,7 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 		HashPalabra hash(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
 
 		ProcesadorOcurrencia procesador;
-		list<Ocurrencia> ocurrencias = procesador.obtenerOcurrencias(palabras);
+		list<Ocurrencia> ocurrencias = procesador.obtenerOcurrencias(palabras, offset);
 
 		list<Ocurrencia> :: iterator itOcurrencias;
 
@@ -231,7 +234,6 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 			int clave = ocurrenciaActual.getIdPalabra();
 			cout << "Indexando" << clave << endl;
 			hash.alta(clave, offsetOcurrencia);
-
 		}
 
 
@@ -260,22 +262,47 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 
 }
 //
-void HandlerComandos::eliminar_de_hash_palabra(int offset) {
+void HandlerComandos::eliminar_de_hash_palabra(int idDocumento) {
+
+	CalculadorDePesoGlobal calculador;
+	calculador.decrementarCantDeDocs();
+
+	ProcesadorNorma procesador;
+	ArbolBMas* arbol = new ArbolBMas(PATH_ID_TERMINOS, 1);
+	list<Elementos*> listaBusqueda;
+
 
 	RegistroLibro reg;
-	this->parser->obtenerRegistroDeLibro(this->handler->buscarRegistro(offset), reg);
+	this->parser->obtenerRegistroDeLibro(this->handler->buscarRegistro(idDocumento), reg);
 	if (reg.getAutor() != REGISTRO_ERRONEO){
+
 		HashPalabra hash(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
 
-		int clave;
 		list < string > palabras = reg.getPalabras();
 		list < string > ::iterator it;
+		int claveABorrar;
 		for (it = palabras.begin(); it != palabras.end(); ++ it) {
-			clave = this->funcion_hash_palabra(*it);
-			hash.baja(clave, offset);
+
+			Clave* clavea = new Clave((*it));
+			arbol->buscar(&listaBusqueda, clavea);
+			if (listaBusqueda.size() > 0 ){
+				list<Elementos*>::iterator itq = listaBusqueda.begin();
+				Elementos elemento = *(*(itq));
+				procesador.decrementarPesoTermino(atoi(elemento.getID()->toString().c_str()));
+				list<int> lista = hash.consultar(atoi(elemento.getID()->toString().c_str()));
+				claveABorrar = this->handlerOcurrencias->obtenerOffsetABorrar(lista, idDocumento);
+				if (claveABorrar != ERROR){
+					hash.baja(atoi(elemento.getID()->toString().c_str()), claveABorrar);
+				}
+			}
+			delete clavea;
+
 		}
+
+		procesador.eliminarNormaGuardada(idDocumento);
+
 	}else{
-		cout<<"ID:"<<offset<<"No pudo ser borrado en el hash de palabra.\n"<<endl;
+		cout<<"ID:"<<idDocumento<<"No pudo ser borrado en el hash de palabra.\n"<<endl;
 	}
 }
 //

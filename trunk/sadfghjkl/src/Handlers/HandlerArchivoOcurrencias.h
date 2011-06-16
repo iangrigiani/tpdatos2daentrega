@@ -74,6 +74,7 @@ public:
 		 * post: devuelve palabra.
 		 */
 		Palabra obtenerPalabra(list<int> offsets, string nombrePalabra);
+		int obtenerOffsetABorrar(list<int>& offsets, int idDocumento);
 };
 
 #endif /* HANDLERARCHIVOOCURRENCIAS_H_ */

@@ -1,10 +1,3 @@
-/*
- * Posicion.h
- *
- *  Created on: 08/06/2011
- *      Author: catu
- */
-
 #ifndef POSICION_H_
 #define POSICION_H_
 
@@ -17,6 +10,7 @@ class Posicion {
 private:
 		string palabra;
 		list<int> posiciones;
+		int idPalabra;
 
 public:
 
@@ -59,6 +53,18 @@ public:
 		void agregarPosicion(int & posicion)
 		{
 			this->posiciones.push_back(posicion);
+
+		}
+
+		void setIdPalabra(int idPalabra)
+		{
+			this->idPalabra = idPalabra;
+
+		}
+
+		int getIdPalabra()
+		{
+			return this->idPalabra;
 
 		}
 
