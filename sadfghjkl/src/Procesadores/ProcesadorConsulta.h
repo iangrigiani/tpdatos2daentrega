@@ -11,6 +11,7 @@
 #include "../Hash/HashPalabra.h"
 #include "../Hash/HashTitulo.h"
 #include "../Procesadores/ProcesadorNorma.h"
+#include "../NormasAInfinito/CalculadorDePesoGlobal.h"
 #include <math.h>
 //using namespace std;
 
