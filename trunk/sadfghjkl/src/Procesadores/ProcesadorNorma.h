@@ -65,11 +65,8 @@ public:
 	float consultarNorma(int idDocumento);
 
 private:
-//	ArbolBMas* arbolPesos;
 	CalculadorDePesoGlobal* calc;
-//	vector<int> idTerminos;
 	string intToString(int integer);
 	void persistirNorma(int idDocumento, float norma);
-//	string lineaArchivoNorma(int idDocument, float norma);
 };
 #endif /* PROCESADORNORMA_H_ */
