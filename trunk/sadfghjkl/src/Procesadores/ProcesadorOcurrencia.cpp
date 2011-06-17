@@ -24,6 +24,10 @@ void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, vector<Ocurrenc
 	Parser parser;
 
 	int iteracion = 0;
+	FrecuenciaTermino frecTermino;
+	frecTermino.frecuencia = 0;
+	frecTermino.idTermino = -1;
+
 	for(itPalabras = palabras.begin();itPalabras!= palabras.end(); ++itPalabras)
 	{
 		string palabraActual = *itPalabras;
@@ -42,7 +46,7 @@ void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, vector<Ocurrenc
 
 			Termino termino = agregarTermino(palabraActual);
 			//Si es asi hay que agregar una nueva posicion a la palabra.
-			insertarBinarioOcurrencia(palabraActual, iteracion, termino.getIdTermino(), ocurrencias);
+			insertarBinarioOcurrencia(palabraActual, iteracion, termino.getIdTermino(), ocurrencias, &frecTermino);
 		}
 		free(cadena);
 		iteracion++;
@@ -54,6 +58,7 @@ void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, vector<Ocurrenc
     //ver como guardar el número de documento indexado (total de docs +1
     ProcesadorNorma handlerFrec;
     handlerFrec.actualizarPesos(idDocumento, this->idTerminos, this->cantidadTerminos);
+    handlerFrec.guardarIDTerminoFrecuente(idDocumento, frecTermino.idTermino);
 
 }
 
@@ -74,7 +79,7 @@ Termino ProcesadorOcurrencia::agregarTermino(string palabraActual){
 	return termino;
 }
 
-void ProcesadorOcurrencia::insertarBinarioOcurrencia(string palabraActual, int iteracion, int idTermino, vector<Ocurrencia> & ocurrencias){
+void ProcesadorOcurrencia::insertarBinarioOcurrencia(string palabraActual, int iteracion, int idTermino, vector<Ocurrencia> & ocurrencias, FrecuenciaTermino * frecTermino){
 
 	Ocurrencia nuevaOcurrencia;
 	if ( ocurrencias.empty() )
@@ -83,6 +88,9 @@ void ProcesadorOcurrencia::insertarBinarioOcurrencia(string palabraActual, int i
 		nuevaOcurrencia.agregarPosicion(iteracion);
 		nuevaOcurrencia.setIdPalabra(idTermino);
 		ocurrencias.push_back(nuevaOcurrencia);
+
+		frecTermino->frecuencia = 1;
+		frecTermino->idTermino = idTermino;
 		return;
 	}
 
@@ -131,6 +139,12 @@ void ProcesadorOcurrencia::insertarBinarioOcurrencia(string palabraActual, int i
 		}
 	} else {
 		ocurrencias[superior].agregarPosicion(iteracion);
+		int cantidadPosiciones = (ocurrencias[superior].getPosiciones()).size();
+
+		if (cantidadPosiciones > frecTermino->frecuencia){
+			frecTermino->idTermino = idTermino;
+			frecTermino->frecuencia = cantidadPosiciones;
+		}
 	}
 }
 

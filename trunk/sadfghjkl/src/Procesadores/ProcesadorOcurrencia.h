@@ -10,12 +10,18 @@
 class ProcesadorOcurrencia {
 
 private:
+		struct FrecuenciaTermino {
+		   int idTermino;
+		   int frecuencia;
+		};
+
 		int cantidadTerminos;
 		int* idTerminos;
 		void getOcurrencias(list<string> palabras, vector<Ocurrencia> & ocurrencias, int idDocumento);
-		void insertarBinarioOcurrencia(string palabraActual, int iteracion, int idTermino, vector<Ocurrencia> & ocurrencias);
+		void insertarBinarioOcurrencia(string palabraActual, int iteracion, int idTermino, vector<Ocurrencia> & ocurrencias, FrecuenciaTermino * frecTermino);
 		Termino agregarTermino(string palabraActual);
 		void insertarIdTermino(int idTermino);
+
 public:
 		ProcesadorOcurrencia();
 		vector<Ocurrencia> obtenerOcurrencias (list<string> palabras, int idDocumento);

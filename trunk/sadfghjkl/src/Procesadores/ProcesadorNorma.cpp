@@ -40,11 +40,6 @@ void ProcesadorNorma::eliminarIDTerminoFrecuente(int idDocumento){
 void ProcesadorNorma::actualizarPesos(int idDocumento, int* lista, int tamanioLista){
 	int i = 0;
 
-	cout << tamanioLista << endl;
-	for ( int i = 0; i < tamanioLista; ++i){
-		cout << lista[i] << endl;
-	}
-
 	while (i < tamanioLista ){
 		this->incrementarPesoTermino(lista[i]);
 	}
