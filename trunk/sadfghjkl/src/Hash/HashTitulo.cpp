@@ -338,13 +338,17 @@ int HashTitulo::consultar(const string& termino) {
 	return this->consultar_elemento(bloque, num_bloque, clave, termino);
 }
 
-void HashTitulo::mostrar(ostream& os) {
+void HashTitulo::mostrar(ostream& os, string nombre) {
 	Persistencia cadena;
 	Bucket bloque;
 	int cant_bloques = this->persistor.get_handler_bloques().get_tam_arch_bloques() / TAM_CUBO;
 
+	stringstream ss;
+	ss<<"Dispersión Extensible de "<<nombre<<"\n";
+	string nom = ss.str();
+
 	os << "********************************************************************************" << endl;
-	os << "		             Dispersión Extensible de Títulos                            " << endl;
+	os << nom <<endl;
 	os << "********************************************************************************" << endl;
 	os << endl;
 
@@ -357,14 +361,14 @@ void HashTitulo::mostrar(ostream& os) {
 	}
 }
 
-void HashTitulo::mostrar(const string& nombre_arch) {
+void HashTitulo::mostrar(const string& nombre_arch, string nombre) {
 	ofstream arch;
 
 	arch.open(nombre_arch.c_str(), fstream::out);
-	this->mostrar(arch);
+	this->mostrar(arch,nombre);
 	arch.close();
 }
 
 void HashTitulo::mostrar() {
-	this->mostrar(cout);
+	this->mostrar(cout," ");
 }

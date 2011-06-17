@@ -34,7 +34,7 @@ private :
 	int consultar_elemento(Bucket& bloque, int num_bloque, int clave, const string& termino);
 
 
-	void mostrar(ostream& os);
+	void mostrar(ostream& os,string nombre);
 
 
 	void crear_condiciones_iniciales();
@@ -58,7 +58,7 @@ public:
 
 	int consultar(const string& termino);
 
-	void mostrar(const string& nombre_arch);
+	void mostrar(const string& nombre_arch,string nombre);
 
 	void mostrar();
 

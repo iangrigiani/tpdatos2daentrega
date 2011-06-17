@@ -152,7 +152,7 @@ int main (int argc , char *argv[]){
 	case 'v':   {
 		printf("-v -archivo     Ver un archivo de índice. \n");
 		if (argv[2]){
-			opcion2 = getopt(argc,argv, "eatp?:");
+			opcion2 = getopt(argc,argv, "eatpron?:");
 			switch (opcion2){
 			case 'e':   {
 				printf("Bookerio: Viendo estructura de árbol de Editoriales.\n");
@@ -177,6 +177,26 @@ int main (int argc , char *argv[]){
 				handlerComandos->verEstructura('p');
 				printf("Bookerio: Fin de estructura de hash de Palabras.\n");
 				break;}
+
+			case 'r':   {
+				printf("Bookerio: Viendo estructura del archivo de términos.\n");
+				handlerComandos->verEstructura('r');
+				printf("Bookerio: Fin de estructura archivo de términos.\n");
+				break;}
+
+
+			case 'o':   {
+				printf("Bookerio: Viendo estructura del archivo de ocurrencias.\n");
+				handlerComandos->verEstructura('o');
+				printf("Bookerio: Fin de estructura archivo de ocurrencias.\n");
+				break;}
+
+			case 'n':   {
+				printf("Bookerio: Viendo estructura del archivo de normas.\n");
+				handlerComandos->verEstructura('n');
+				printf("Bookerio: Fin de estructura archivo de normas.\n");
+				break;}
+
 
 			case '?':   {
 				printf("Bookerio: Parámetro inválido. \n");
@@ -216,6 +236,9 @@ int main (int argc , char *argv[]){
 		printf("   -a          Para ver el árbol de Autores. \n");
 		printf("   -t          Para ver el hash de Títulos. \n");
 		printf("   -p          Para ver el hash de Palabras. \n");
+		printf("   -r          Para ver el archivo de términos. \n");
+		printf("   -o          Para ver el archivo de ocurrencias. \n");
+		printf("   -n          Para ver el archivo de normas. \n");
 
 		break;}
 

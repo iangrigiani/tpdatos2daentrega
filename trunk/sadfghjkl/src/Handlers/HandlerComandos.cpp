@@ -130,13 +130,32 @@ void HandlerComandos::verEstructura(int parametro){
 	case 't': {
 		printf("Viendo estructura del hash de títulos. \n");
 		HashTitulo hash(NOM_BLOQUES_TITULO, NOM_ESP_LIBRE_TITULO, NOM_TABLA_TITULO);
-		hash.mostrar(NOM_SALIDA_TITULO);
+		hash.mostrar(NOM_SALIDA_TITULO,"Titulo");
 		break; }
 	case 'p': {
 		printf("Viendo estructura del hash de palabras. \n");
 		HashPalabra hash(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
 		hash.mostrar(NOM_SALIDA_PALABRA);
 		break; }
+
+	case 'r': {
+		printf("Viendo estructura del archivo de terminos. \n");
+		this->arbol = new ArbolBMas(PATH_ID_TERMINOS, PATH_IDS, 1);
+		arbol->mostrar();
+		delete arbol;
+		break; }
+
+	case 'o': {
+		printf("Viendo estructura del archivo de ocurrencias. \n");
+		cout<<"El archivo de salida generado para las ocurrencias esta guardado en un archivo con nombre "<<PATH_ARCHIVO_OCURRENCIAS<<endl;
+		break; }
+
+	case 'n': {
+		printf("Viendo estructura del archivo de normas. \n");
+		HashTitulo hash(NOM_BLOQUES_NORMA, NOM_ESP_LIBRE_NORMA, NOM_TABLA_NORMA);
+		hash.mostrar(NOM_SALIDA_NORMA,"Norma");
+		break; }
+
 
 	}
 }

@@ -78,6 +78,7 @@
 #define NOM_BLOQUES_NORMA "BloquesNorma"
 #define NOM_ESP_LIBRE_NORMA "EspLibreNorma"
 #define NOM_TABLA_NORMA "TablaNorma"
+#define NOM_SALIDA_NORMA "SalidaNorma"
 
 /*********************Testing ***************************/
 #define PATH_BLOQUES_TITULO_TEST "BloquesTituloTest"
