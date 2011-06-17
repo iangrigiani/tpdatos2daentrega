@@ -299,7 +299,7 @@ void HandlerComandos::eliminar_de_hash_palabra(int idDocumento) {
 
 		}
 
-		procesador.eliminarNormaGuardada(idDocumento);
+		procesador.eliminarIDTerminoFrecuente(idDocumento);
 
 	}else{
 		cout<<"ID:"<<idDocumento<<"No pudo ser borrado en el hash de palabra.\n"<<endl;
