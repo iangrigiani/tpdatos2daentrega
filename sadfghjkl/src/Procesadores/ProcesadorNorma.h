@@ -9,7 +9,7 @@ class HashTitulo;
 #include <string.h>
 #include <math.h>
 #include <vector>
-#include "../NormasAInfinito/CalculadorDePesoGlobal.h"
+//#include "../NormasAInfinito/CalculadorDePesoGlobal.h"
 #include "../Arbol/ArbolBMas.h"
 #include "../Hash/HashTitulo.h"
 
@@ -75,7 +75,7 @@ public:
 
 private:
 
-	CalculadorDePesoGlobal* calc;
+//	CalculadorDePesoGlobal* calc;
 	string intToString(int integer);
 
 };
