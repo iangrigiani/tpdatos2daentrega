@@ -300,6 +300,21 @@ void HandlerComandos::eliminar_de_hash_palabra(int idDocumento) {
 		list < string > palabras = reg.getPalabras();
 		list < string > ::iterator it;
 		int claveABorrar;
+
+		for (it = palabras.begin(); it != palabras.end(); ++ it) {
+			Clave clavea = (Clave)*it;
+			arbol->buscar(&listaBusqueda, &clavea);
+			if (listaBusqueda.size() > 0) {
+				Elementos* elemento = listaBusqueda.front();
+				procesador.decrementarPesoTermino(atoi(elemento->getID()->toString().c_str()));
+				list < int > lista = hash.consultar(atoi(elemento->getID()->toString().c_str()));
+				claveABorrar = this->handlerOcurrencias->obtenerOffsetABorrar(lista, idDocumento);
+				if (claveABorrar != ERROR)
+					hash.baja(atoi(elemento->getID()->toString().c_str()), claveABorrar);
+			}
+		}
+
+	/*
 		for (it = palabras.begin(); it != palabras.end(); ++ it) {
 
 			Clave* clavea = new Clave((*it));
@@ -317,7 +332,7 @@ void HandlerComandos::eliminar_de_hash_palabra(int idDocumento) {
 			delete clavea;
 
 		}
-
+	*/
 		procesador.eliminarIDTerminoFrecuente(idDocumento);
 
 	}else{

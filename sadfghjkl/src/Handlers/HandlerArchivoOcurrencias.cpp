@@ -15,20 +15,22 @@ void HandlerArchivoOcurrencias::crearArchivoVacio()
 }
 
 int HandlerArchivoOcurrencias::obtenerOffsetABorrar(list<int>& offsets,int idDocumento){
-
 	int retorno;
-
-	std::list<int>::iterator it = offsets.begin();
+	std::list < int > ::iterator it = offsets.begin();
 	bool encontrado = false;
-	while ( it != offsets.end() && !encontrado){
-		Ocurrencia o = this->buscarOcurrencia((*it));
-		if (o.getIdDocumento() == idDocumento){
+
+	while (it != offsets.end() && encontrado == false) {
+		Ocurrencia o = this->buscarOcurrencia(*it);
+		if (o.getIdDocumento() == idDocumento) {
 			encontrado = true;
 			retorno = (*it);
 		}
-		++it;
+		++ it;
 	}
-	if (encontrado) return retorno;
+
+	if (encontrado == true)
+		return retorno;
+
 	return ERROR;
 }
 
