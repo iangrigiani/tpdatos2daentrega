@@ -53,7 +53,7 @@ void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, vector<Ocurrenc
 
     //ver como guardar el número de documento indexado (total de docs +1
     ProcesadorNorma handlerFrec;
-    handlerFrec.actualizarPesosYNormas(idDocumento, this->idTerminos, this->cantidadTerminos);
+    handlerFrec.actualizarPesos(idDocumento, this->idTerminos, this->cantidadTerminos);
 
 }
 
