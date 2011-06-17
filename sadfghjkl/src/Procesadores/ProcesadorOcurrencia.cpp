@@ -51,7 +51,7 @@ void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, vector<Ocurrenc
 		free(cadena);
 		iteracion++;
 
-		cout << "Indexando palabras Libro de ID " << idDocumento << " ..." << (int) (((iteracion+1) * 100 / palabras.size())+1) << "%\r";
+		cout << "Indexando palabras Libro de ID " << idDocumento << " ...";
 	}
     // Le paso la lista de terminos al handler del archivo de normas.
 

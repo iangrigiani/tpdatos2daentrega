@@ -107,7 +107,6 @@ void HashTitulo::agregar_nuevo_elemento(Bucket& bloque, int num_bloque, RegTitul
 			int num_bloque_sig = this->persistor.guardar_bloque(bloque_sig.Serializar());
 			reg.set_bloque_sig(num_bloque_sig);
 			this->persistor.guardar_bloque(bloque.Serializar(), num_bloque);
-			//cout << "el bloque " << num_bloque << " tiene un reg con clave " << reg.get_clave() << " q apunta al bloque " << num_bloque_sig << endl;
 		}
 		else {
 			Persistencia cadena;
@@ -144,28 +143,8 @@ void HashTitulo::alta(int clave, int ID) {
 }
 
 void HashTitulo::alta(const string& termino, int ID) {
-	Persistencia cadena;
-	Bucket bloque;
-
 	int clave = this->funcion_hash(termino);
-	int num_bloque = this->handler_tabla.get_num_bloque(clave);
-	this->persistor.recuperar_bloque(num_bloque, cadena);
-	bloque.Hidratar(cadena);
-
-	if (bloque.existe_reg(clave) == true) {
-		RegTitulo& reg = bloque.buscar_reg(clave);
-
-		if (this->elemento_repetido(reg, termino) == false) {
-			Elemento elemento(termino, ID);
-			this->agregar_nuevo_elemento(bloque, num_bloque, reg, elemento);
-		}
-	}
-	else {
-		Elemento elemento(termino, ID);
-		RegTitulo reg(clave);
-		reg.agregar_nuevo_elemento(elemento);
-		this->insertar_reg(reg);
-	}
+	this->alta(clave, ID);
 }
 
 bool HashTitulo::eliminar_reg(int clave) {
@@ -281,16 +260,8 @@ void HashTitulo::baja(int clave) {
 }
 
 void HashTitulo::baja(const string& termino) {
-	Persistencia cadena;
-	Bucket bloque;
-
 	int clave = this->funcion_hash(termino);
-	int num_bloque = this->handler_tabla.get_num_bloque(clave);
-	this->persistor.recuperar_bloque(num_bloque, cadena);
-	bloque.Hidratar(cadena);
-
-	this->eliminar_elemento(bloque, num_bloque, clave, termino);
-	this->eliminar_reg_y_bloques_sigs(bloque, num_bloque, clave);
+	this->baja(clave);
 }
 
 int HashTitulo::consultar_elemento(Bucket& bloque, int num_bloque, int clave, const string& termino) {
@@ -328,27 +299,21 @@ int HashTitulo::consultar(int clave) {
 }
 
 int HashTitulo::consultar(const string& termino) {
-	Persistencia cadena;
-	Bucket bloque;
-
 	int clave = this->funcion_hash(termino);
-	int num_bloque = this->handler_tabla.get_num_bloque(clave);
-	this->persistor.recuperar_bloque(num_bloque, cadena);
-	bloque.Hidratar(cadena);
-	return this->consultar_elemento(bloque, num_bloque, clave, termino);
+	return this->consultar(clave);
 }
 
-void HashTitulo::mostrar(ostream& os, string nombre) {
+void HashTitulo::mostrar(ostream& os, const string& nombre) {
 	Persistencia cadena;
 	Bucket bloque;
 	int cant_bloques = this->persistor.get_handler_bloques().get_tam_arch_bloques() / TAM_CUBO;
 
 	stringstream ss;
-	ss<<"Dispersión Extensible de "<<nombre<<"\n";
+	ss << "Hash de " << nombre << endl;
 	string nom = ss.str();
 
 	os << "********************************************************************************" << endl;
-	os << nom <<endl;
+	os << "                  " << nom << endl;
 	os << "********************************************************************************" << endl;
 	os << endl;
 
@@ -361,14 +326,14 @@ void HashTitulo::mostrar(ostream& os, string nombre) {
 	}
 }
 
-void HashTitulo::mostrar(const string& nombre_arch, string nombre) {
+void HashTitulo::mostrar(const string& nombre_arch, const string& nombre) {
 	ofstream arch;
 
 	arch.open(nombre_arch.c_str(), fstream::out);
-	this->mostrar(arch,nombre);
+	this->mostrar(arch, nombre);
 	arch.close();
 }
 
-void HashTitulo::mostrar() {
-	this->mostrar(cout," ");
+void HashTitulo::mostrar(const string& nombre) {
+	this->mostrar(cout, nombre);
 }

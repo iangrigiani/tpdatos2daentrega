@@ -130,7 +130,7 @@ void HandlerComandos::verEstructura(int parametro){
 	case 't': {
 		printf("Viendo estructura del hash de títulos. \n");
 		HashTitulo hash(NOM_BLOQUES_TITULO, NOM_ESP_LIBRE_TITULO, NOM_TABLA_TITULO);
-		hash.mostrar(NOM_SALIDA_TITULO,"Titulo");
+		hash.mostrar(NOM_SALIDA_TITULO,"Títulos");
 		break; }
 	case 'p': {
 		printf("Viendo estructura del hash de palabras. \n");
@@ -147,15 +147,14 @@ void HandlerComandos::verEstructura(int parametro){
 
 	case 'o': {
 		printf("Viendo estructura del archivo de ocurrencias. \n");
-		cout<<"El archivo de salida generado para las ocurrencias esta guardado en un archivo con nombre "<<PATH_ARCHIVO_OCURRENCIAS<<endl;
+		cout << "El archivo de salida generado para las ocurrencias esta guardado en un archivo con nombre " << PATH_ARCHIVO_OCURRENCIAS << endl;
 		break; }
 
 	case 'n': {
 		printf("Viendo estructura del archivo de normas. \n");
 		HashTitulo hash(NOM_BLOQUES_NORMA, NOM_ESP_LIBRE_NORMA, NOM_TABLA_NORMA);
-		hash.mostrar(NOM_SALIDA_NORMA,"Norma");
+		hash.mostrar(NOM_SALIDA_NORMA, "Normas Infinito");
 		break; }
-
 
 	}
 }
@@ -252,7 +251,7 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 			int offsetOcurrencia = this->handlerOcurrencias->insertarOcurrencia(ocurrenciaActual,offset);
 			int clave = ocurrenciaActual.getIdPalabra();
 			hash.alta(clave, offsetOcurrencia);
-			cout << "Actualizando el Archivo de Ocurrencias" << " ..." << (int) (((cont+1) * 100 / ocurrencias.size())+1) << "%\r";
+			cout << "Actualizando el Archivo de Ocurrencias...";
 		}
 		delete procesador;
 
@@ -422,12 +421,14 @@ bool HandlerComandos::eliminarEnArbol(int tipoArbol, int offset) {
 }
 
 void HandlerComandos::consultarEditorial(string editorial){
+	string aux = editorial;
+
 	this->parser->downCase(editorial);
 	ProcesadorConsulta procesador;
 	list<int> listaDocumentos = procesador.consultaEditorial(editorial);
 	if (listaDocumentos.size() > 0){
 		cout << "Se recuperaron " << listaDocumentos.size() << " libros, cuya Editorial es ->" <<
-				editorial << "<-. Se genero un archivo en el directorio con el resultado ( Path: ConsultaEditorial.txt )" << endl;
+				aux << "<-. Se genero un archivo en el directorio con el resultado ( Path: ConsultaEditorial.txt )" << endl;
 		fstream off;
 		off.open(PATH_CONSULTA_EDITORIAL, ios_base::out);
 		off.close();
@@ -450,12 +451,14 @@ void HandlerComandos::consultarEditorial(string editorial){
 	}
 }
 void HandlerComandos::consultarAutor(string autor){
+	string aux = autor;
+
 	this->parser->downCase(autor);
 	ProcesadorConsulta procesador;
 	list<int> listaDocumentos = procesador.consultaAutor(autor);
 	if (listaDocumentos.size() > 0){
 		cout << "Se recuperaron " << listaDocumentos.size() << " libros, cuyo autor es ->" <<
-				autor << "<-. Se genero un archivo en el directorio con el resultado ( Path: ConsultaAutor.txt )" << endl;
+				aux << "<-. Se genero un archivo en el directorio con el resultado ( Path: ConsultaAutor.txt )" << endl;
 		fstream off;
 		off.open(PATH_CONSULTA_AUTOR, ios_base::out);
 		off.close();
@@ -477,11 +480,13 @@ void HandlerComandos::consultarAutor(string autor){
 	}
 }
 void HandlerComandos::consultarTitulo(string titulo) {
+	string aux = titulo;
+
 	this->parser->downCase(titulo);
 	ProcesadorConsulta procesador;
 	int documento = procesador.consultaTitulo(titulo);
 	if (documento != ERROR) {
-		cout << "Se recuperó el libro cuyo título es: " << titulo << endl;
+		cout << "Se recuperó el libro cuyo título es: " << aux << endl;
 		cout << "Se generó un archivo en el directorio con el resultado ( Path: ConsultaTitulo.txt )" << endl;
 		fstream off;
 		off.open(PATH_CONSULTA_TITULO, ios_base::out);

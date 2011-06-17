@@ -11,8 +11,6 @@
 using namespace std;
 
 int main (int argc , char *argv[]){
-
-	/* TODO cambiar printfs por métodos de HandlerComandos*/
 	HandlerComandos* handlerComandos = new HandlerComandos();
 	string path;
 
@@ -25,14 +23,11 @@ int main (int argc , char *argv[]){
 			else ss << argv[i] << " ";
 		}
 		path = ss.str();
-		//    	printf("Bookerio: Cantidad errónea de parámetros. Sólo puede pasar un parámetro o ");
-		//        printf("dos en caso de -v(er) o de -i(ngresar). \n");
-		//        printf("Bookerio: Ingrese el parámetro -h(elp) para ver la referencia de parámetros. \n");
 	}else{
 		if (argv[2])
 			path = argv[2];
 	}
-	(opcion1 = getopt(argc,argv, "ieatploqvhc?:")) ;
+	opcion1 = getopt(argc,argv, "ieatploqvhc?:");
 	switch (opcion1) {
 	case 'i':   {
 		if (argv[2]) {
@@ -42,35 +37,35 @@ int main (int argc , char *argv[]){
 		break;}
 
 	case 'e':   {
-		printf("Bookerio: Indexando por Editorial los libros agregados recientemente \n");
+		printf("Bookerio: Indexando por Editorial los libros agregados recientemente...\n");
 		handlerComandos->indexar('e');
 		cout << endl;
 		printf("Bookerio: Fin de indexado por Editorial.\n");
 		break;}
 
 	case 'a':   {
-		printf("Bookerio: Indexando por Autor los libros agregados recientemente \n");
+		printf("Bookerio: Indexando por Autor los libros agregados recientemente...\n");
 		handlerComandos->indexar('a');
 		cout << endl;
 		printf("Bookerio: Fin de indexado por Autor.\n");
 		break;}
 
 	case 't':   {
-		printf("Bookerio: Indexando por Título los libros agregados recientemente \n");
+		printf("Bookerio: Indexando por Título los libros agregados recientemente...\n");
 		handlerComandos->indexar('t');
 		cout << endl;
 		printf("Bookerio: Fin de indexado por Título.\n");
 		break;}
 
 	case 'p':   {
-		printf("Bookerio: Indexando por Palabras los libros agregados recientemente \n");
+		printf("Bookerio: Indexando por Palabras los libros agregados recientemente...\n");
 		handlerComandos->indexar('p');
 		cout << endl;
 		printf("Bookerio: Fin de indexado por Palabras.\n");
 		break;}
 
 	case 'l':   {
-		printf("Bookerio: Listando todos los archivos tomados recientemente \n");
+		printf("Bookerio: Listando todos los archivos tomados recientemente...\n");
 		handlerComandos->listarLibrosIngresados();
 		printf("Bookerio: Fin de listado de libros tomados recientemente.\n");
 		break;}
@@ -179,22 +174,21 @@ int main (int argc , char *argv[]){
 				break;}
 
 			case 'r':   {
-				printf("Bookerio: Viendo estructura del archivo de términos.\n");
+				printf("Bookerio: Viendo estructura de árbol de términos.\n");
 				handlerComandos->verEstructura('r');
-				printf("Bookerio: Fin de estructura archivo de términos.\n");
+				printf("Bookerio: Fin de estructura de árbol de términos.\n");
 				break;}
 
-
 			case 'o':   {
-				printf("Bookerio: Viendo estructura del archivo de ocurrencias.\n");
+				printf("Bookerio: Viendo estructura de archivo de ocurrencias.\n");
 				handlerComandos->verEstructura('o');
-				printf("Bookerio: Fin de estructura archivo de ocurrencias.\n");
+				printf("Bookerio: Fin de estructura de archivo de ocurrencias.\n");
 				break;}
 
 			case 'n':   {
-				printf("Bookerio: Viendo estructura del archivo de normas.\n");
+				printf("Bookerio: Viendo estructura de hash de normas.\n");
 				handlerComandos->verEstructura('n');
-				printf("Bookerio: Fin de estructura archivo de normas.\n");
+				printf("Bookerio: Fin de estructura de hash de normas.\n");
 				break;}
 
 
@@ -236,9 +230,9 @@ int main (int argc , char *argv[]){
 		printf("   -a          Para ver el árbol de Autores. \n");
 		printf("   -t          Para ver el hash de Títulos. \n");
 		printf("   -p          Para ver el hash de Palabras. \n");
-		printf("   -r          Para ver el archivo de términos. \n");
+		printf("   -r          Para ver el árbol de términos. \n");
 		printf("   -o          Para ver el archivo de ocurrencias. \n");
-		printf("   -n          Para ver el archivo de normas. \n");
+		printf("   -n          Para ver el hash de normas. \n");
 
 		break;}
 
@@ -248,30 +242,6 @@ int main (int argc , char *argv[]){
 	}
 
 	delete handlerComandos;
+
 	return EXIT_SUCCESS;
 }
-
-//#include <iostream>
-//using namespace std;
-//#include "Arbol/ArbolBMas.h"
-//
-//int main() {
-//	int i = 0;
-//	while ( i < 10000){
-//		stringstream ss;
-//		ss << i;
-//		string s = ss.str();
-////		ParserArbolBMas* parser = new ParserArbolBMas();
-//		ArbolBMas* arbol = new ArbolBMas("Arbol", 2);
-//		arbol->insertar(new Elementos(new Clave(s), new Persistencia(s), new Persistencia(" ")));
-//
-//		cout << "Incerte Elemento: " << i << endl;
-//		++i;
-////		delete parser;
-//		delete arbol;
-//	}
-//	ArbolBMas* arbol = new ArbolBMas("Arbol", 2);
-//	arbol->mostrar();
-//	delete arbol;
-//	return 0;
-//}
