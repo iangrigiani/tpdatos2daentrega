@@ -20,9 +20,9 @@ int main (int argc , char *argv[]){
 	if ((argc!= 2) && (argc!=3)) {
 		stringstream ss;
 		for ( int i = 2 ; i < argc; ++i) {
-			if (i == (argc - 1)){
+			if (i == (argc - 1))
 				ss << argv[i];
-			}else ss << argv[i] << " ";
+			else ss << argv[i] << " ";
 		}
 		path = ss.str();
 		//    	printf("Bookerio: Cantidad errónea de parámetros. Sólo puede pasar un parámetro o ");
@@ -91,12 +91,12 @@ int main (int argc , char *argv[]){
 		break;}
 
 	case 'c':   {
-		printf("-q -archivo     Consultar un archivo de índice. \n");
+		printf("-c -archivo     Consultar un archivo de índice. \n");
 		if (argv[2]) {
 			opcion2 = getopt(argc, argv, "eatp?:");
 			switch (opcion2) {
 				case 'a':   {
-					printf("-q -a <Autor> Consulta puntual por <Autor>.\n");
+					printf("-c -a <Autor> Consulta puntual por <Autor>.\n");
 					stringstream ss;
 					for (int i = 3; i < argc; ++ i) {
 						if (i == (argc - 1))
@@ -107,7 +107,7 @@ int main (int argc , char *argv[]){
 					break;}
 
 				case 'e':   {
-					printf("-q -e <Editorial> Consulta puntual por <Editorial>.\n");
+					printf("-c -e <Editorial> Consulta puntual por <Editorial>.\n");
 					stringstream ss;
 					for (int i = 3; i < argc; ++ i) {
 						if (i == (argc - 1))
@@ -118,7 +118,7 @@ int main (int argc , char *argv[]){
 					break;}
 
 				case 't':   {
-					printf("-q -t <Título> Consulta puntual por <Título>.\n");
+					printf("-c -t <Título> Consulta puntual por <Título>.\n");
 					stringstream ss;
 					for (int i = 3; i < argc; ++ i) {
 						if (i == (argc - 1))
@@ -129,7 +129,7 @@ int main (int argc , char *argv[]){
 					break;}
 
 				case 'p':   {
-					printf("-q -p <Palabra> Consulta puntual por <Palabra>.\n");
+					printf("-c -p <Palabra> Consulta puntual por <Palabra>.\n");
 					string s;
 					list < string > palabras;
 					for (int i = 3; i < argc; ++ i) {
