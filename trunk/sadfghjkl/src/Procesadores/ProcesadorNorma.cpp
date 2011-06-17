@@ -42,6 +42,7 @@ void ProcesadorNorma::actualizarPesos(int idDocumento, int* lista, int tamanioLi
 
 	while (i < tamanioLista ){
 		this->incrementarPesoTermino(lista[i]);
+		i++;
 	}
 }
 
