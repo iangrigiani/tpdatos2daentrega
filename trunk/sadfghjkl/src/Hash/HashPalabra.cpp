@@ -78,7 +78,6 @@ void HashPalabra::agregar_nuevo_offset(Cubo& bloque, int num_bloque, RegPalabra&
 			int num_bloque_sig = this->persistor.guardar_bloque(bloque_sig.Serializar());
 			reg.set_bloque_sig(num_bloque_sig);
 			this->persistor.guardar_bloque(bloque.Serializar(), num_bloque);
-			cout << "el bloque " << num_bloque << " tiene un reg con clave " << reg.get_clave() << " q apunta al bloque " << num_bloque_sig << endl;
 		}
 		else {
 			Persistencia cadena;
