@@ -17,14 +17,6 @@ void HandlerArchivoOcurrencias::crearArchivoVacio()
 int HandlerArchivoOcurrencias::obtenerOffsetABorrar(list<int>& offsets,int idDocumento){
 
 	int retorno;
-	std:: fstream fEspLibreOcurrencias;
-	fEspLibreOcurrencias.open(PATH_ESPACIO_LIBRE_OCURRENCIAS, std::ios_base::in | std::ios_base::out);
-
-	if (!fEspLibreOcurrencias.is_open()){
-		fEspLibreOcurrencias.open(PATH_ESPACIO_LIBRE_OCURRENCIAS, std::ios_base::out);
-		fEspLibreOcurrencias.close();
-		fEspLibreOcurrencias.open(PATH_ESPACIO_LIBRE_OCURRENCIAS, std::ios_base::in | std::ios_base::out);
-	}
 
 	std::list<int>::iterator it = offsets.begin();
 	bool encontrado = false;
