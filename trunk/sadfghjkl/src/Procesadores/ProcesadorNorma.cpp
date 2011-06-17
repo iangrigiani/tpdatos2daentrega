@@ -1,12 +1,12 @@
 #include "ProcesadorNorma.h"
 
 ProcesadorNorma::ProcesadorNorma(){
-	this->calc       = new CalculadorDePesoGlobal();
+//	this->calc       = new CalculadorDePesoGlobal();
 }
 
 
 ProcesadorNorma::~ProcesadorNorma() {
-	delete this->calc;
+//	delete this->calc;
 }
 
 
