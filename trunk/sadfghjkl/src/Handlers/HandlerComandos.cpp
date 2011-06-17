@@ -282,25 +282,43 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 }
 //
 void HandlerComandos::eliminar_de_hash_palabra(int idDocumento) {
-
 	CalculadorDePesoGlobal calculador;
 	calculador.decrementarCantDeDocs();
 
 	ProcesadorNorma procesador;
 	ArbolBMas* arbol = new ArbolBMas(PATH_ID_TERMINOS, PATH_IDS, 1);
-	list<Elementos*> listaBusqueda;
-
 
 	RegistroLibro reg;
 	this->parser->obtenerRegistroDeLibro(this->handler->buscarRegistro(idDocumento), reg);
-	if (reg.getAutor() != REGISTRO_ERRONEO){
+	if (reg.getAutor() != REGISTRO_ERRONEO) {
 
 		HashPalabra hash(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
 
+		list < Elementos* > listaBusqueda;
+
 		list < string > palabras = reg.getPalabras();
 		list < string > ::iterator it;
+
 		int claveABorrar;
 
+		for (it = palabras.begin(); it != palabras.end(); ++ it) {
+			Clave clavea = (Clave)*it;
+			arbol->buscar(&listaBusqueda, &clavea);
+
+			if (listaBusqueda.size() > 0) {
+				Elementos* elemento = listaBusqueda.front();
+				procesador.decrementarPesoTermino(atoi(elemento->getID()->toString().c_str()));
+				list < int > lista = hash.consultar(atoi(elemento->getID()->toString().c_str()));
+				claveABorrar = this->handlerOcurrencias->obtenerOffsetABorrar(lista, idDocumento);
+
+				if (claveABorrar != ERROR)
+					hash.baja(atoi(elemento->getID()->toString().c_str()), claveABorrar);
+			}
+
+			listaBusqueda.pop_front();
+		}
+
+/*
 		for (it = palabras.begin(); it != palabras.end(); ++ it) {
 			Clave clavea = (Clave)*it;
 			arbol->buscar(&listaBusqueda, &clavea);
@@ -313,7 +331,7 @@ void HandlerComandos::eliminar_de_hash_palabra(int idDocumento) {
 					hash.baja(atoi(elemento->getID()->toString().c_str()), claveABorrar);
 			}
 		}
-
+*/
 	/*
 		for (it = palabras.begin(); it != palabras.end(); ++ it) {
 
@@ -334,10 +352,8 @@ void HandlerComandos::eliminar_de_hash_palabra(int idDocumento) {
 		}
 	*/
 		procesador.eliminarIDTerminoFrecuente(idDocumento);
-
-	}else{
-		cout<<"ID:"<<idDocumento<<"No pudo ser borrado en el hash de palabra.\n"<<endl;
 	}
+	else cout << "ID:" << idDocumento << "No pudo ser borrado en el hash de palabra.\n" << endl;
 }
 //
 void HandlerComandos::insertarEnArbol (int tipoArbol, int offset){
