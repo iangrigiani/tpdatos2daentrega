@@ -148,9 +148,13 @@ int HandlerArchivoOcurrencias::insertarOcurrencia(Ocurrencia ocurrencia,int idDo
 	fOcurrencias.open(PATH_ARCHIVO_OCURRENCIAS, std::ios_base::in | std::ios_base::out);
 
 	//Convierto el numero de documento a Gamma
-	CodigoGamma codigoGamma;
-	codigoGamma.setNumAConvertir(idDocumento);
-	string codigoGammaDocumento = codigoGamma.aplicarConversion();
+	string codigoGammaDocumento;
+	if (idDocumento != 0) {
+		CodigoGamma codigoGamma;
+		codigoGamma.setNumAConvertir(idDocumento);
+		codigoGammaDocumento = codigoGamma.aplicarConversion();
+	}
+	else codigoGammaDocumento = "0";
 
 	//Le seteo a la ocurrencia su respectivo codigo gamma de documento
 	ocurrencia.setCodigoGammaDocumento(codigoGammaDocumento);
