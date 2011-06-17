@@ -15,13 +15,18 @@ void HandlerArchivoOcurrencias::crearArchivoVacio()
 }
 
 int HandlerArchivoOcurrencias::obtenerOffsetABorrar(list<int>& offsets,int idDocumento){
+
 	int retorno;
 	std::list < int > ::iterator it = offsets.begin();
+	int numeroDocumento = 0;
+	CodigoGamma codigoGamma;
 	bool encontrado = false;
 
 	while (it != offsets.end() && encontrado == false) {
+
 		Ocurrencia o = this->buscarOcurrencia(*it);
-		if (o.getIdDocumento() == idDocumento) {
+		numeroDocumento = codigoGamma.interpretarConversion(o.getCodigoGammaDocumento());
+		if (numeroDocumento == idDocumento) {
 			encontrado = true;
 			retorno = (*it);
 		}
