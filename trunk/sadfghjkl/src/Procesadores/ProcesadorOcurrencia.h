@@ -17,14 +17,14 @@ private:
 
 		int cantidadTerminos;
 		int* idTerminos;
-		void getOcurrencias(list<string> palabras, vector<Ocurrencia> & ocurrencias, int idDocumento);
+		void getOcurrencias(list<string> palabras, list<Ocurrencia> & ocurrencias, int idDocumento);
 		void insertarBinarioOcurrencia(string palabraActual, int iteracion, int idTermino, vector<Ocurrencia> & ocurrencias, FrecuenciaTermino * frecTermino);
 		Termino agregarTermino(string palabraActual);
 		void insertarIdTermino(int idTermino);
 
 public:
 		ProcesadorOcurrencia();
-		vector<Ocurrencia> obtenerOcurrencias (list<string> palabras, int idDocumento);
+		list<Ocurrencia> obtenerOcurrencias (list<string> palabras, int idDocumento);
 		virtual ~ProcesadorOcurrencia();
 };
 
