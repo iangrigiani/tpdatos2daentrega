@@ -178,33 +178,44 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 	ArbolBMas* arbol = new ArbolBMas(PATH_ID_TERMINOS,PATH_IDS,1);
 	HandlerArchivoOcurrencias handlerArchivoOcurrencias;
 
+	Parser parser;
+	char * aux;
+	cout << palabras.size() << endl;
 	while( itPalabras!= palabras.end() )
 	{
-		Palabra palabra;
 
-		list<int> idTermino;
-		list<Elementos*> listaBusqueda;
-		Clave* clave = new Clave(*itPalabras);
-		arbol->buscar(&listaBusqueda, clave);
+		(*itPalabras).copy(aux, (*itPalabras).size(), 0);
+		aux [(*itPalabras).size()] = '\0';
 
-		if ( listaBusqueda.size() > 0){
-			list<Elementos*>::iterator it = listaBusqueda.begin();
-			idTermino.push_back(atoi((*it)->getID()->toString().c_str()));
+		if (parser.esStopWords(aux) == false) {
+
+			Palabra palabra;
+
+			list<int> idTermino;
+			list<Elementos*> listaBusqueda;
+			Clave* clave = new Clave(*itPalabras);
+			arbol->buscar(&listaBusqueda, clave);
+
+			if ( listaBusqueda.size() > 0){
+				list<Elementos*>::iterator it = listaBusqueda.begin();
+				idTermino.push_back(atoi((*it)->getID()->toString().c_str()));
+			}
+
+			list<int>::iterator it2 = idTermino.begin();
+			list<int> offsetsArchivoOcurrencias;
+
+			//Esto devuelve la lista de offsets al archivo de ocurrencias correspondiente a ese termino
+
+			offsetsArchivoOcurrencias = hashPalabra.consultar((*it2));
+
+			palabra = handlerArchivoOcurrencias.obtenerPalabra(offsetsArchivoOcurrencias,*itPalabras);
+
+			palabra.setPalabra(*itPalabras);
+
+			palabrasConsulta.push_back(palabra);
+
 		}
-
-		list<int>::iterator it2 = idTermino.begin();
-		list<int> offsetsArchivoOcurrencias;
-
-		//Esto devuelve la lista de offsets al archivo de ocurrencias correspondiente a ese termino
-
-		offsetsArchivoOcurrencias = hashPalabra.consultar((*it2));
-
-		palabra = handlerArchivoOcurrencias.obtenerPalabra(offsetsArchivoOcurrencias,*itPalabras);
-
-		palabra.setPalabra(*itPalabras);
-
-		palabrasConsulta.push_back(palabra);
-		++itPalabras;
+		++ itPalabras;
 	}
 
 	palabraFiltrada = this->procesarApariciones(palabrasConsulta);
