@@ -239,20 +239,33 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 
 		HashPalabra hash(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
 
-		ProcesadorOcurrencia* procesador = new ProcesadorOcurrencia();
-		vector<Ocurrencia> ocurrencias = procesador->obtenerOcurrencias(palabras, offset);
+		ProcesadorOcurrencia procesador;
+		vector<Ocurrencia> ocurrencias = procesador.obtenerOcurrencias(palabras, offset);
 
 		vector<Ocurrencia> :: iterator itOcurrencias;
 
-		cout << "Actualizando el Archivo de Ocurrencias..." << endl;;
+		cout << "Actualizando el Archivo de Ocurrencias..." << endl;
+
+		Parser parser;
+		char* aux;
+		string s;
+
 		for(itOcurrencias = ocurrencias.begin(); itOcurrencias != ocurrencias.end();++itOcurrencias)
 		{
 			Ocurrencia ocurrenciaActual = *itOcurrencias;
-			int offsetOcurrencia = this->handlerOcurrencias->insertarOcurrencia(ocurrenciaActual,offset);
-			int clave = ocurrenciaActual.getIdPalabra();
-			hash.alta(clave, offsetOcurrencia);
+			//cout << ocurrenciaActual.getPalabra() << endl;
+
+			s = ocurrenciaActual.getPalabra();
+			s.copy(aux, s.size(), 0);
+			aux [s.size()] = '\0';
+
+			if (parser.esStopWords(aux) == false) {
+				int offsetOcurrencia = this->handlerOcurrencias->insertarOcurrencia(ocurrenciaActual,offset);
+				int clave = ocurrenciaActual.getIdPalabra();
+				hash.alta(clave, offsetOcurrencia);
+			}
 		}
-		delete procesador;
+		//delete procesador;
 
 			/*
 			for (it_1 = palabras.begin(); it_1 != palabras.end(); ++ it_1) {
