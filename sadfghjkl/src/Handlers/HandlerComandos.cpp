@@ -240,9 +240,9 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 		HashPalabra hash(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
 
 		ProcesadorOcurrencia* procesador = new ProcesadorOcurrencia();
-		vector<Ocurrencia> ocurrencias = procesador->obtenerOcurrencias(palabras, offset);
+		list<Ocurrencia> ocurrencias = procesador->obtenerOcurrencias(palabras, offset);
 
-		vector<Ocurrencia> :: iterator itOcurrencias;
+		list<Ocurrencia> :: iterator itOcurrencias;
 		int cont = 0;
 		cout << "Actualizando el Archivo de Ocurrencias..." << endl;;
 		for(itOcurrencias = ocurrencias.begin(); itOcurrencias != ocurrencias.end();++itOcurrencias)
@@ -308,6 +308,7 @@ void HandlerComandos::eliminar_de_hash_palabra(int idDocumento) {
 				Elementos* elemento = listaBusqueda.front();
 				procesador.decrementarPesoTermino(atoi(elemento->getID()->toString().c_str()));
 				list < int > lista = hash.consultar(atoi(elemento->getID()->toString().c_str()));
+				cout<<"elementos lista"<<lista.size()<<endl;
 				claveABorrar = this->handlerOcurrencias->obtenerOffsetABorrar(lista, idDocumento);
 
 				if (claveABorrar != ERROR)
