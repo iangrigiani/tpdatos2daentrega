@@ -48,6 +48,9 @@ void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, vector<Ocurrenc
                         //Si es asi hay que agregar una nueva posicion a la palabra.
                         insertarBinarioOcurrencia(palabraActual, iteracion, termino.getIdTermino(), ocurrencias, &frecTermino);
                 }
+                else
+                	itPalabras = palabras.erase(itPalabras);
+
                 free(cadena);
                 iteracion++;
 

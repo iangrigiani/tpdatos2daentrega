@@ -165,22 +165,25 @@ bool HandlerTabla::mitades_iguales() const {
 }
 
 int HandlerTabla::get_num_bloque(int clave) const {
-	ifstream arch;
-	string s;
-	int num_bloque;
-	int contador = 0;
+	int num_bloque = -1;
 
-	arch.open(this->ruta_arch_tabla.c_str());
+	if (this->tam_tabla != 0) {
+		ifstream arch;
+		string s;
+		int contador = 0;
 
-	getline(arch, s, '|');
+		arch.open(this->ruta_arch_tabla.c_str());
 
-	while (contador != clave % this->tam_tabla) {
+		getline(arch, s, '|');
+
+		while (contador != clave % this->tam_tabla) {
+			arch >> num_bloque;
+			++ contador;
+		}
 		arch >> num_bloque;
-		++ contador;
-	}
-	arch >> num_bloque;
 
-	arch.close();
+		arch.close();
+	}
 
 	return num_bloque;
 }

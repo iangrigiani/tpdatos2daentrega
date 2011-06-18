@@ -249,9 +249,13 @@ list < int > HashPalabra::consultar(int clave) {
 	Cubo bloque;
 
 	int num_bloque = this->handler_tabla.get_num_bloque(clave);
-	this->persistor.recuperar_bloque(num_bloque, cadena);
-	bloque.Hidratar(cadena);
-	return this->consultar_offsets(bloque, num_bloque, clave);
+	if (num_bloque != -1) {
+		this->persistor.recuperar_bloque(num_bloque, cadena);
+		bloque.Hidratar(cadena);
+		return this->consultar_offsets(bloque, num_bloque, clave);
+	}
+	list < int > vacia;
+	return vacia;
 }
 
 void HashPalabra::mostrar(ostream& os) {
