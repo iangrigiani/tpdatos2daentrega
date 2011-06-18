@@ -49,7 +49,7 @@ char * ParserDeLibros::obtenerPrimerMatch(char * string, char *patronDeFiltro, i
 
 list < string > ParserDeLibros::obtenerDatos(char* cadena, bool filtrar) {
 	list < string > elementos;
-	char* pch = strtok(cadena, "¿?¡!:;., \n\t\r");
+	char* pch = strtok(cadena, "*¿?¡!:;.,()- \n\t\r");
 	string str;
 
 	while (pch != NULL) {
@@ -67,7 +67,28 @@ list < string > ParserDeLibros::obtenerDatos(char* cadena, bool filtrar) {
 	}
 	return elementos;
 }
+/*
+list < string > ParserDeLibros::obtenerDatos(char* cadena, bool filtrar) {
+	list < string > elementos;
+	char* pch = strtok(cadena, "¿?¡!:;.,()- \n\t\r");
+	string str;
 
+	while (pch != NULL) {
+		str = pch;
+		this->downCase(str);
+		if (filtrar){
+			if (!this->esStopWords(pch)) {
+				elementos.push_back(str);
+			}
+		}else{
+			elementos.push_back(str);
+		}
+		str.clear();
+		pch = strtok(NULL, "¿?¡!:;., \n\t\r");
+	}
+	return elementos;
+}
+*/
 list<string> ParserDeLibros::obtenerPalabrasDeLibro(char* libro){
 	this->libroActual = libro;
 	list < string > palabras;
