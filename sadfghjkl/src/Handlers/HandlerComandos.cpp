@@ -243,11 +243,10 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 		vector<Ocurrencia> ocurrencias = procesador->obtenerOcurrencias(palabras, offset);
 
 		vector<Ocurrencia> :: iterator itOcurrencias;
-		int cont = 0;
+
 		cout << "Actualizando el Archivo de Ocurrencias..." << endl;;
 		for(itOcurrencias = ocurrencias.begin(); itOcurrencias != ocurrencias.end();++itOcurrencias)
 		{
-			++cont;
 			Ocurrencia ocurrenciaActual = *itOcurrencias;
 			int offsetOcurrencia = this->handlerOcurrencias->insertarOcurrencia(ocurrenciaActual,offset);
 			int clave = ocurrenciaActual.getIdPalabra();
