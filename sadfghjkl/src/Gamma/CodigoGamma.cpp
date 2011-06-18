@@ -31,8 +31,9 @@ std::string CodigoGamma::obtenerUnario(int numAConvertir){
 	retorno.clear();
 	// Obtengo el logaritmo en base 10 del numero
 	double logaritmo = (log10(numAConvertir) / log10(2));
+
 	// Le aplico la funcion piso
-	int valor = (int)floor(logaritmo);
+	long int valor = (int)floor(logaritmo);
 	// Le sumo 1
 	++valor;
 
@@ -140,20 +141,21 @@ int CodigoGamma::interpretarConversion(std::string conversion){
 }
 
 int CodigoGamma::interpretarBinario(std::string binarioAInterpretar){
-	int retorno;
-	long binario,p,c;
-	binario = atoi(binarioAInterpretar.c_str());
-	c=1;
-	retorno=0;
-	while(binario>0){
-		p=0;
-		p=c*(binario%10);
-		retorno+=p;
-		c*=2;
-		binario/=10;
+	int largo = binarioAInterpretar.size();
+
+	int sumatoria = 0;
+	int val;
+	int exponente;
+
+	for (int a =0; a<largo; a++){
+		val = binarioAInterpretar[a];
+		exponente = largo - a - 1;
+		if ( val == 49){
+			sumatoria += pow(2, exponente);
+		}
 	}
 
-	return retorno;
+	return sumatoria;
 }
 
 std::string CodigoGamma::comprimirLista(std::list<int> listaInvertida, int primero){

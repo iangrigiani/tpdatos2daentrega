@@ -361,17 +361,19 @@ list<int> HandlerArchivoOcurrencias::obtenerListaDocumentos(list<int> offsets){
 	int numeroDocumento;
 
 	while ( it != offsets.end()){
-		cout<<*it<<endl;
 		Ocurrencia ocurrencia = this->buscarOcurrencia((*it));
 		numeroDocumento = codigoGamma.interpretarConversion(ocurrencia.getCodigoGammaDocumento());
 		//numeroDocumento = ocurrencia.getIdDocumento();
-		//cout<<"Numero Documento"<<numeroDocumento<<endl;
+//		cout<<"Numero Documento " << numeroDocumento << "offset: " << *it << endl;
 		documentos.push_back(numeroDocumento);
 		++it;
 	}
 
 	//Ordeno la lista de documentos ascendentemente.
 	documentos.sort();
+
+	// Magia
+	documentos.unique();
 
 	return documentos;
 }

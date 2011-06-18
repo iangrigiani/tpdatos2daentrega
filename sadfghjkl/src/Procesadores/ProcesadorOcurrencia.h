@@ -10,22 +10,22 @@
 class ProcesadorOcurrencia {
 
 private:
-		struct FrecuenciaTermino {
-		   int idTermino;
-		   int frecuencia;
-		};
+                struct FrecuenciaTermino {
+                   int idTermino;
+                   int frecuencia;
+                };
 
-		int cantidadTerminos;
-		int* idTerminos;
-		void getOcurrencias(list<string> palabras, list<Ocurrencia> & ocurrencias, int idDocumento);
-		void insertarBinarioOcurrencia(string palabraActual, int iteracion, int idTermino, vector<Ocurrencia> & ocurrencias, FrecuenciaTermino * frecTermino);
-		Termino agregarTermino(string palabraActual);
-		void insertarIdTermino(int idTermino);
+                int cantidadTerminos;
+                int* idTerminos;
+                void getOcurrencias(list<string> palabras, vector<Ocurrencia> & ocurrencias, int idDocumento);
+                void insertarBinarioOcurrencia(string palabraActual, int iteracion, int idTermino, vector<Ocurrencia> & ocurrencias, FrecuenciaTermino * frecTermino);
+                Termino agregarTermino(string palabraActual);
+                void insertarIdTermino(int idTermino);
 
 public:
-		ProcesadorOcurrencia();
-		list<Ocurrencia> obtenerOcurrencias (list<string> palabras, int idDocumento);
-		virtual ~ProcesadorOcurrencia();
+                ProcesadorOcurrencia();
+                vector<Ocurrencia> obtenerOcurrencias (list<string> palabras, int idDocumento);
+                virtual ~ProcesadorOcurrencia();
 };
 
 #endif /* PROCESADOROCURRENCIA_H_ */
