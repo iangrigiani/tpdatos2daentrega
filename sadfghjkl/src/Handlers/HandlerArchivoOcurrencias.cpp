@@ -203,9 +203,9 @@ int HandlerArchivoOcurrencias::insertarOcurrencia(Ocurrencia ocurrencia,int idDo
 		}
 
 		if(esEspacioLibre)
-			cadenaFinal << ocurrencia.getIdPalabra() << "|" << idDocumento << "|" << cadenaDePosiciones;
+			cadenaFinal << ocurrencia.getIdPalabra() << "|" << codigoGammaDocumento << "|" << cadenaDePosiciones;
 		else
-			cadenaFinal << ocurrencia.getIdPalabra() << "|" << idDocumento << "|" << cadenaDePosiciones<<"\n";
+			cadenaFinal << ocurrencia.getIdPalabra() << "|" << codigoGammaDocumento << "|" << cadenaDePosiciones<<"\n";
 
 
 		string cadenaAInsertar = cadenaFinal.str();
@@ -265,10 +265,7 @@ void HandlerArchivoOcurrencias::procesarCadenaDeDatos(char * cadena,Ocurrencia &
 
 	 caracteres = strtok(NULL,"|");
 
-	 int idDocumento = atoi(caracteres);
-
-	 ocurrencia.setIdDocumento(idDocumento);
-	 // ocurrencia.setCodigoGammaDocumento(caracteres);
+	 ocurrencia.setCodigoGammaDocumento(caracteres);
 
 	 caracteres = strtok(NULL,"|,");
 	 do
@@ -329,9 +326,9 @@ int HandlerArchivoOcurrencias::obtenerTamanioOcurrencia(Ocurrencia ocurrencia)
 
 	ssIdPalabra<<ocurrencia.getIdPalabra();
 
-	ssDocumento<<ocurrencia.getIdDocumento();
-	//longitudIdDocumento = ocurrencia.getCodigoGammaDocumento().length();
-	longitudIdDocumento = ssDocumento.str().length();
+	//ssDocumento<<ocurrencia.getIdDocumento();
+	longitudIdDocumento = ocurrencia.getCodigoGammaDocumento().length();
+	//longitudIdDocumento = ssDocumento.str().length();
 
 	string cadenaIdPalabra = ssIdPalabra.str();
 	longitudIdPalabra = cadenaIdPalabra.length();
@@ -366,9 +363,9 @@ list<int> HandlerArchivoOcurrencias::obtenerListaDocumentos(list<int> offsets){
 	while ( it != offsets.end()){
 		cout<<*it<<endl;
 		Ocurrencia ocurrencia = this->buscarOcurrencia((*it));
-		//numeroDocumento = codigoGamma.interpretarConversion(ocurrencia.getCodigoGammaDocumento());
-		numeroDocumento = ocurrencia.getIdDocumento();
-		cout<<"Numero Documento"<<numeroDocumento<<endl;
+		numeroDocumento = codigoGamma.interpretarConversion(ocurrencia.getCodigoGammaDocumento());
+		//numeroDocumento = ocurrencia.getIdDocumento();
+		//cout<<"Numero Documento"<<numeroDocumento<<endl;
 		documentos.push_back(numeroDocumento);
 		++it;
 	}
@@ -394,10 +391,10 @@ Palabra HandlerArchivoOcurrencias::obtenerPalabra(list<int> offsets, string nomb
 	while ( it != offsets.end())
 	{
 		ocurrencia =this->buscarOcurrencia((*it));
-		//numeroDocumento = codigoGamma.interpretarConversion(ocurrencia.getCodigoGammaDocumento());
+		numeroDocumento = codigoGamma.interpretarConversion(ocurrencia.getCodigoGammaDocumento());
 
-		numeroDocumento = ocurrencia.getIdDocumento();
-		cout<<"Numero Documento"<<numeroDocumento<<endl;
+		//numeroDocumento = ocurrencia.getIdDocumento();
+		//cout<<"Numero Documento"<<numeroDocumento<<endl;
 		Aparicion aparicion;
 		aparicion.setIdDocumento(numeroDocumento);
 		aparicion.agregarPosiciones(ocurrencia.getPosiciones(),nombrePalabra,ocurrencia.getIdPalabra());
