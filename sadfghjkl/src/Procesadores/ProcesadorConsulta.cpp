@@ -180,7 +180,7 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 
 	Parser parser;
 	char * aux;
-	cout << palabras.size() << endl;
+
 	while( itPalabras!= palabras.end() )
 	{
 

@@ -312,9 +312,9 @@ void HandlerComandos::eliminar_de_hash_palabra(int idDocumento) {
 
 				if (claveABorrar != ERROR)
 					hash.baja(atoi(elemento->getID()->toString().c_str()), claveABorrar);
-			}
 
-			listaBusqueda.pop_front();
+				listaBusqueda.pop_front();
+			}
 		}
 
 /*
