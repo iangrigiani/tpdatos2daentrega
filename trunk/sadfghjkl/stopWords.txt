@@ -24,6 +24,7 @@ arriba
 asi
 así
 atras
+atrás
 aun
 aunque
 bajo
@@ -56,6 +57,7 @@ cualquieras
 cuan
 cuán
 cuando
+cuándo
 cuanta
 cuánta
 cuantas
@@ -65,6 +67,7 @@ cuánto
 cuantos
 cuántos
 de
+debajo
 dejar
 del
 demás
@@ -76,7 +79,7 @@ demasiados
 dentro
 desde
 donde
-dos
+dónde
 el
 él
 ella
@@ -89,6 +92,7 @@ entonces
 entre
 era
 eramos
+éramos
 eran
 eras
 eres
@@ -99,6 +103,7 @@ ese
 eso
 esos
 esta
+está
 estaba
 estado
 estamos
@@ -110,12 +115,15 @@ esto
 estos
 estoy
 etc
+etcétera
 fin
 fue
 fueron
 fui
 fuimos
 ha
+haber
+había
 hace
 hacemos
 hacen
@@ -124,6 +132,16 @@ haces
 hacia
 hago
 hasta
+he
+hecho
+hice
+hicieron
+hicimos
+hizo
+hubo
+hubiera
+hubieran
+inclusive
 incluso
 intenta
 intentamos
@@ -204,8 +222,8 @@ podrian
 podrias
 podrías
 por
-por qué
 porque
+primera
 primero
 puede
 pueden
