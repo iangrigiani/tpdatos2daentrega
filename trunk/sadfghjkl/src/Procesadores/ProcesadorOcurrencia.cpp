@@ -52,7 +52,7 @@ void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, vector<Ocurrenc
 		iteracion++;
 
 	}
-		cout << "Indexando palabras Libro de ID " << idDocumento << " ..." << endl;;
+		cout << "Indexando palabras Libro de ID " << idDocumento << " ..." << endl;
     // Le paso la lista de terminos al handler del archivo de normas.
 
     //ver como guardar el número de documento indexado (total de docs +1
