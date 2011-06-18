@@ -165,7 +165,7 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 {
 	list<Palabra> palabrasConsulta;
 	list<int> documentosCoincidentes;
-
+	list<string> palabrasFinales;
 	Palabra palabraFiltrada;
 
 	list<string> :: iterator itPalabras  = palabras.begin();
@@ -179,15 +179,15 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 	HandlerArchivoOcurrencias handlerArchivoOcurrencias;
 
 	Parser parser;
-	char * aux;
 
 	while( itPalabras!= palabras.end() )
 	{
 
+		char * aux = new char[(*itPalabras).size()+1];
 		(*itPalabras).copy(aux, (*itPalabras).size(), 0);
 		aux [(*itPalabras).size()] = '\0';
 
-		if (parser.esStopWords(aux) == false) {
+		if (parser.esStopWords( aux ) == false) {
 
 			Palabra palabra;
 
@@ -214,8 +214,16 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 
 			palabrasConsulta.push_back(palabra);
 
+			palabrasFinales.push_back(*itPalabras);
+
 		}
 		++ itPalabras;
+		delete aux;
+	}
+
+	if (palabrasFinales.size() == 1){
+		list<string>::iterator it3 = palabrasFinales.begin();
+		return this->consultaPuntualPalabra(*it3);
 	}
 
 	palabraFiltrada = this->procesarApariciones(palabrasConsulta);

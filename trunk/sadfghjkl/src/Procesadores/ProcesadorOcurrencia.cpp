@@ -9,85 +9,51 @@ ProcesadorOcurrencia::~ProcesadorOcurrencia() {
 	if (this->idTerminos) delete[] this->idTerminos;
 }
 
-list<Ocurrencia> ProcesadorOcurrencia::obtenerOcurrencias (list<string> palabras, int idDocumento)
+vector<Ocurrencia> ProcesadorOcurrencia::obtenerOcurrencias (list<string> palabras, int idDocumento)
 {
 
-	list<Ocurrencia> ocurrencias;
-	this->getOcurrencias(palabras, ocurrencias, idDocumento);
-	return ocurrencias;
+        vector<Ocurrencia> ocurrencias;
+        this->getOcurrencias(palabras, ocurrencias, idDocumento);
+        return ocurrencias;
 }
 
-void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, list<Ocurrencia> & ocurrencias, int idDocumento)
+void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, vector<Ocurrencia> & ocurrencias, int idDocumento)
 {
-	list <string> ::iterator itPalabras;
-	list<Ocurrencia> :: iterator itOcurrencias;
-	Parser parser;
+        list <string> ::iterator itPalabras;
+        vector<Ocurrencia> :: iterator itOcurrencias;
+        Parser parser;
 
-	int iteracion = 0;
-	FrecuenciaTermino frecTermino;
-	bool encontrado = false;
-	frecTermino.frecuencia = 0;
-	frecTermino.idTermino = -1;
+        int iteracion = 0;
+        FrecuenciaTermino frecTermino;
+        frecTermino.frecuencia = 0;
+        frecTermino.idTermino = -1;
 
-	for(itPalabras = palabras.begin();itPalabras!= palabras.end(); ++itPalabras)
-	{
-			string palabraActual = *itPalabras;
+        for(itPalabras = palabras.begin();itPalabras!= palabras.end(); ++itPalabras)
+        {
+                string palabraActual = *itPalabras;
 
-			char * cadena = (char*)calloc (palabraActual.length(), sizeof(char));
+                char * cadena = (char*)calloc (palabraActual.length(), sizeof(char));
 
-			palabraActual.copy(cadena,palabraActual.length(),0);
+                palabraActual.copy(cadena,palabraActual.length(),0);
 
-			itOcurrencias = ocurrencias.begin();
+                itOcurrencias = ocurrencias.begin();
 
-			bool esStopWords = parser.esStopWords(cadena);
+                bool esStopWords = parser.esStopWords(cadena);
 
-			if(!esStopWords)
-			{
-				// Agrego palabra al archivo de termino.
+                if(!esStopWords)
+                {
+                        // Agrego palabra al archivo de termino.
 
-				Termino termino = agregarTermino(palabraActual);
+                        Termino termino = agregarTermino(palabraActual);
+                        //Si es asi hay que agregar una nueva posicion a la palabra.
+                        insertarBinarioOcurrencia(palabraActual, iteracion, termino.getIdTermino(), ocurrencias, &frecTermino);
+                }
+                free(cadena);
+                iteracion++;
 
-				//insertarBinarioOcurrencia(palabraActual, iteracion, termino.getIdTermino(), ocurrencias, &frecTermino);
-
-
-				while(itOcurrencias != ocurrencias.end() && !encontrado)
-				{
-					//Si es asi hay que agregar una nueva posicion a la palabra.
-					if(strcmp(palabraActual.c_str(),(*itOcurrencias).getPalabra().c_str()) == 0)
-					{
-						(*itOcurrencias).agregarPosicion(iteracion);
-						encontrado = true;
-
-						int cantidadPosiciones = (*itOcurrencias).getPosiciones().size();
-
-						if (cantidadPosiciones > frecTermino.frecuencia){
-							frecTermino.idTermino = termino.getIdTermino();
-							frecTermino.frecuencia = cantidadPosiciones;
-						}
-
-					}
-					++itOcurrencias;
-				}
-				//Si no encontre esa clave es porque no existe en la lista de ocurrencias
-				//entonces la agrego por primera vez.
-				if(!encontrado)
-				{
-					Ocurrencia nuevaOcurrencia;
-
-					nuevaOcurrencia.setPalabra(palabraActual);
-					nuevaOcurrencia.agregarPosicion(iteracion);
-					nuevaOcurrencia.setIdPalabra(termino.getIdTermino());
-					ocurrencias.push_back(nuevaOcurrencia);
-					frecTermino.frecuencia = 1;
-					frecTermino.idTermino = termino.getIdTermino();
-				}
-
-				encontrado = false;
-			}
-			free(cadena);
-			iteracion++;
-		}
-
+        }
+                cout << "Indexando palabras Libro de ID " << idDocumento << " ..." << endl;
+    // Le paso la lista de terminos al handler del archivo de normas.
 
     //ver como guardar el número de documento indexado (total de docs +1
     ProcesadorNorma handlerFrec;
@@ -95,6 +61,7 @@ void ProcesadorOcurrencia::getOcurrencias(list<string> palabras, list<Ocurrencia
     handlerFrec.guardarIDTerminoFrecuente(idDocumento, frecTermino.idTermino);
 
 }
+
 
 Termino ProcesadorOcurrencia::agregarTermino(string palabraActual){
 
