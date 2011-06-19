@@ -218,7 +218,7 @@ list<int> ProcesadorConsulta::consultaPalabras(list<string> palabras)
 
 		}
 		++ itPalabras;
-		delete aux;
+		delete []aux;
 	}
 
 	if (palabrasFinales.size() == 1){

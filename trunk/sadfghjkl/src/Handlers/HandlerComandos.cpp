@@ -114,13 +114,13 @@ void HandlerComandos::verEstructura(int parametro){
 
 	switch (parametro) {
 	case 'a': {
-		printf("Viendo estructura del árbol de autores. \n");
+		printf("Se generó un archivo en el directorio con la salida ( Path: Autores_Salida.txt )\n");
 		this->arbol = new ArbolBMas(PATH_AUTOR, PATH_IDS_BORRAR, 2);
 		arbol->mostrar();
 		//delete arbol;
 		break; }
 	case 'e': {
-		printf("Viendo estructura del árbol de editoriales. \n");
+		printf("Se generó un archivo en el directorio con la salida ( Path: Editoriales_Salida.txt )\n");
 		this->arbol = new ArbolBMas(PATH_EDITORIAL, PATH_IDS_BORRAR, 2);
 		//ArbolBMas* arbol = new ArbolBMas(2, PATH_NODOS);
 		arbol->mostrar();
@@ -128,18 +128,18 @@ void HandlerComandos::verEstructura(int parametro){
 		break; }
 
 	case 't': {
-		printf("Viendo estructura del hash de títulos. \n");
+		printf("Se generó un archivo en el directorio con la salida ( Path: SalidaTitulo )\n");
 		HashTitulo hash(NOM_BLOQUES_TITULO, NOM_ESP_LIBRE_TITULO, NOM_TABLA_TITULO);
 		hash.mostrar(NOM_SALIDA_TITULO,"Títulos");
 		break; }
 	case 'p': {
-		printf("Viendo estructura del hash de palabras. \n");
+		printf("Se generó un archivo en el directorio con la salida ( Path: SalidaPalabra )\n");
 		HashPalabra hash(NOM_BLOQUES_PALABRA, NOM_ESP_LIBRE_PALABRA, NOM_TABLA_PALABRA);
 		hash.mostrar(NOM_SALIDA_PALABRA);
 		break; }
 
 	case 'r': {
-		printf("Viendo estructura del archivo de terminos. \n");
+		printf("Se generó un archivo en el directorio con la salida ( Path: Terminos_Salida.txt )\n");
 		this->arbol = new ArbolBMas(PATH_ID_TERMINOS, PATH_IDS, 1);
 		arbol->mostrar();
 		delete arbol;
@@ -151,33 +151,14 @@ void HandlerComandos::verEstructura(int parametro){
 		break; }
 
 	case 'n': {
-		printf("Viendo estructura del archivo de normas. \n");
+		printf("Se generó un archivo en el directorio con la salida ( Path: SalidaNorma )\n");
 		HashTitulo hash(NOM_BLOQUES_NORMA, NOM_ESP_LIBRE_NORMA, NOM_TABLA_NORMA);
 		hash.mostrar(NOM_SALIDA_NORMA, "Normas Infinito");
 		break; }
 
 	}
 }
-/*
-int HandlerComandos::funcion_hash_titulo(const string& str) {
 
-	int size = str.size();
-	char* cadena = (char*) malloc (sizeof(char) * (size + 1));
-	str.copy(cadena, size);
-	cadena[size] = '\0';
-
-	list < string >::iterator it;
-	bool filtrar =  true;
-	list < string > palabras = this->parser->obtenerDatos(cadena,filtrar);
-	int clave = 0;
-	for (it = palabras.begin(); it != palabras.end(); ++ it)
-		for (unsigned int i = 0; i < (*it).size(); ++ i)
-			clave += ((int)(*it)[i]) * i;
-
-	free(cadena);
-	return clave;
-}
-*/
 void HandlerComandos::insertar_en_hash_titulo(int offset) {
 	RegistroLibro reg;
 	this->parser->obtenerRegistroDeLibro(this->handler->buscarRegistro(offset), reg);
@@ -202,32 +183,7 @@ void HandlerComandos::eliminar_de_hash_titulo(int offset) {
 	}
 //	hash.mostrar();
 }
-//
-list < int > HandlerComandos::eliminar_repeticion(list < int > & palabras) {
 
-	list < int > filtrados;
-	list < int > ::iterator it_1;
-	list < int > ::iterator it_2;
-
-	for (it_1 = palabras.begin(); it_1 != palabras.end(); ++ it_1) {
-		it_2 = filtrados.begin();
-		while ((*it_2) != (*it_1) && it_2 != filtrados.end())
-			++ it_2;
-		if ((*it_2) != (*it_1) && it_2 == filtrados.end())
-			filtrados.push_back(*it_1);
-	}
-	return filtrados;
-}
-//
-int HandlerComandos::funcion_hash_palabra(const string& str) {
-
-	int clave = 0;
-	for (unsigned int i = 0; i < str.size(); ++ i)
-		clave += ((int)str[i]) * (str.size() - i);
-
-	return clave;
-}
-//
 void HandlerComandos::insertar_en_hash_palabra(int offset) {
 
 	CalculadorDePesoGlobal calculador;
@@ -247,15 +203,15 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 		cout << "Actualizando el Archivo de Ocurrencias..." << endl;
 
 		Parser parser;
-		char* aux;
 		string s;
 
 		for(itOcurrencias = ocurrencias.begin(); itOcurrencias != ocurrencias.end();++itOcurrencias)
 		{
 			Ocurrencia ocurrenciaActual = *itOcurrencias;
-			//cout << ocurrenciaActual.getPalabra() << endl;
 
 			s = ocurrenciaActual.getPalabra();
+
+			char* aux = new char[s.size() + 1];
 			s.copy(aux, s.size(), 0);
 			aux [s.size()] = '\0';
 
@@ -264,26 +220,9 @@ void HandlerComandos::insertar_en_hash_palabra(int offset) {
 				int clave = ocurrenciaActual.getIdPalabra();
 				hash.alta(clave, offsetOcurrencia);
 			}
+
+			delete [] aux;
 		}
-		//delete procesador;
-
-			/*
-			for (it_1 = palabras.begin(); it_1 != palabras.end(); ++ it_1) {
-				str = *it_1;
-				clave = this->funcion_hash_palabra(str);
-				str.clear();
-				claves.push_back(clave);
-			}
-
-			list < int > filtrados = this->eliminar_repeticion(claves);
-			int t = 0;
-			for (it_2 = filtrados.begin(); it_2 != filtrados.end(); ++ it_2) {
-				offsets.push_back(offset);
-				hash.insercion((*it_2), offsets);
-				offsets.clear();
-				cout << "Processando palabras Libro de ID " << offset << " ..." << (int) ((t * 100 / filtrados.size())+1) << "%\r";
-				++t;
-			}*/
 
 	}else{
 		cout<<"ID:"<<offset<<"No pudo ser insertado en el hash de palabra.\n"<<endl;
@@ -320,7 +259,6 @@ void HandlerComandos::eliminar_de_hash_palabra(int idDocumento) {
 				Elementos* elemento = listaBusqueda.front();
 				procesador.decrementarPesoTermino(atoi(elemento->getID()->toString().c_str()));
 				list < int > lista = hash.consultar(atoi(elemento->getID()->toString().c_str()));
-				cout<<"elementos lista"<<lista.size()<<endl;
 				claveABorrar = this->handlerOcurrencias->obtenerOffsetABorrar(lista, idDocumento);
 
 				if (claveABorrar != ERROR)
@@ -330,39 +268,6 @@ void HandlerComandos::eliminar_de_hash_palabra(int idDocumento) {
 			}
 		}
 
-/*
-		for (it = palabras.begin(); it != palabras.end(); ++ it) {
-			Clave clavea = (Clave)*it;
-			arbol->buscar(&listaBusqueda, &clavea);
-			if (listaBusqueda.size() > 0) {
-				Elementos* elemento = listaBusqueda.front();
-				procesador.decrementarPesoTermino(atoi(elemento->getID()->toString().c_str()));
-				list < int > lista = hash.consultar(atoi(elemento->getID()->toString().c_str()));
-				claveABorrar = this->handlerOcurrencias->obtenerOffsetABorrar(lista, idDocumento);
-				if (claveABorrar != ERROR)
-					hash.baja(atoi(elemento->getID()->toString().c_str()), claveABorrar);
-			}
-		}
-*/
-	/*
-		for (it = palabras.begin(); it != palabras.end(); ++ it) {
-
-			Clave* clavea = new Clave((*it));
-			arbol->buscar(&listaBusqueda, clavea);
-			if (listaBusqueda.size() > 0 ){
-				list<Elementos*>::iterator itq = listaBusqueda.begin();
-				Elementos elemento = *(*(itq));
-				procesador.decrementarPesoTermino(atoi(elemento.getID()->toString().c_str()));
-				list<int> lista = hash.consultar(atoi(elemento.getID()->toString().c_str()));
-				claveABorrar = this->handlerOcurrencias->obtenerOffsetABorrar(lista, idDocumento);
-				if (claveABorrar != ERROR){
-					hash.baja(atoi(elemento.getID()->toString().c_str()), claveABorrar);
-				}
-			}
-			delete clavea;
-
-		}
-	*/
 		procesador.eliminarIDTerminoFrecuente(idDocumento);
 	}
 	else cout << "ID:" << idDocumento << "No pudo ser borrado en el hash de palabra.\n" << endl;

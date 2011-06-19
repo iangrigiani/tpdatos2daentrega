@@ -31,9 +31,9 @@ private:
 
 	void eliminar_de_hash_titulo(int offset);
 
-	list < int > eliminar_repeticion(list < int > & palabras);
+	//list < int > eliminar_repeticion(list < int > & palabras);
 
-	int funcion_hash_palabra(const string& str);
+	//int funcion_hash_palabra(const string& str);
 
 	void insertar_en_hash_palabra(int offset);
 
