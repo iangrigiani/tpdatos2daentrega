@@ -44,22 +44,15 @@ int HandlerArchivoRLV::insertarRegistro(const string& path_nuevo_libro)
 		if (id_Archivo == ERROR){
 			id_Archivo = this->obtenerTamanioMaestro();
 		}else{
-			/*
-			 *  Si lo voy a insertar en un espacio libre debo borrar ese dato
-			 *  del archivo de espacios libres
-			 */
-			borrarOffsetArchivoDeEspaciosLibres();
+			borrarOffsetArchivoDeEspaciosLibres(); //Como uso EL borro ese offset de la lista de EL
 		}
-		int indexado = 0;
-		int procesado = 1;
-
 		// Manejo sobre el archivo de RLV
 		std::fstream f_dst;
 		f_dst.open(PATH_REG_LONG_VARIABLE, std::ios_base::in | std::ios_base::out);
 		stringstream ss;
 
 		// Armo las cabecera para el libro
-		ss << id_Archivo << "|" << tamanioRegistro << "|" << procesado << "|" << indexado << "|" << "\n" << buffer << "\n" ;
+		ss << id_Archivo << "|" << tamanioRegistro  << "\n" << buffer << "\n" ;
 		string str = ss.str();
 		// Escribo libro en el archivo de RLV
 		f_dst.seekg(id_Archivo);
