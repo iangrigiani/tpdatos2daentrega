@@ -82,6 +82,16 @@ int ProcesadorNorma::buscarPesoTermino(int IDTermino){
 }
 
 
+void ProcesadorNorma::decrementarPesos(int idDocumento, int* lista, int tamanioLista){
+	int i = 0;
+
+	while (i < tamanioLista ){
+		this->decrementarPesoTermino(lista[i]);
+		i++;
+	}
+}
+
+
 int ProcesadorNorma::decrementarPesoTermino (int IDTermino){
 
 	ArbolBMas arbol(PATH_ARCHIVO_FREC_GLOB, PATH_ID_PESOS, 1);

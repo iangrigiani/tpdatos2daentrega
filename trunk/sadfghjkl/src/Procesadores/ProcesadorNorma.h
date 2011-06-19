@@ -9,7 +9,6 @@ class HashTitulo;
 #include <string.h>
 #include <math.h>
 #include <vector>
-//#include "../NormasAInfinito/CalculadorDePesoGlobal.h"
 #include "../Arbol/ArbolBMas.h"
 #include "../Hash/HashTitulo.h"
 
@@ -44,7 +43,7 @@ public:
 
 
 	/* Actualiza el arbol de frecuencias incrementando en 1 el valor del peso que estaba
-	 * guardado para cada IDTermino del vector idTerminos.
+	 * guardado para cada término de la lista.
 	 * PRE: -
 	 * POS: Archivo de frecuencias actualizado.
 	 */
@@ -57,13 +56,19 @@ public:
 	 */
 	int  incrementarPesoTermino(int IDTermino);
 
-
 	/* Busca en el arbol de frecuencias el valor del peso que esta
 	 * guardado correspondiente al IDTermino pasado.
 	 * PRE: Recibe un int con el IDTermino.
 	 * POS: Devuelve OK o error según haya tenido éxito o no la operación
 	 */
 	int  buscarPesoTermino(int IDTermino);
+
+	/* Actualiza el arbol de frecuencias decrementando en 1 el valor del peso que estaba
+	 * guardado para cada término de la lista.
+	 * PRE: -
+	 * POS: Archivo de frecuencias actualizado.
+	 */
+	void decrementarPesos(int idDocumento, int* lista, int tamanioLista);
 
 	/* Actualiza el arbol de frecuencias decrementando en 1 el valor del peso que estaba
 	 * guardado para el IDTermino pasado.
@@ -75,7 +80,6 @@ public:
 
 private:
 
-//	CalculadorDePesoGlobal* calc;
 	string intToString(int integer);
 
 };
