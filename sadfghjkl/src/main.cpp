@@ -2,11 +2,6 @@
 #include "Procesadores/ProcesadorConsulta.h"
 #include "Comunes/Aparicion.h"
 #include "Comunes/Palabra.h"
-#include <iostream>
-#include <stdio.h>
-#include <cstring>
-#include <string>
-#include <unistd.h>
 
 using namespace std;
 
@@ -150,47 +145,39 @@ int main (int argc , char *argv[]){
 			opcion2 = getopt(argc,argv, "eatpron?:");
 			switch (opcion2){
 			case 'e':   {
-				printf("Bookerio: Viendo estructura de árbol de Editoriales.\n");
+				printf("Bookerio: Ver estructura de árbol de Editoriales.\n");
 				handlerComandos->verEstructura('e');
-				printf("Bookerio: Fin de estructura de árbol de Editoriales.\n");
 				break;}
 
 			case 'a':   {
-				printf("Bookerio: Viendo estructura de árbol de Autores.\n");
+				printf("Bookerio: Ver estructura de árbol de Autores.\n");
 				handlerComandos->verEstructura('a');
-				printf("Bookerio: Fin de estructura de árbol de Autores.\n");
 				break;}
 
 			case 't':   {
-				printf("Bookerio: Viendo estructura de hash de Títulos.\n");
+				printf("Bookerio: Ver estructura de hash de Títulos.\n");
 				handlerComandos->verEstructura('t');
-				printf("Bookerio: Fin de estructura de hash de Títulos.\n");
 				break;}
 
 			case 'p':   {
-				printf("Bookerio: Viendo estructura de hash de Palabras.\n");
+				printf("Bookerio: Ver estructura de hash de Palabras.\n");
 				handlerComandos->verEstructura('p');
-				printf("Bookerio: Fin de estructura de hash de Palabras.\n");
 				break;}
 
 			case 'r':   {
-				printf("Bookerio: Viendo estructura de árbol de términos.\n");
+				printf("Bookerio: Ver estructura de árbol de términos.\n");
 				handlerComandos->verEstructura('r');
-				printf("Bookerio: Fin de estructura de árbol de términos.\n");
 				break;}
 
 			case 'o':   {
-				printf("Bookerio: Viendo estructura de archivo de ocurrencias.\n");
+				printf("Bookerio: Ver estructura de archivo de ocurrencias.\n");
 				handlerComandos->verEstructura('o');
-				printf("Bookerio: Fin de estructura de archivo de ocurrencias.\n");
 				break;}
 
 			case 'n':   {
-				printf("Bookerio: Viendo estructura de hash de normas.\n");
+				printf("Bookerio: Ver estructura de hash de normas.\n");
 				handlerComandos->verEstructura('n');
-				printf("Bookerio: Fin de estructura de hash de normas.\n");
 				break;}
-
 
 			case '?':   {
 				printf("Bookerio: Parámetro inválido. \n");

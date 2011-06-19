@@ -49,7 +49,7 @@ char * ParserDeLibros::obtenerPrimerMatch(char * string, char *patronDeFiltro, i
 
 list < string > ParserDeLibros::obtenerDatos(char* cadena, bool filtrar) {
 	list < string > elementos;
-	char* pch = strtok(cadena, "*¿?¡!:;.,()- \n\t\r");
+	char* pch = strtok(cadena, "+*¿?¡!:;.,()- \n\t\r");
 	string str;
 
 	while (pch != NULL) {
@@ -63,7 +63,7 @@ list < string > ParserDeLibros::obtenerDatos(char* cadena, bool filtrar) {
 			elementos.push_back(str);
 		}
 		str.clear();
-		pch = strtok(NULL, "¿?¡!:;., \n\t\r");
+		pch = strtok(NULL, "+*¿?¡!:;., \n\t\r");
 	}
 	return elementos;
 }
